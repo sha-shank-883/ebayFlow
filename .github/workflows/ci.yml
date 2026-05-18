@@ -1,0 +1,223 @@
+# CI/CD Pipeline for SellerFlow AI
+# This workflow handles linting, type checking, testing, building, and deployment
+
+name: CI/CD Pipeline
+
+on:
+  # Trigger on pushes to the main branch
+  push:
+    branches: [main]
+  # Trigger on pull requests to any branch
+  pull_request:
+
+# Environment variables available to all jobs
+env:
+  NODE_ENV: test
+  # Use SQLite for testing to avoid external database dependencies
+  DATABASE_URL: "file:./test.db"
+
+jobs:
+  # Job 1: Lint - Run ESLint on frontend and backend code
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Test against multiple Node.js versions for compatibility
+        node-version: [18, 20]
+    steps:
+      # Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up Node.js with the specified version from the matrix
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          # Cache node_modules to speed up subsequent runs
+          cache: 'npm'
+
+      # Install all dependencies (including devDependencies for linting)
+      - name: Install dependencies
+        run: npm ci
+
+      # Run ESLint on the frontend code
+      - name: Lint frontend
+        run: npm run lint --workspace=frontend || npm run lint:frontend || npx eslint frontend/src --ext .ts,.tsx,.js,.jsx
+
+      # Run ESLint on the backend code
+      - name: Lint backend
+        run: npm run lint --workspace=backend || npm run lint:backend || npx eslint backend/src --ext .ts,.js
+
+  # Job 2: Typecheck - Run TypeScript type checking
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    # This job depends on lint passing first
+    needs: lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Run TypeScript compiler in no-emit mode to check types without generating output files
+      - name: Type check frontend
+        run: npm run typecheck --workspace=frontend || npm run typecheck:frontend || npx tsc --noEmit -p frontend/tsconfig.json
+
+      - name: Type check backend
+        run: npm run typecheck --workspace=backend || npm run typecheck:backend || npx tsc --noEmit -p backend/tsconfig.json
+
+  # Job 3: Test - Run tests with coverage reporting
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    needs: lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Run the test suite with coverage enabled
+      - name: Run tests with coverage
+        run: npm run test --workspace=frontend -- --coverage || npm run test:frontend -- --coverage
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Run backend tests with coverage
+        run: npm run test --workspace=backend -- --coverage || npm run test:backend -- --coverage
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      # Upload coverage reports as artifacts for later review
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report-node-${{ matrix.node-version }}
+          path: |
+            frontend/coverage/
+            backend/coverage/
+          retention-days: 7
+
+  # Job 4: Build - Build frontend and backend for production
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+    # Build only after linting, type checking, and tests all pass
+    needs: [lint, typecheck, test]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Build the frontend (e.g., React/Vue/Next.js bundle)
+      - name: Build frontend
+        run: npm run build --workspace=frontend || npm run build:frontend
+        env:
+          NODE_ENV: production
+
+      # Build the backend (e.g., TypeScript compilation)
+      - name: Build backend
+        run: npm run build --workspace=backend || npm run build:backend
+        env:
+          NODE_ENV: production
+
+      # Upload build artifacts for the deploy job
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output-node-${{ matrix.node-version }}
+          path: |
+            frontend/dist/
+            frontend/build/
+            backend/dist/
+          retention-days: 7
+
+  # Job 5: Deploy - Deploy to production (only on main branch)
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    # Only run this job when pushing to the main branch (not on pull requests)
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # Deploy only after all build jobs succeed
+    needs: build
+    # Specify the deployment environment for approval gates and environment variables
+    environment:
+      name: production
+      url: https://sellerflow-ai.example.com
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Download the build artifacts from the build job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output-node-20
+
+      # Deploy to production environment
+      # Replace this step with your actual deployment commands
+      # Examples: AWS ECS, Vercel, Railway, Docker Hub, etc.
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production..."
+          # Add your deployment commands here, for example:
+          # npm run deploy
+          # docker build -t sellerflow-ai .
+          # docker push sellerflow-ai:latest
+          # aws ecs update-service --cluster prod --service sellerflow-ai --force-new-deployment
+        env:
+          # Production environment variables (set in GitHub Secrets)
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          NODE_ENV: production
+
+      # Post-deployment verification
+      - name: Verify deployment
+        run: |
+          echo "Verifying deployment health..."
+          # Add health check commands here, for example:
+          # curl -f https://sellerflow-ai.example.com/health || exit 1

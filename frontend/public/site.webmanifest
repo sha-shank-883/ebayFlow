@@ -1,0 +1,16 @@
+{
+  "name": "eBay Flow AI",
+  "short_name": "eBay Flow",
+  "description": "AI-Powered eBay Listing Management Platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

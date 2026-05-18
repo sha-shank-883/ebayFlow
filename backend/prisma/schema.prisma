@@ -1,0 +1,821 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  password      String?
+  avatar        String?
+  role          Role      @default(USER)
+  googleId      String?   @unique
+  phone         String?
+  timezone      String    @default("Europe/London")
+  isVerified    Boolean   @default(false)
+  isActive      Boolean   @default(true)
+  failedLoginAttempts Int @default(0)
+  lockoutUntil  DateTime?
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  workspaces    WorkspaceMember[]
+  refreshTokens RefreshToken[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  adminUsers    AdminUser[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  STAFF
+  SUPER_ADMIN
+  EDITOR
+}
+
+model Workspace {
+  id                   String    @id @default(cuid())
+  name                 String
+  slug                 String    @unique
+  logo                 String?
+  plan                 Plan      @default(STARTER)
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  subscriptionStatus   String    @default("inactive")
+  trialEndsAt          DateTime?
+  currentPeriodEnd     DateTime?
+  listingsLimit        Int       @default(200)
+  accountsLimit        Int       @default(1)
+  aiCreditsLimit       Int       @default(50)
+  aiCreditsUsed        Int       @default(0)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  members       WorkspaceMember[]
+  ebayAccounts  EbayAccount[]
+  listings      Listing[]
+  orders        Order[]
+  inventory     InventoryItem[]
+  templates     ListingTemplate[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  jobQueue      JobQueue[]
+  aiLogs        AILog[]
+  webhooks      Webhook[]
+  syncLogs      SyncLog[]
+}
+
+enum Plan {
+  STARTER
+  GROWTH
+  PROFESSIONAL
+}
+
+model WorkspaceMember {
+  id          String     @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        MemberRole @default(MEMBER)
+  createdAt   DateTime   @default(now())
+  workspace   Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([workspaceId, userId])
+}
+
+enum MemberRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+model EbayAccount {
+  id               String    @id @default(cuid())
+  workspaceId      String
+  ebayUserId       String
+  username         String
+  accessToken      String    // AES-256 encrypted
+  refreshToken     String    // AES-256 encrypted
+  tokenExpiry      DateTime
+  refreshTokenExpiry DateTime?
+  marketplace      String    @default("EBAY_GB")
+  storeName        String?
+  storeUrl         String?
+  feedbackScore    Int?
+  feedbackPercent  Decimal?  @db.Decimal(5,2)
+  sellerLevel      String?
+  activeListings   Int       @default(0)
+  totalSales       Decimal   @default(0) @db.Decimal(12,2)
+  defectRate       Decimal?  @db.Decimal(5,2)
+  lateShipRate     Decimal?  @db.Decimal(5,2)
+  isActive         Boolean   @default(true)
+  isSandbox        Boolean   @default(false)
+  scopes           String[]
+  lastSyncedAt     DateTime?
+  syncStatus       String    @default("idle")
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  workspace        Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  listings         Listing[]
+  orders           Order[]
+  webhooks         Webhook[]
+
+  @@unique([workspaceId, ebayUserId])
+  @@index([workspaceId])
+}
+
+model Listing {
+  id              String        @id @default(cuid())
+  workspaceId     String
+  ebayAccountId   String
+  ebayItemId      String?
+  title           String
+  subtitle        String?
+  description     String?       @db.Text
+  descriptionHtml String?       @db.Text
+  price           Decimal       @db.Decimal(10,2)
+  originalPrice   Decimal?      @db.Decimal(10,2)
+  buyItNowPrice   Decimal?      @db.Decimal(10,2)
+  currency        String        @default("GBP")
+  quantity        Int           @default(0)
+  quantitySold    Int           @default(0)
+  quantityAvail   Int           @default(0)
+  status          ListingStatus @default(ACTIVE)
+  format          String        @default("FIXED_PRICE")
+  condition       String?
+  conditionDesc   String?
+  categoryId      String?
+  categoryName    String?
+  storeCategoryId String?
+  sku             String?
+  images          String[]
+  itemSpecifics   Json?
+  variations      Json?
+  shippingDetails Json?
+  returnPolicy    Json?
+  paymentPolicy   Json?
+  aiScore         Int?
+  aiSuggestions   Json?
+  seoScore        Int?
+  viewCount       Int           @default(0)
+  watchCount      Int           @default(0)
+  clickCount      Int           @default(0)
+  templateId      String?
+  tags            String[]
+  isScheduled     Boolean       @default(false)
+  scheduledAt     DateTime?
+  endedAt         DateTime?
+  lastSyncedAt    DateTime?
+  ebayCreatedAt   DateTime?
+  ebayUpdatedAt   DateTime?
+
+  // Draft/publish system
+  isDraft         Boolean       @default(false)
+  draftData       Json?
+  publishedAt     DateTime?
+  revisionCount   Int           @default(0)
+  lastPublishedById String?
+
+  // Full-text search
+  searchVector    String?       @db.Text
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  workspace       Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  ebayAccount     EbayAccount  @relation(fields: [ebayAccountId], references: [id], onDelete: Cascade)
+  template        ListingTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  imagesList      ListingImage[]
+  specifics       ListingSpecific[]
+  variationsList  ListingVariation[]
+  revisions       ListingRevision[]
+
+  @@index([workspaceId, status])
+  @@index([workspaceId, ebayAccountId])
+  @@unique([ebayItemId])
+  @@index([sku])
+  @@index([workspaceId, isDraft])
+  @@index([workspaceId, createdAt(sort: Desc)])
+}
+
+enum ListingStatus {
+  ACTIVE
+  ENDED
+  OUT_OF_STOCK
+  DRAFT
+  SCHEDULED
+  SUSPENDED
+  PENDING_REVIEW
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  workspaceId     String
+  ebayAccountId   String
+  ebayOrderId     String      @unique
+  buyerUsername   String
+  buyerEmail      String?
+  buyerName       String?
+  buyerPhone      String?
+  total           Decimal     @db.Decimal(10,2)
+  subtotal        Decimal     @db.Decimal(10,2)
+  shippingCost    Decimal     @default(0) @db.Decimal(10,2)
+  ebayFees        Decimal     @default(0) @db.Decimal(10,2)
+  vatAmount       Decimal     @default(0) @db.Decimal(10,2)
+  netProfit       Decimal     @default(0) @db.Decimal(10,2)
+  currency        String      @default("GBP")
+  status          OrderStatus @default(PENDING)
+  paymentStatus   String      @default("PAID")
+  paymentMethod   String?
+  shippingAddress Json?
+  billingAddress  Json?
+  items           Json
+  trackingNumber  String?
+  carrier         String?
+  labelUrl        String?
+  dispatchByDate  DateTime?
+  estimatedDelivery DateTime?
+  notes           String?
+  internalNotes   String?
+  isReturned      Boolean     @default(false)
+  returnReason    String?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  cancelledAt     DateTime?
+  ebayCreatedAt   DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  workspace       Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  ebayAccount     EbayAccount  @relation(fields: [ebayAccountId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, status])
+  @@index([workspaceId, ebayAccountId])
+  @@index([ebayOrderId])
+}
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_RECEIVED
+  PROCESSING
+  AWAITING_DISPATCH
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  RETURN_REQUESTED
+  RETURNED
+}
+
+model InventoryItem {
+  id                String    @id @default(cuid())
+  workspaceId       String
+  sku               String
+  name              String
+  description       String?
+  quantity          Int       @default(0)
+  reservedQuantity  Int       @default(0)
+  incomingQuantity  Int       @default(0)
+  lowStockThreshold Int       @default(5)
+  warehouseLocation String?
+  binLocation       String?
+  barcodeId         String?
+  barcode           String?
+  costPrice         Decimal?  @db.Decimal(10,2)
+  supplier          String?
+  supplierSku       String?
+  weight            Decimal?  @db.Decimal(8,3)
+  dimensions        Json?
+  notes             String?
+  lastCountedAt     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  workspace         Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, sku])
+  @@index([workspaceId])
+}
+
+model ListingTemplate {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  htmlContent String   @db.Text
+  cssContent  String?  @db.Text
+  thumbnail   String?
+  category    String?
+  isDefault   Boolean  @default(false)
+  isPublic    Boolean  @default(false)
+  usageCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  listings    Listing[]
+  @@index([workspaceId])
+}
+
+model AILog {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String?
+  type        String
+  model       String   @default("gpt-4o")
+  prompt      String   @db.Text
+  response    String   @db.Text
+  tokensUsed  Int      @default(0)
+  cost        Decimal  @default(0) @db.Decimal(8,4)
+  duration    Int?
+  listingId   String?
+  success     Boolean  @default(true)
+  error       String?
+  createdAt   DateTime @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  @@index([workspaceId, type])
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String?
+  type        String
+  title       String
+  message     String
+  data        Json?
+  isRead      Boolean  @default(false)
+  readAt      DateTime?
+  createdAt   DateTime @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  @@index([workspaceId, isRead])
+}
+
+model JobQueue {
+  id          String    @id @default(cuid())
+  workspaceId String
+  type        String
+  payload     Json
+  status      String    @default("pending")
+  priority    Int       @default(0)
+  attempts    Int       @default(0)
+  maxAttempts Int       @default(3)
+  error       String?
+  result      Json?
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  @@index([status, scheduledAt])
+  @@index([workspaceId, type])
+}
+
+model Webhook {
+  id            String   @id @default(cuid())
+  workspaceId   String
+  ebayAccountId String?
+  event         String
+  payload       Json
+  status        String   @default("received")
+  processedAt   DateTime?
+  error         String?
+  createdAt     DateTime @default(now())
+
+  workspace     Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  ebayAccount   EbayAccount? @relation(fields: [ebayAccountId], references: [id], onDelete: SetNull)
+  @@index([workspaceId, event])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  workspaceId String?
+  userId      String?
+  action      String
+  resource    String
+  resourceId  String?
+  oldValue    Json?
+  newValue    Json?
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  @@index([workspaceId, createdAt])
+  @@index([userId])
+}
+
+model ListingImage {
+  id            String    @id @default(cuid())
+  listingId     String
+  workspaceId   String
+  ebayImageUrl  String
+  localPath     String?
+  thumbnailPath String?
+  s3Key         String?
+  s3Url         String?
+  cdnUrl        String?
+  width         Int?
+  height        Int?
+  fileSize      Int?
+  mimeType      String?
+  sortOrder     Int       @default(0)
+  isPrimary     Boolean   @default(false)
+  altText       String?
+  uploadedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  listing       Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId, sortOrder])
+  @@index([workspaceId])
+  @@index([s3Key])
+}
+
+model ListingSpecific {
+  id            String    @id @default(cuid())
+  listingId     String
+  workspaceId   String
+  key           String
+  value         String
+  valueType     String    @default("text")  // text, number, boolean, list, compatibility
+  sortOrder     Int       @default(0)
+  isRequired    Boolean   @default(false)
+  isCustom      Boolean   @default(false)
+
+  listing       Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@unique([listingId, key])
+  @@index([listingId])
+  @@index([workspaceId])
+  @@index([key])
+  @@index([workspaceId, key])
+}
+
+model ListingVariation {
+  id              String    @id @default(cuid())
+  listingId       String
+  workspaceId     String
+  sku             String?
+  ebayVariationId String?
+  price           Decimal   @db.Decimal(10,2)
+  quantity        Int       @default(0)
+  quantitySold    Int       @default(0)
+  stockLevel      String?
+  images          String[]
+  specifics       Json?     // e.g. { "Size": "Large", "Color": "Red" }
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  listing         Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId])
+  @@index([workspaceId])
+  @@index([sku])
+  @@index([workspaceId, sku])
+}
+
+model SyncLog {
+  id            String        @id @default(cuid())
+  workspaceId   String
+  ebayAccountId String?
+  type          String        // full-sync, incremental, listing-sync, order-sync, image-sync
+  status        SyncStatus    @default(PENDING)
+  itemsQueued   Int           @default(0)
+  itemsProcessed Int          @default(0)
+  itemsFailed   Int           @default(0)
+  error         String?
+  errorMessage  String?       @db.Text
+  startedAt     DateTime?
+  completedAt   DateTime?
+  duration      Int?          // milliseconds
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+
+  workspace     Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, type])
+  @@index([workspaceId, status])
+  @@index([workspaceId, createdAt(sort: Desc)])
+  @@index([ebayAccountId])
+}
+
+enum SyncStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  PARTIAL
+  CANCELLED
+}
+
+model ListingRevision {
+  id            String    @id @default(cuid())
+  listingId     String
+  workspaceId   String
+  userId        String?
+  revisionNumber Int
+  changeType    String    // draft, publish, edit, sync, rollback
+  changes       Json      // { field: { old: ..., new: ... } }
+  snapshot      Json?     // full listing snapshot at this revision
+  note          String?
+  createdAt     DateTime  @default(now())
+
+  listing       Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId, revisionNumber])
+  @@index([workspaceId])
+  @@index([listingId, createdAt(sort: Desc)])
+}
+
+// ============================================
+// WEBSITE MANAGEMENT MODULE
+// ============================================
+
+model SiteSettings {
+  id            String   @id @default(cuid())
+  siteName      String   @default("eBay Flow AI")
+  tagline       String?
+  logoUrl       String?
+  faviconUrl    String?
+  contactEmail  String?
+  contactPhone  String?
+  contactAddress String?
+  socialLinks   Json?    // { twitter, linkedin, facebook, instagram, github }
+  analyticsId   String?  // GA4, etc.
+  customCSS     String?  @db.Text
+  announcementBar Json?  // { text, bgColor, textColor, isActive, startDate, endDate }
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Page {
+  id          String   @id @default(cuid())
+  slug        String   @unique  // "home", "about", "pricing", "custom-page"
+  title       String
+  description String?
+  template    String   @default("default") // "default", "full-width", "landing", "blank"
+  isActive    Boolean  @default(true)
+  deletedAt   DateTime?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  seo         PageSEO?
+  sections    SectionContent[]
+
+  @@index([isActive, deletedAt])
+  @@index([sortOrder])
+}
+
+model PageSEO {
+  id              String   @id @default(cuid())
+  pageId          String   @unique
+  metaTitle       String
+  metaDescription String
+  metaKeywords    String?
+  ogTitle         String?
+  ogDescription   String?
+  ogImageUrl      String?
+  canonicalUrl    String?
+  robotsIndex     Boolean  @default(true)
+  customJsonLd    String?  @db.Text
+  updatedAt       DateTime @updatedAt
+
+  page            Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+}
+
+model SectionContent {
+  id          String   @id @default(cuid())
+  pageId      String
+  sectionKey  String   // "hero", "features", "testimonials", "cta", "faq", "pricing", "custom"
+  sectionType String   // "hero", "features", "testimonials", "cta", "faq", "pricing", "how-it-works", "custom-html", "audit", "logos", "trust-signals"
+  title       String?
+  subtitle    String?
+  content     Json     // Flexible: { headings, paragraphs, images, buttons, items[], stats[], etc. }
+  settings    Json?    // { backgroundColor, textColor, padding, alignment, animation, fullWidth, etc. }
+  isActive    Boolean  @default(true)
+  deletedAt   DateTime?
+  order       Int      @default(0)
+  updatedAt   DateTime @updatedAt
+
+  page        Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, sectionKey])
+  @@index([pageId, isActive, deletedAt, order])
+  @@index([sectionType])
+}
+
+model NavigationItem {
+  id              String    @id @default(cuid())
+  location        String    // "header", "footer"
+  column          String?   // for footer columns: "platform", "engine", "company", "compliance"
+  label           String
+  href            String
+  order           Int       @default(0)
+  parentId        String?   // for dropdowns
+  isOpenInNewTab  Boolean   @default(false)
+  isActive        Boolean   @default(true)
+  deletedAt       DateTime?
+
+  @@index([location, isActive, deletedAt, order])
+  @@index([column])
+}
+
+model MediaAsset {
+  id        String    @id @default(cuid())
+  filename  String
+  url       String
+  alt       String?
+  mimeType  String
+  size      Int
+  width     Int?
+  height    Int?
+  category  String?   // "logo", "banner", "hero", "testimonial", "blog", "general"
+  isActive  Boolean   @default(true)
+  deletedAt DateTime?
+  uploadedAt DateTime @default(now())
+
+  @@index([isActive, deletedAt])
+  @@index([category])
+}
+
+model BlogPost {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String    @db.Text
+  content         String    @db.Text  // HTML from TipTap
+  featuredImage   String?
+  authorId        String?
+  status          String    @default("DRAFT") // "DRAFT" | "PUBLISHED" | "SCHEDULED"
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  isActive        Boolean   @default(true)
+  deletedAt       DateTime?
+  metaTitle       String?
+  metaDescription String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([status, isActive, deletedAt, publishedAt])
+  @@index([slug])
+}
+
+model Testimonial {
+  id        String    @id @default(cuid())
+  quote     String    @db.Text
+  author    String
+  role      String?
+  company   String?
+  avatarUrl String?
+  rating    Int       // 1-5
+  stats     String?   // "40% sales increase"
+  order     Int       @default(0)
+  isActive  Boolean   @default(true)
+  deletedAt DateTime?
+
+  @@index([isActive, deletedAt, order])
+}
+
+model FAQCategory {
+  id        String    @id @default(cuid())
+  name      String
+  order     Int       @default(0)
+  isActive  Boolean   @default(true)
+  deletedAt DateTime?
+
+  items     FAQItem[]
+
+  @@index([isActive, deletedAt, order])
+}
+
+model FAQItem {
+  id          String      @id @default(cuid())
+  categoryId  String
+  question    String
+  answer      String      @db.Text
+  order       Int         @default(0)
+  isActive    Boolean     @default(true)
+  deletedAt   DateTime?
+
+  category    FAQCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId, isActive, deletedAt, order])
+}
+
+model PricingPlan {
+  id          String    @id @default(cuid())
+  name        String
+  price       String
+  period      String    // "monthly" | "yearly"
+  description String?
+  features    Json      // array of strings
+  isPopular   Boolean   @default(false)
+  ctaText     String    @default("Get Started")
+  ctaLink     String    @default("/register")
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+
+  @@index([period, isActive, deletedAt, order])
+}
+
+model Redirect {
+  id          String    @id @default(cuid())
+  from        String    @unique
+  to          String
+  statusCode  Int       @default(301)
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+
+  @@index([isActive, deletedAt])
+}
+
+model ContentAudit {
+  id          String    @id @default(cuid())
+  userId      String?
+  userEmail   String?
+  action      String    // "CREATE" | "UPDATE" | "DELETE" | "TOGGLE" | "RESTORE"
+  entityType  String    // "SectionContent" | "BlogPost" | "Page" | "Testimonial" | etc.
+  entityId    String
+  entityName  String?
+  changes     Json?     // { before: ..., after: ... }
+  ipAddress   String?
+  createdAt   DateTime  @default(now())
+
+  @@index([entityType, entityId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model AdminRole {
+  id          String    @id @default(cuid())
+  name        String    @unique  // "Super Admin", "Editor", "Content Manager"
+  description String?
+  permissions Json      // array of permission strings
+  isSystem    Boolean   @default(false)  // system roles can't be deleted
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  users       AdminUser[]
+
+  @@index([isActive])
+}
+
+model AdminUser {
+  id          String    @id @default(cuid())
+  userId      String    @unique  // links to User table
+  roleId      String
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role        AdminRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([roleId])
+}
+
+model ContentVersion {
+  id          String   @id @default(cuid())
+  entityType  String   // "page", "section", "blog", etc.
+  entityId    String
+  version     Int      // auto-incremented version number
+  content     Json     // snapshot of content at this version
+  createdBy   String?  // user ID
+  createdAt   DateTime @default(now())
+  notes       String?  // optional version notes
+  
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}

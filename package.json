@@ -1,0 +1,52 @@
+{
+  "name": "sellerflow-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SellerFlow AI - Full-stack application",
+  "scripts": {
+    "// Dev Scripts": "",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+
+    "// Build Scripts": "",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+
+    "// Production Scripts": "",
+    "start": "cd backend && npm start",
+
+    "// Test Scripts": "",
+    "test": "npm run test:backend && npm run test:frontend",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
+    "test:e2e": "cd e2e && npm test",
+    "test:load": "cd tests/load && npm test",
+
+    "// Quality Scripts": "",
+    "lint": "npm run lint:backend && npm run lint:frontend",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "typecheck": "npm run typecheck:backend && npm run typecheck:frontend",
+    "typecheck:backend": "cd backend && npm run typecheck",
+    "typecheck:frontend": "cd frontend && npm run typecheck",
+
+    "// Database Scripts": "",
+    "db:migrate": "cd backend && npx prisma migrate deploy",
+    "db:seed": "cd backend && npx prisma db seed",
+    "db:backup": "node scripts/db-backup.js",
+    "db:restore": "node scripts/db-restore.js",
+
+    "// Environment Scripts": "",
+    "env:validate": "node scripts/validate-env.js",
+
+    "// Docker Scripts": "",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
