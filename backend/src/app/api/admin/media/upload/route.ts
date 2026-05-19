@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../../_auth';
+import { requireSuperAdmin } from '../../../../../_auth';
 import { prisma } from '../../../../../../lib/prisma';
-import { createAuditLog } from '../../../_audit';
+import { createAuditLog } from '../../_audit';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';

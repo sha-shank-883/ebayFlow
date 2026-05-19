@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '../../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
+import { prisma } from '../../../../../../lib/prisma';
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
