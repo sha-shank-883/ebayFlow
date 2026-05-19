@@ -6,20 +6,21 @@ import { prisma } from '../../lib/prisma';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-fallback-secret';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || 'dev-fallback-secret';
 const BCRYPT_ROUNDS = 12;
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
 const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY = '7d';
 
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET environment variable is required');
-}
-
-if (!JWT_REFRESH_SECRET) {
-  throw new Error('JWT_REFRESH_SECRET environment variable is required');
+function requireJwtSecrets() {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is required');
+  }
+  if (!process.env.JWT_REFRESH_SECRET) {
+    throw new Error('JWT_REFRESH_SECRET environment variable is required');
+  }
 }
 
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
@@ -36,6 +37,7 @@ function validatePasswordStrength(password: string): string | null {
 
 export class AuthService {
   async register(data: RegisterDto) {
+    requireJwtSecrets();
     const passwordError = validatePasswordStrength(data.password);
     if (passwordError) {
       throw new Error(passwordError);
@@ -82,6 +84,7 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
+    requireJwtSecrets();
     const user = await prisma.user.findUnique({
       where: { email: data.email.toLowerCase() },
     });
@@ -133,6 +136,7 @@ export class AuthService {
   }
 
   async refreshTokens(refreshToken: string) {
+    requireJwtSecrets();
     try {
       const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET!) as { userId: string; jti: string };
 
@@ -192,6 +196,7 @@ export class AuthService {
   }
 
   private async generateTokens(user: any) {
+    requireJwtSecrets();
     const membership = await prisma.workspaceMember.findFirst({
       where: { userId: user.id },
       include: { workspace: true },

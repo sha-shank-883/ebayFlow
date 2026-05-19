@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
@@ -7,6 +9,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   webpack: (config) => {
+    config.resolve.alias['@'] = path.resolve(__dirname, 'src');
     config.cache = false;
     return config;
   },

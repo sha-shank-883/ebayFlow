@@ -5,15 +5,14 @@ import { AuthService } from '@/modules/auth/auth.service';
 
 export const dynamic = 'force-dynamic';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
-if (!JWT_SECRET) {
-  throw new Error('JWT_SECRET environment variable is required');
-}
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-fallback-secret';
 
 const authService = new AuthService();
 
 export async function GET(request: Request) {
+  if (!process.env.JWT_SECRET) {
+    return NextResponse.json({ message: 'Server configuration error' }, { status: 500 });
+  }
   try {
     const authHeader = request.headers.get('authorization');
 

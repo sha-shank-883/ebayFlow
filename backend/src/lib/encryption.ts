@@ -2,13 +2,15 @@ import crypto from 'crypto';
 
 const ALGORITHM = 'aes-256-gcm';
 
-if (!process.env.ENCRYPTION_KEY || process.env.ENCRYPTION_KEY.length < 32) {
-  throw new Error('ENCRYPTION_KEY environment variable is required and must be at least 32 characters');
+function getEncryptionKey(): Buffer {
+  if (!process.env.ENCRYPTION_KEY || process.env.ENCRYPTION_KEY.length < 32) {
+    throw new Error('ENCRYPTION_KEY environment variable is required and must be at least 32 characters');
+  }
+  return Buffer.from(process.env.ENCRYPTION_KEY.slice(0, 32));
 }
 
-const ENCRYPTION_KEY = Buffer.from(process.env.ENCRYPTION_KEY.slice(0, 32));
-
 export function encrypt(text: string): string {
+  const ENCRYPTION_KEY = getEncryptionKey();
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
   let encrypted = cipher.update(text, 'utf8', 'hex');
@@ -18,6 +20,7 @@ export function encrypt(text: string): string {
 }
 
 export function decrypt(encryptedText: string): string {
+  const ENCRYPTION_KEY = getEncryptionKey();
   const [ivHex, authTagHex, encrypted] = encryptedText.split(':');
   if (!ivHex || !authTagHex || !encrypted) {
     throw new Error('Invalid encrypted data format');
