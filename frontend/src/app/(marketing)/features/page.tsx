@@ -71,7 +71,7 @@ export default function FeaturesPage() {
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Everything you need to manage, optimize, and scale your eBay business.
-                The only listing management tool built specifically for the high-volume UK market.
+                The only listing management tool built specifically for high-volume eBay marketplaces worldwide.
               </p>
             </div>
 

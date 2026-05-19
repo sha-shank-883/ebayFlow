@@ -2,12 +2,12 @@
   {
     "id": "default",
     "siteName": "eBay Flow AI",
-    "tagline": "AI-Powered eBay Listing Management & Automation for UK Sellers",
+    "tagline": "AI-Powered eBay Listing Management & Automation for Global Sellers",
     "logoUrl": null,
     "faviconUrl": null,
     "contactEmail": "hello@ebayflow.ai",
-    "contactPhone": "+44 20 8123 4567",
-    "contactAddress": "71-75 Shelton Street, London, WC2H 9JQ, United Kingdom",
+    "contactPhone": "+1 (555) 123-4567",
+    "contactAddress": "123 Market Street, San Francisco, CA 94105, United States",
     "socialLinks": {
       "github": "https://github.com/ebayflow-ai",
       "twitter": "https://twitter.com/ebayflowai"

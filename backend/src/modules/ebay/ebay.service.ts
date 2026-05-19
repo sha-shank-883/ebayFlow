@@ -6,8 +6,8 @@ import { ConfigService } from '@nestjs/config';
 const config = {
   clientId: process.env.EBAY_CLIENT_ID || '',
   clientSecret: process.env.EBAY_CLIENT_SECRET || '',
-  ruName: process.env.EBAY_RU_NAME || '',
-  environment: process.env.EBAY_ENVIRONMENT || 'sandbox',
+  ruName: process.env.EBAY_REDIRECT_URI || process.env.EBAY_RU_NAME || '',
+  environment: (process.env.EBAY_ENVIRONMENT === 'production' || process.env.EBAY_ENVIRONMENT === 'prod') ? 'production' : 'sandbox',
 };
 
 const EBAY_AUTH_BASE = config.environment === 'production'

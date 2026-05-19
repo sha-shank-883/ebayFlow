@@ -152,8 +152,8 @@ export function Hero() {
                   {/* KPI Row */}
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-muted/50 p-5 rounded-2xl border border-border">
-                      <div className="text-muted-foreground text-xs mb-1 uppercase tracking-wider">UK Revenue</div>
-                      <div className="text-2xl font-bold text-foreground">{hero.preview?.revenue || "£42,850.00"}</div>
+                      <div className="text-muted-foreground text-xs mb-1 uppercase tracking-wider">Global Revenue</div>
+                      <div className="text-2xl font-bold text-foreground">{hero.preview?.revenue || "$42,850.00"}</div>
                       <div className="text-emerald-400 text-[10px] mt-1 font-medium">{hero.preview?.revenueGrowth || "+12.5% vs last month"}</div>
                     </div>
                     <div className="bg-muted/50 p-5 rounded-2xl border border-border">

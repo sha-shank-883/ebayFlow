@@ -145,10 +145,10 @@ async function main() {
     create: {
       id: 'default',
       siteName: 'eBay Flow AI',
-      tagline: 'AI-Powered eBay Listing Management & Automation for UK Sellers',
+      tagline: 'AI-Powered eBay Listing Management & Automation for Global Sellers',
       contactEmail: 'hello@ebayflow.ai',
-      contactPhone: '+44 20 8123 4567',
-      contactAddress: '71-75 Shelton Street, London, WC2H 9JQ, United Kingdom',
+      contactPhone: '+1 (555) 123-4567',
+      contactAddress: '123 Market Street, San Francisco, CA 94105, United States',
       socialLinks: { twitter: 'https://twitter.com/ebayflowai', github: 'https://github.com/ebayflow-ai' },
     },
   });
@@ -170,22 +170,22 @@ async function main() {
       sectionKey: 'hero',
       sectionType: 'hero',
       title: 'The Enterprise AI Engine for',
-      subtitle: 'UK eBay Sellers',
+      subtitle: 'eBay Sellers Worldwide',
       content: {
-        badge: 'Scale Your eBay Business in the UK',
-        description: 'Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for the high-volume UK market.',
+        badge: 'Scale Your eBay Business Globally',
+        description: 'Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for high-volume eBay marketplaces worldwide.',
         cta: 'Start Your Free Audit',
         ctaLink: '/register',
         secondaryCta: 'View Case Studies',
         secondaryCtaLink: '/case-studies',
         stats: [
-          { label: 'UK Sellers', value: '5,000+' },
+          { label: 'Global Sellers', value: '5,000+' },
           { label: 'Listings Optimized', value: '1.2M+' },
           { label: 'Avg. Sales Growth', value: '34%' },
           { label: 'Uptime Guarantee', value: '99.99%' },
         ],
         preview: {
-          revenue: '£42,850.00',
+          revenue: '$42,850.00',
           revenueGrowth: '+12.5% vs last month',
           listings: '1,248',
           listingStatus: '98% SEO Optimized',
@@ -206,15 +206,15 @@ async function main() {
       sectionKey: 'features',
       sectionType: 'features',
       title: 'Precision Engineering for',
-      subtitle: 'UK eBay Dominance',
+      subtitle: 'Global eBay Dominance',
       content: {
         badge: 'Enterprise Capabilities',
-        description: "We've built the most advanced toolset specifically for the UK market. Automate the mundane, optimize for the algorithm, and scale without limits.",
+        description: "We've built the most advanced toolset for eBay sellers worldwide. Automate the mundane, optimize for the algorithm, and scale without limits.",
         items: [
-          { title: 'AI Listing Optimization', description: 'Our AI analyzes thousands of top-performing UK listings to generate titles and descriptions that convert.', icon: 'Sparkles' },
+          { title: 'AI Listing Optimization', description: 'Our AI analyzes thousands of top-performing listings globally to generate titles and descriptions that convert.', icon: 'Sparkles' },
           { title: 'Bulk Inventory Sync', description: 'Real-time synchronization across multiple eBay accounts and warehouses with millisecond latency.', icon: 'RefreshCw' },
-          { title: 'eBay SEO Dominance', description: "Proprietary algorithms designed for eBay.co.uk's 'Best Match' search system to keep you at the top.", icon: 'TrendingUp' },
-          { title: 'Automated Fulfillment', description: 'Streamline your UK shipping with direct integrations into Royal Mail, Evri, and DPD.', icon: 'Truck' },
+          { title: 'eBay SEO Dominance', description: "Proprietary algorithms designed for eBay's 'Best Match' search system to keep you at the top across all marketplaces.", icon: 'TrendingUp' },
+          { title: 'Automated Fulfillment', description: 'Streamline your shipping with direct integrations into major carriers worldwide including USPS, FedEx, DHL, and more.', icon: 'Truck' },
         ],
       },
       order: 2,
@@ -235,7 +235,7 @@ async function main() {
         badge: 'Simple Setup',
         description: 'No complex setup, no technical knowledge required. Start optimizing your eBay business in minutes.',
         steps: [
-          { icon: 'Upload', title: 'Connect Your eBay Account', description: 'Securely link your eBay seller account in under 2 minutes. We support multiple accounts and marketplaces including eBay UK, US, DE, and more.', details: ['One-click OAuth connection', 'No passwords stored', 'Bank-level encryption', 'Instant sync of existing listings'] },
+          { icon: 'Upload', title: 'Connect Your eBay Account', description: 'Securely link your eBay seller account in under 2 minutes. We support multiple accounts and all eBay marketplaces worldwide.', details: ['One-click OAuth connection', 'No passwords stored', 'Bank-level encryption', 'Instant sync of existing listings'] },
           { icon: 'Wand2', title: 'AI Optimizes Your Listings', description: 'Our AI analyzes millions of successful listings to generate optimized titles, descriptions, and pricing recommendations automatically.', details: ['SEO-optimized titles', 'Compelling descriptions', 'Competitive pricing analysis', 'Image enhancement suggestions'] },
           { icon: 'Rocket', title: 'Publish & Scale', description: 'Publish optimized listings instantly and watch your visibility and sales grow. Monitor performance with real-time analytics.', details: ['One-click publish to eBay', 'Bulk listing operations', 'Real-time performance tracking', 'Automated repricing'] },
         ],
@@ -256,7 +256,7 @@ async function main() {
       subtitle: '10,000+ Sellers',
       content: {
         badge: 'Loved by Sellers',
-        description: 'See why thousands of UK eBay sellers choose eBay Flow to power their business.',
+        description: 'See why thousands of eBay sellers worldwide choose eBay Flow to power their business.',
       },
       order: 4,
     },
@@ -274,7 +274,7 @@ async function main() {
       subtitle: 'eBay Empire',
       content: {
         badge: 'Flexible Plans',
-        description: 'Transparent pricing tailored for UK sellers of all sizes. No hidden fees, no credit card required to start.',
+        description: 'Transparent pricing tailored for eBay sellers of all sizes worldwide. No hidden fees, no credit card required to start.',
       },
       order: 5,
     },
@@ -288,11 +288,11 @@ async function main() {
       pageId: homePage.id,
       sectionKey: 'cta',
       sectionType: 'cta',
-      title: 'Scale Your UK Business',
+      title: 'Scale Your Global Business',
       subtitle: 'at the Speed of AI',
       content: {
         badge: 'Join the eBay Revolution',
-        description: "Experience the enterprise listing engine trusted by the UK's top retailers. Start your 14-day masterclass in automation today.",
+        description: "Experience the enterprise listing engine trusted by top retailers worldwide. Start your 14-day masterclass in automation today.",
         primaryCta: 'Get Started Now',
         primaryCtaLink: '/register',
         secondaryCta: 'Talk to Sales',
@@ -329,10 +329,10 @@ async function main() {
       title: 'Is Your eBay Store Performing',
       subtitle: 'at its Peak?',
       content: {
-        badge: 'Exclusive for UK Sellers',
-        description: "Our AI diagnostic tool analyzes your listings against the latest eBay.co.uk 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
+        badge: 'Exclusive for eBay Sellers',
+        description: "Our AI diagnostic tool analyzes your listings against the latest eBay 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
         features: [
-          { icon: 'BarChart3', title: 'Detailed Sales Gap Analysis', description: 'See exactly where you\'re losing out to competitors in the UK search results.' },
+          { icon: 'BarChart3', title: 'Detailed Sales Gap Analysis', description: 'See exactly where you\'re losing out to competitors in global search results.' },
           { icon: 'ShieldCheck', title: 'Listing Health Check', description: 'We scan for missing item specifics and title optimization errors.' },
           { icon: 'Zap', title: 'Instant Scaling Roadmap', description: 'Receive a step-by-step plan to automate your growth with eBay Flow.' },
         ],
@@ -353,7 +353,7 @@ async function main() {
       sectionType: 'custom',
       content: {
         features: [
-          { icon: 'BarChart3', title: 'Detailed Sales Gap Analysis', description: 'See exactly where you\'re losing out to competitors in the UK search results.' },
+          { icon: 'BarChart3', title: 'Detailed Sales Gap Analysis', description: 'See exactly where you\'re losing out to competitors in global search results.' },
           { icon: 'ShieldCheck', title: 'Listing Health Check', description: 'We scan for missing item specifics and title optimization errors.' },
           { icon: 'Zap', title: 'Instant Scaling Roadmap', description: 'Receive a step-by-step plan to automate your growth with eBay Flow.' },
         ],
@@ -374,16 +374,16 @@ async function main() {
         title: 'Get Your Free eBay Audit',
         description: 'Discover hidden optimization opportunities. Our specialists will review your current listing performance.',
         successTitle: 'Request Received',
-        successDescription: 'Our UK-based eBay specialists will analyze your store and contact you within 24 hours with your free audit.',
+        successDescription: 'Our eBay specialists will analyze your store and contact you within 24 hours with your free audit.',
         fields: {
           name: { label: 'Full Name', placeholder: 'John Smith' },
-          email: { label: 'Work Email', placeholder: 'john@company.co.uk' },
+          email: { label: 'Work Email', placeholder: 'john@company.com' },
           business: { label: 'Business Name', placeholder: 'Enterprise Sellers Ltd' },
-          url: { label: 'eBay Store URL (Optional)', placeholder: 'ebay.co.uk/str/yourstore' },
+          url: { label: 'eBay Store URL (Optional)', placeholder: 'ebay.com/str/yourstore' },
         },
         cta: 'Claim My Free Audit',
         loadingCta: 'Analyzing...',
-        guarantees: ['No Obligation', 'UK Based Team', 'GDPR Compliant'],
+        guarantees: ['No Obligation', 'Global Support Team', 'GDPR Compliant'],
       },
       order: 10,
     },
@@ -400,7 +400,7 @@ async function main() {
       content: {
         trustSignals: [
           { label: 'eBay Solution Partner', icon: 'CheckCircle2', color: 'text-blue-500' },
-          { label: 'UK Based Support', icon: 'Shield', color: 'text-blue-500' },
+          { label: 'Global Support', icon: 'Shield', color: 'text-blue-500' },
           { label: '4.9/5 Trustpilot', icon: 'Star', color: 'text-yellow-500' },
         ],
       },
@@ -421,8 +421,8 @@ async function main() {
           { name: 'eBay', color: 'text-[#E53238]' },
           { name: 'PayPal', color: 'text-[#003087]' },
           { name: 'Shopify', color: 'text-[#96BF48]' },
-          { name: 'Royal Mail', color: 'text-[#DC291E]' },
-          { name: 'Evri', color: 'text-[#ED7902]' },
+          { name: 'USPS', color: 'text-[#333366]' },
+          { name: 'FedEx', color: 'text-[#4D148C]' },
           { name: 'Stripe', color: 'text-[#635BFF]' },
         ],
       },
@@ -438,11 +438,11 @@ async function main() {
     update: {},
     create: {
       pageId: homePage.id,
-      metaTitle: 'eBay Flow AI - AI-Powered eBay Listing Management for UK Sellers',
-      metaDescription: 'Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built for the high-volume UK market.',
-      metaKeywords: 'eBay listing tool, eBay SEO, UK eBay, AI listing optimization, inventory management',
-      ogTitle: 'eBay Flow AI - Scale Your eBay Business in the UK',
-      ogDescription: 'AI-powered listing management, SEO optimization, and inventory sync for UK eBay sellers.',
+      metaTitle: 'eBay Flow AI - AI-Powered eBay Listing Management for Global Sellers',
+      metaDescription: 'Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built for high-volume eBay marketplaces worldwide.',
+      metaKeywords: 'eBay listing tool, eBay SEO, AI listing optimization, inventory management, global eBay',
+      ogTitle: 'eBay Flow AI - Scale Your eBay Business Globally',
+      ogDescription: 'AI-powered listing management, SEO optimization, and inventory sync for eBay sellers worldwide.',
     },
   });
 
@@ -462,7 +462,7 @@ async function main() {
       sectionKey: 'about-content',
       sectionType: 'custom-html',
       content: {
-        mission: { title: 'Our Mission', description: 'To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.' },
+        mission: { title: 'Our Mission', description: 'To democratize enterprise-grade automation for eBay sellers worldwide. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.' },
         vision: { title: 'Our Vision', description: 'To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.' },
       },
       order: 1,
@@ -499,10 +499,10 @@ async function main() {
       sectionType: 'custom',
       content: {
         milestones: [
-          { year: '2022', event: 'eBay Flow AI founded in London', detail: 'Started with a mission to help UK sellers leverage AI' },
-          { year: '2023', event: 'Series A Funding', detail: 'Raised £5M to expand our platform and team' },
-          { year: '2024', event: '10,000+ sellers milestone', detail: 'Became the #1 AI-powered eBay tool in the UK' },
-          { year: '2025', event: 'Global expansion', detail: 'Now serving sellers across UK, US, EU, and Australia' },
+          { year: '2022', event: 'eBay Flow AI founded', detail: 'Started with a mission to help eBay sellers leverage AI' },
+          { year: '2023', event: 'Series A Funding', detail: 'Raised $5M to expand our platform and team' },
+          { year: '2024', event: '10,000+ sellers milestone', detail: 'Became the #1 AI-powered eBay tool globally' },
+          { year: '2025', event: 'Global expansion', detail: 'Now serving sellers across US, UK, EU, Australia, and beyond' },
         ],
       },
       order: 3,
@@ -515,7 +515,7 @@ async function main() {
     create: {
       pageId: aboutPage.id,
       metaTitle: 'About eBay Flow AI - Built by Sellers, for Sellers',
-      metaDescription: 'Learn about our mission to empower UK eBay sellers with enterprise-grade AI tools. From London to global.',
+      metaDescription: 'Learn about our mission to empower eBay sellers worldwide with enterprise-grade AI tools. From startup to global.',
     },
   });
 
@@ -540,7 +540,7 @@ async function main() {
         badge: 'Contact Us',
         title: 'Get in',
         titleAccent: 'Touch',
-        description: 'Have a question, feedback, or need help? Our UK-based team typically responds within 24 hours.',
+        description: 'Have a question, feedback, or need help? Our global team typically responds within 24 hours.',
         formTitle: 'Send us a message',
         infoTitle: 'Contact Information',
         hours: { title: 'Business Hours', detail: 'Mon-Fri: 9:00 AM - 6:00 PM GMT', weekend: 'Sat-Sun: Closed' },
@@ -562,7 +562,7 @@ async function main() {
         title: 'Send us a message',
         fields: {
           name: { label: 'Full Name', placeholder: 'John Smith' },
-          email: { label: 'Work Email', placeholder: 'john@company.co.uk' },
+          email: { label: 'Work Email', placeholder: 'john@company.com' },
           company: { label: 'Company (Optional)', placeholder: 'Enterprise Sellers Ltd' },
           subject: {
             label: 'Subject',
@@ -598,14 +598,14 @@ async function main() {
         email: 'hello@ebayflow.ai',
         phone: '+44 20 8123 4567',
         address: {
-          line1: '71-75 Shelton Street',
-          city: 'London',
-          postcode: 'WC2H 9JQ',
-          country: 'United Kingdom',
+          line1: '123 Market Street',
+          city: 'San Francisco',
+          postcode: 'CA 94105',
+          country: 'United States',
         },
         hours: {
           title: 'Business Hours',
-          detail: 'Mon-Fri: 9:00 AM - 6:00 PM GMT',
+          detail: 'Mon-Fri: 9:00 AM - 6:00 PM PST',
           weekend: 'Sat-Sun: Closed',
         },
         immediate: {
@@ -623,8 +623,8 @@ async function main() {
     update: {},
     create: {
       pageId: contactPage.id,
-      metaTitle: 'Contact eBay Flow AI - UK-Based Support',
-      metaDescription: 'Get in touch with our UK-based team. We respond within 24 hours.',
+      metaTitle: 'Contact eBay Flow AI - Global Support',
+      metaDescription: 'Get in touch with our global team. We respond within 24 hours.',
     },
   });
 
@@ -668,11 +668,11 @@ async function main() {
         badge: 'Save 20%',
         trustSignals: [
           { label: 'Safe & Secure', value: '100%' },
-          { label: 'Support UK', value: '24/7' },
+          { label: 'Support', value: '24/7' },
           { label: 'Commission', value: '0%' },
         ],
         ctaText: 'Have questions?',
-        ctaLinkText: 'Chat with our UK team',
+        ctaLinkText: 'Chat with our team',
       },
       order: 2,
     },
@@ -703,8 +703,8 @@ async function main() {
     update: {},
     create: {
       pageId: pricingPage.id,
-      metaTitle: 'eBay Flow AI Pricing - Plans for Every UK Seller',
-      metaDescription: 'Transparent pricing tailored for UK sellers. Start with a 14-day free trial. No credit card required.',
+      metaTitle: 'eBay Flow AI Pricing - Plans for Every eBay Seller',
+      metaDescription: 'Transparent pricing tailored for eBay sellers worldwide. Start with a 14-day free trial. No credit card required.',
     },
   });
 
@@ -784,7 +784,7 @@ async function main() {
           ['eBay Accounts', '1', '3', 'Unlimited'],
           ['AI Title Optimizer', 'Basic', 'Advanced', 'Custom Training'],
           ['Inventory Sync', 'Daily', 'Real-time', 'Priority Sync'],
-          ['UK Carrier Integrations', 'Royal Mail', 'All Carriers', 'Full API Access'],
+          ['Global Shipping Integrations', 'USPS', 'All Carriers', 'Full API Access'],
           ['Support', 'Email', 'Priority Chat', 'Dedicated Manager'],
           ['API Access', 'None', 'Standard', 'Full Access'],
           ['SLA Guarantee', 'None', '99.9%', '99.99%'],
@@ -837,7 +837,7 @@ async function main() {
 
   // ---- TESTIMONIALS ----
   const testimonials = [
-    { quote: 'eBay Flow has completely transformed how I manage my eBay business. The AI listing generator alone saves me 10+ hours per week. My sales have increased by 40% since switching.', author: 'James Mitchell', role: 'eBay PowerSeller', company: 'TechDeals UK', rating: 5, stats: '40% sales increase' },
+    { quote: 'eBay Flow has completely transformed how I manage my eBay business. The AI listing generator alone saves me 10+ hours per week. My sales have increased by 40% since switching.', author: 'James Mitchell', role: 'eBay PowerSeller', company: 'TechDeals Global', rating: 5, stats: '40% sales increase' },
     { quote: 'We manage over 5,000 listings across multiple accounts. eBay Flow\'s bulk operations and inventory sync have eliminated overselling completely.', author: 'Sarah Thompson', role: 'E-commerce Manager', company: 'Fashion Forward Ltd', rating: 5, stats: '5,000+ listings managed' },
     { quote: 'The AI-powered repricing feature has given us a competitive edge we never had before. We\'re winning more buy boxes and our profit margins have improved significantly.', author: 'David Chen', role: 'Founder', company: 'GadgetHub', rating: 5, stats: '25% margin improvement' },
     { quote: 'Before eBay Flow, we were drowning in manual work. Now everything is automated - from listing creation to order processing.', author: 'Emma Williams', role: 'Operations Director', company: 'HomeStyle Direct', rating: 5, stats: '60% time saved' },
@@ -862,7 +862,7 @@ async function main() {
         { q: 'How do I get started with eBay Flow AI?', a: "Simply create a free account, connect your eBay seller account through our secure OAuth integration, and you're ready to go. The entire setup takes less than 2 minutes. No credit card required for the 14-day free trial." },
         { q: 'Do I need technical knowledge to use eBay Flow?', a: 'Not at all. eBay Flow is designed to be intuitive and user-friendly. If you can use eBay, you can use eBay Flow. Our interface is clean and straightforward, and we provide helpful tooltips and guides throughout the platform.' },
         { q: 'Can I try eBay Flow before committing to a paid plan?', a: "Absolutely! We offer a 14-day free trial on all plans with full access to every feature. No credit card required to start. You can explore the platform, connect your eBay account, and see the value before making any commitment." },
-        { q: 'Is eBay Flow available outside the UK?', a: 'Yes! While we started in the UK, eBay Flow now supports eBay marketplaces worldwide including the US, Germany, France, Italy, Spain, and Australia. Our platform handles currency conversion and marketplace-specific requirements automatically.' },
+        { q: 'Is eBay Flow available outside the US?', a: 'Yes! eBay Flow supports eBay marketplaces worldwide including the UK, Germany, France, Italy, Spain, Australia, and more. Our platform handles currency conversion and marketplace-specific requirements automatically.' },
       ],
     },
     {
@@ -889,7 +889,7 @@ async function main() {
       items: [
         { q: 'Is my data secure with eBay Flow?', a: "Security is our top priority. We use AES-256 encryption for all data at rest, TLS 1.3 for data in transit, and never store your eBay passwords. We're GDPR compliant, undergo regular security audits, and maintain SOC 2 Type II certification." },
         { q: "Do you store my eBay credentials?", a: "No. We use eBay's official OAuth authentication, which means we never see or store your eBay password. We receive a secure access token that can be revoked at any time from your eBay account settings." },
-        { q: 'Where is my data stored?', a: 'All data is stored in secure data centers within the UK and EU, ensuring compliance with GDPR and UK data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.' },
+        { q: 'Where is my data stored?', a: 'All data is stored in secure data centers with global coverage, ensuring compliance with GDPR, CCPA, and international data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.' },
         { q: 'Can I export or delete my data?', a: 'Yes. Under GDPR, you have the right to access, export, and delete your data at any time. You can export all your data from the Settings page, and you can request complete data deletion which we process within 30 days.' },
       ],
     },
@@ -922,12 +922,12 @@ async function main() {
 
   // ---- PRICING PLANS ----
   const pricingPlans = [
-    { name: 'Starter', price: '£49', period: 'monthly', description: 'Perfect for growing UK eBay sellers.', features: ['Up to 500 active listings', 'AI Title Optimizer', 'Daily Inventory Sync', 'Email Support', 'Royal Mail Integration'], order: 1 },
-    { name: 'Professional', price: '£149', period: 'monthly', description: 'Our most popular plan for established businesses.', features: ['Up to 5,000 active listings', 'Advanced AI Content Engine', 'Real-time Multi-account Sync', 'Priority Chat Support', 'All UK Carrier Integrations', 'Sales Performance Analytics'], isPopular: true, order: 2 },
-    { name: 'Enterprise', price: 'Custom', period: 'monthly', description: "Unlimited scale for UK's largest retailers.", features: ['Unlimited active listings', 'Custom AI Model Training', 'Dedicated Account Manager', 'Custom API Access', 'White-label Reports', 'SLA Guarantee'], order: 3 },
-    { name: 'Starter', price: '£39', period: 'yearly', description: 'Perfect for growing UK eBay sellers.', features: ['Up to 500 active listings', 'AI Title Optimizer', 'Daily Inventory Sync', 'Email Support', 'Royal Mail Integration'], order: 1 },
-    { name: 'Professional', price: '£119', period: 'yearly', description: 'Our most popular plan for established businesses.', features: ['Up to 5,000 active listings', 'Advanced AI Content Engine', 'Real-time Multi-account Sync', 'Priority Chat Support', 'All UK Carrier Integrations', 'Sales Performance Analytics'], isPopular: true, order: 2 },
-    { name: 'Enterprise', price: 'Custom', period: 'yearly', description: "Unlimited scale for UK's largest retailers.", features: ['Unlimited active listings', 'Custom AI Model Training', 'Dedicated Account Manager', 'Custom API Access', 'White-label Reports', 'SLA Guarantee'], order: 3 },
+    { name: 'Starter', price: '$49', period: 'monthly', description: 'Perfect for growing eBay sellers worldwide.', features: ['Up to 500 active listings', 'AI Title Optimizer', 'Daily Inventory Sync', 'Email Support', 'USPS Integration'], order: 1 },
+    { name: 'Professional', price: '$149', period: 'monthly', description: 'Our most popular plan for established businesses.', features: ['Up to 5,000 active listings', 'Advanced AI Content Engine', 'Real-time Multi-account Sync', 'Priority Chat Support', 'Global Shipping Integrations', 'Sales Performance Analytics'], isPopular: true, order: 2 },
+    { name: 'Enterprise', price: 'Custom', period: 'monthly', description: "Unlimited scale for the world's largest retailers.", features: ['Unlimited active listings', 'Custom AI Model Training', 'Dedicated Account Manager', 'Custom API Access', 'White-label Reports', 'SLA Guarantee'], order: 3 },
+    { name: 'Starter', price: '$39', period: 'yearly', description: 'Perfect for growing eBay sellers worldwide.', features: ['Up to 500 active listings', 'AI Title Optimizer', 'Daily Inventory Sync', 'Email Support', 'USPS Integration'], order: 1 },
+    { name: 'Professional', price: '$119', period: 'yearly', description: 'Our most popular plan for established businesses.', features: ['Up to 5,000 active listings', 'Advanced AI Content Engine', 'Real-time Multi-account Sync', 'Priority Chat Support', 'Global Shipping Integrations', 'Sales Performance Analytics'], isPopular: true, order: 2 },
+    { name: 'Enterprise', price: 'Custom', period: 'yearly', description: "Unlimited scale for the world's largest retailers.", features: ['Unlimited active listings', 'Custom AI Model Training', 'Dedicated Account Manager', 'Custom API Access', 'White-label Reports', 'SLA Guarantee'], order: 3 },
   ];
 
   for (const plan of pricingPlans) {

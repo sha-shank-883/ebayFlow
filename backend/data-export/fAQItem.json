@@ -138,7 +138,7 @@
     "id": "faq-faq-cat-security-&-data-2",
     "categoryId": "faq-cat-security-&-data",
     "question": "Where is my data stored?",
-    "answer": "All data is stored in secure data centers within the UK and EU, ensuring compliance with GDPR and UK data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.",
+    "answer": "All data is stored in secure data centers with global coverage, ensuring compliance with GDPR, CCPA, and international data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.",
     "order": 2,
     "isActive": true,
     "deletedAt": null

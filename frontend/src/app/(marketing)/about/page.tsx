@@ -27,12 +27,12 @@ export default function AboutPage() {
   const { data: aboutData, loading } = useAboutPageContent();
 
   const about = loading ? {
-    mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+    mission: "To democratize enterprise-grade automation for eBay sellers worldwide. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
     vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
     values: marketingConfig.aboutPage.values,
     milestones: marketingConfig.aboutPage.milestones,
   } : (aboutData || {
-    mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+    mission: "To democratize enterprise-grade automation for eBay sellers worldwide. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
     vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
     values: marketingConfig.aboutPage.values,
     milestones: marketingConfig.aboutPage.milestones,
@@ -59,8 +59,8 @@ export default function AboutPage() {
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                eBay Flow AI was born from frustration in the London e-commerce scene. 
-                We're on a mission to empower every eBay seller with enterprise-grade AI tools.
+                eBay Flow AI was born from frustration in the e-commerce world. 
+                We're on a mission to empower every eBay seller worldwide with enterprise-grade AI tools.
               </p>
             </div>
 
@@ -115,7 +115,7 @@ export default function AboutPage() {
                 Our Journey
               </h2>
               <p className="text-muted-foreground text-center mb-20 text-lg">
-                From a small London office to powering thousands of UK businesses.
+                From a small startup to powering thousands of businesses worldwide.
               </p>
               <div className="space-y-12">
                 {about.milestones.map((milestone: any, index: number) => (

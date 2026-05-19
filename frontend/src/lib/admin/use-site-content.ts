@@ -459,7 +459,7 @@ export function useAboutPageContent() {
           setData(result);
         } else {
           setData({
-            mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+            mission: "To democratize enterprise-grade automation for eBay sellers worldwide. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
             vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
             values: marketingConfig.aboutPage.values,
             milestones: marketingConfig.aboutPage.milestones,
@@ -468,7 +468,7 @@ export function useAboutPageContent() {
         }
       } catch {
         setData({
-          mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+          mission: "To democratize enterprise-grade automation for eBay sellers worldwide. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
           vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
           values: marketingConfig.aboutPage.values,
           milestones: marketingConfig.aboutPage.milestones,

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Twitter, Linkedin, Github, Mail, MapPin, Phone } from "lucide-react";
+import { Twitter, Linkedin, Github, Mail, MapPin, Phone, Globe } from "lucide-react";
 import { marketingConfig } from "@/config/marketing";
 import { useNavigation, useSettings } from "@/lib/admin/use-site-content";
 
@@ -127,7 +127,7 @@ export function Footer() {
             <div className="h-4 w-px bg-border" />
             <div className="flex items-center gap-2">
                <div className="w-4 h-4 rounded bg-muted border border-border flex items-center justify-center">
-                  <span className="text-[8px] font-black text-muted-foreground">UK</span>
+                  <Globe className="h-2.5 w-2.5 text-muted-foreground" />
                </div>
                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Global Ops</span>
             </div>

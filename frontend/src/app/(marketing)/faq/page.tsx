@@ -50,8 +50,8 @@ export default function FAQPage() {
     </>
   );
   const metaDescription = metadataLoading || metadata?.fallback
-    ? "Find answers to common questions about eBay Flow AI. Can't find what you're looking for? Contact our UK support team."
-    : metadata?.description || "Find answers to common questions about eBay Flow AI. Can't find what you're looking for? Contact our UK support team.";
+    ? "Find answers to common questions about eBay Flow AI. Can't find what you're looking for? Contact our global support team."
+    : metadata?.description || "Find answers to common questions about eBay Flow AI. Can't find what you're looking for? Contact our global support team.";
 
   return (
     <div className="min-h-screen bg-background">

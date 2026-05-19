@@ -5,13 +5,13 @@
     "sectionKey": "hero",
     "sectionType": "hero",
     "title": "The Enterprise AI Engine for",
-    "subtitle": "UK eBay Sellers",
+    "subtitle": "eBay Sellers",
     "content": {
       "cta": "Start Your Free Audit",
-      "badge": "Scale Your eBay Business in the UK",
+      "badge": "Scale Your eBay Business Globally",
       "stats": [
         {
-          "label": "UK Sellers",
+          "label": "Global Sellers",
           "value": "5,000+"
         },
         {
@@ -30,13 +30,13 @@
       "ctaLink": "/register",
       "preview": {
         "roi": "3.4x",
-        "revenue": "£42,850.00",
+        "revenue": "$42,850.00",
         "listings": "1,248",
         "syncSpeed": "250ms",
         "listingStatus": "98% SEO Optimized",
         "revenueGrowth": "+12.5% vs last month"
       },
-      "description": "Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for the high-volume UK market.",
+      "description": "Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for high-volume eBay marketplaces worldwide.",
       "secondaryCta": "View Case Studies",
       "secondaryCtaLink": "/case-studies"
     },
@@ -52,14 +52,14 @@
     "sectionKey": "features",
     "sectionType": "features",
     "title": "Precision Engineering for",
-    "subtitle": "UK eBay Dominance",
+    "subtitle": "Global eBay Dominance",
     "content": {
       "badge": "Enterprise Capabilities",
       "items": [
         {
           "icon": "Sparkles",
           "title": "AI Listing Optimization",
-          "description": "Our AI analyzes thousands of top-performing UK listings to generate titles and descriptions that convert."
+          "description": "Our AI analyzes thousands of top-performing listings globally to generate titles and descriptions that convert."
         },
         {
           "icon": "RefreshCw",
@@ -69,15 +69,15 @@
         {
           "icon": "TrendingUp",
           "title": "eBay SEO Dominance",
-          "description": "Proprietary algorithms designed for eBay.co.uk's 'Best Match' search system to keep you at the top."
+          "description": "Proprietary algorithms designed for eBay's 'Best Match' search system to keep you at the top across all marketplaces."
         },
         {
           "icon": "Truck",
           "title": "Automated Fulfillment",
-          "description": "Streamline your UK shipping with direct integrations into Royal Mail, Evri, and DPD."
+          "description": "Streamline your shipping with direct integrations into major carriers worldwide including USPS, FedEx, DHL, and more."
         }
       ],
-      "description": "We've built the most advanced toolset specifically for the UK market. Automate the mundane, optimize for the algorithm, and scale without limits."
+      "description": "We've built the most advanced toolset for eBay sellers worldwide. Automate the mundane, optimize for the algorithm, and scale without limits."
     },
     "settings": null,
     "isActive": true,
@@ -104,7 +104,7 @@
             "Bank-level encryption",
             "Instant sync of existing listings"
           ],
-          "description": "Securely link your eBay seller account in under 2 minutes. We support multiple accounts and marketplaces including eBay UK, US, DE, and more."
+          "description": "Securely link your eBay seller account in under 2 minutes. We support multiple accounts and all eBay marketplaces worldwide."
         },
         {
           "icon": "Wand2",
@@ -146,7 +146,7 @@
     "subtitle": "10,000+ Sellers",
     "content": {
       "badge": "Loved by Sellers",
-      "description": "See why thousands of UK eBay sellers choose eBay Flow to power their business."
+      "description": "See why thousands of eBay sellers worldwide choose eBay Flow to power their business."
     },
     "settings": null,
     "isActive": true,
@@ -163,7 +163,7 @@
     "subtitle": "eBay Empire",
     "content": {
       "badge": "Flexible Plans",
-      "description": "Transparent pricing tailored for UK sellers of all sizes. No hidden fees, no credit card required to start."
+      "description": "Transparent pricing tailored for eBay sellers of all sizes worldwide. No hidden fees, no credit card required to start."
     },
     "settings": null,
     "isActive": true,
@@ -176,7 +176,7 @@
     "pageId": "cmpbr97ec001v58gitvz7dble",
     "sectionKey": "cta",
     "sectionType": "cta",
-    "title": "Scale Your UK Business",
+    "title": "Scale Your Global Business",
     "subtitle": "at the Speed of AI",
     "content": {
       "badge": "Join the eBay Revolution",
@@ -186,7 +186,7 @@
         "Cancel Anytime"
       ],
       "primaryCta": "Get Started Now",
-      "description": "Experience the enterprise listing engine trusted by the UK's top retailers. Start your 14-day masterclass in automation today.",
+      "description": "Experience the enterprise listing engine trusted by top retailers worldwide. Start your 14-day masterclass in automation today.",
       "secondaryCta": "Talk to Sales",
       "primaryCtaLink": "/register",
       "secondaryCtaLink": "/contact"
@@ -225,12 +225,12 @@
     "title": "Is Your eBay Store Performing",
     "subtitle": "at its Peak?",
     "content": {
-      "badge": "Exclusive for UK Sellers",
+      "badge": "Exclusive for eBay Sellers",
       "features": [
         {
           "icon": "BarChart3",
           "title": "Detailed Sales Gap Analysis",
-          "description": "See exactly where you're losing out to competitors in the UK search results."
+          "description": "See exactly where you're losing out to competitors in global search results."
         },
         {
           "icon": "ShieldCheck",
@@ -244,7 +244,7 @@
         }
       ],
       "formTitle": "Get Your Free eBay Audit",
-      "description": "Our AI diagnostic tool analyzes your listings against the latest eBay.co.uk 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
+      "description": "Our AI diagnostic tool analyzes your listings against the latest eBay 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
       "formDescription": "Discover hidden optimization opportunities. Our specialists will review your current listing performance."
     },
     "settings": null,
@@ -265,7 +265,7 @@
         {
           "icon": "BarChart3",
           "title": "Detailed Sales Gap Analysis",
-          "description": "See exactly where you're losing out to competitors in the UK search results."
+          "description": "See exactly where you're losing out to competitors in global search results."
         },
         {
           "icon": "ShieldCheck",
@@ -298,7 +298,7 @@
       "fields": {
         "url": {
           "label": "eBay Store URL (Optional)",
-          "placeholder": "ebay.co.uk/str/yourstore"
+          "placeholder": "ebay.com/str/yourstore"
         },
         "name": {
           "label": "Full Name",
@@ -306,7 +306,7 @@
         },
         "email": {
           "label": "Work Email",
-          "placeholder": "john@company.co.uk"
+          "placeholder": "john@company.com"
         },
         "business": {
           "label": "Business Name",
@@ -315,13 +315,13 @@
       },
       "guarantees": [
         "No Obligation",
-        "UK Based Team",
+        "Global Support Team",
         "GDPR Compliant"
       ],
       "loadingCta": "Analyzing...",
       "description": "Discover hidden optimization opportunities. Our specialists will review your current listing performance.",
       "successTitle": "Request Received",
-      "successDescription": "Our UK-based eBay specialists will analyze your store and contact you within 24 hours with your free audit."
+      "successDescription": "Our eBay specialists will analyze your store and contact you within 24 hours with your free audit."
     },
     "settings": null,
     "isActive": true,
@@ -346,7 +346,7 @@
         {
           "icon": "Shield",
           "color": "text-blue-500",
-          "label": "UK Based Support"
+          "label": "Global Support"
         },
         {
           "icon": "Star",
@@ -382,14 +382,14 @@
           "name": "Shopify",
           "color": "text-[#96BF48]"
         },
-        {
-          "name": "Royal Mail",
-          "color": "text-[#DC291E]"
-        },
-        {
-          "name": "Evri",
-          "color": "text-[#ED7902]"
-        },
+          {
+            "name": "USPS",
+            "color": "text-[#333366]"
+          },
+          {
+            "name": "FedEx",
+            "color": "text-[#4D148C]"
+          },
         {
           "name": "Stripe",
           "color": "text-[#635BFF]"
@@ -416,7 +416,7 @@
       },
       "mission": {
         "title": "Our Mission",
-        "description": "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants."
+        "description": "To democratize enterprise-grade automation for eBay sellers worldwide. We believe that small businesses should have access to the same AI-powered optimization as global retail giants."
       }
     },
     "settings": null,
@@ -473,23 +473,23 @@
       "milestones": [
         {
           "year": "2022",
-          "event": "eBay Flow AI founded in London",
-          "detail": "Started with a mission to help UK sellers leverage AI"
+          "event": "eBay Flow AI founded",
+          "detail": "Started with a mission to help eBay sellers leverage AI"
         },
         {
           "year": "2023",
           "event": "Series A Funding",
-          "detail": "Raised £5M to expand our platform and team"
+          "detail": "Raised $5M to expand our platform and team"
         },
         {
           "year": "2024",
           "event": "10,000+ sellers milestone",
-          "detail": "Became the #1 AI-powered eBay tool in the UK"
+          "detail": "Became the #1 AI-powered eBay tool globally"
         },
         {
           "year": "2025",
           "event": "Global expansion",
-          "detail": "Now serving sellers across UK, US, EU, and Australia"
+          "detail": "Now serving sellers across US, UK, EU, Australia, and beyond"
         }
       ]
     },
@@ -510,7 +510,7 @@
       "badge": "Contact Us",
       "hours": {
         "title": "Business Hours",
-        "detail": "Mon-Fri: 9:00 AM - 6:00 PM GMT",
+        "detail": "Mon-Fri: 9:00 AM - 6:00 PM PST",
         "weekend": "Sat-Sun: Closed"
       },
       "title": "Get in",
@@ -521,7 +521,7 @@
         "description": "Check our help center for instant answers to common questions."
       },
       "infoTitle": "Contact Information",
-      "description": "Have a question, feedback, or need help? Our UK-based team typically responds within 24 hours.",
+      "description": "Have a question, feedback, or need help? Our global team typically responds within 24 hours.",
       "titleAccent": "Touch"
     },
     "settings": null,
@@ -547,7 +547,7 @@
         },
         "email": {
           "label": "Work Email",
-          "placeholder": "john@company.co.uk"
+          "placeholder": "john@company.com"
         },
         "company": {
           "label": "Company (Optional)",
@@ -604,16 +604,16 @@
       "email": "hello@ebayflow.ai",
       "hours": {
         "title": "Business Hours",
-        "detail": "Mon-Fri: 9:00 AM - 6:00 PM GMT",
+        "detail": "Mon-Fri: 9:00 AM - 6:00 PM PST",
         "weekend": "Sat-Sun: Closed"
       },
-      "phone": "+44 20 8123 4567",
+      "phone": "+1 (555) 123-4567",
       "title": "Contact Information",
       "address": {
-        "city": "London",
-        "line1": "71-75 Shelton Street",
-        "country": "United Kingdom",
-        "postcode": "WC2H 9JQ"
+        "city": "San Francisco",
+        "line1": "123 Market Street",
+        "country": "United States",
+        "postcode": "CA 94105"
       },
       "immediate": {
         "title": "Need Immediate Help?",
@@ -669,14 +669,14 @@
     "content": {
       "badge": "Save 20%",
       "ctaText": "Have questions?",
-      "ctaLinkText": "Chat with our UK team",
+      "ctaLinkText": "Chat with our team",
       "trustSignals": [
         {
           "label": "Safe & Secure",
           "value": "100%"
         },
         {
-          "label": "Support UK",
+          "label": "Support",
           "value": "24/7"
         },
         {
@@ -859,8 +859,8 @@
           "Priority Sync"
         ],
         [
-          "UK Carrier Integrations",
-          "Royal Mail",
+          "Global Shipping Integrations",
+          "USPS/FedEx/DHL",
           "All Carriers",
           "Full API Access"
         ],

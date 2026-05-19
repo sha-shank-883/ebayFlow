@@ -1,6 +1,6 @@
 export const marketingConfig = {
   name: "eBay Flow AI",
-  description: "AI-Powered eBay Listing Management & Automation for UK Sellers",
+  description: "AI-Powered eBay Listing Management & Automation for Global Sellers",
   url: "https://ebayflow.ai",
   ogImage: "https://ebayflow.ai/og.jpg",
   links: {
@@ -10,12 +10,12 @@ export const marketingConfig = {
   contact: {
     email: "hello@ebayflow.ai",
     address: {
-      line1: "71-75 Shelton Street",
-      city: "London",
-      postcode: "WC2H 9JQ",
-      country: "United Kingdom",
+      line1: "123 Market Street",
+      city: "San Francisco",
+      postcode: "CA 94105",
+      country: "United States",
     },
-    phone: "+44 20 8123 4567",
+    phone: "+1 (555) 123-4567",
   },
   mainNav: [
     { title: "Features", href: "/features" },
@@ -25,20 +25,20 @@ export const marketingConfig = {
     { title: "Blog", href: "/blog" },
   ],
   hero: {
-    badge: "Scale Your eBay Business in the UK",
+    badge: "Scale Your eBay Business Globally",
     title: "The Enterprise AI Engine for",
-    titleAccent: "UK eBay Sellers",
-    description: "Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for the high-volume UK market.",
+    titleAccent: "eBay Sellers Worldwide",
+    description: "Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for high-volume eBay marketplaces worldwide.",
     cta: "Start Your Free Audit",
     secondaryCta: "View Case Studies",
     stats: [
-      { label: "UK Sellers", value: "5,000+" },
+      { label: "Global Sellers", value: "5,000+" },
       { label: "Listings Optimized", value: "1.2M+" },
       { label: "Avg. Sales Growth", value: "34%" },
       { label: "Uptime Guarantee", value: "99.99%" },
     ],
     preview: {
-      revenue: "£42,850.00",
+      revenue: "$42,850.00",
       revenueGrowth: "+12.5% vs last month",
       listings: "1,248",
       listingStatus: "98% SEO Optimized",
@@ -49,7 +49,7 @@ export const marketingConfig = {
   services: [
     {
       title: "AI Listing Optimization",
-      description: "Our AI analyzes thousands of top-performing UK listings to generate titles and descriptions that convert.",
+      description: "Our AI analyzes thousands of top-performing listings globally to generate titles and descriptions that convert.",
       icon: "Sparkles",
     },
     {
@@ -59,12 +59,12 @@ export const marketingConfig = {
     },
     {
       title: "eBay SEO Dominance",
-      description: "Proprietary algorithms designed for eBay.co.uk's 'Best Match' search system to keep you at the top.",
+      description: "Proprietary algorithms designed for eBay's 'Best Match' search system to keep you at the top across all marketplaces.",
       icon: "TrendingUp",
     },
     {
       title: "Automated Fulfillment",
-      description: "Streamline your UK shipping with direct integrations into Royal Mail, Evri, and DPD.",
+      description: "Streamline your shipping with direct integrations into major carriers worldwide including USPS, FedEx, DHL, and more.",
       icon: "Truck",
     },
   ],
@@ -112,13 +112,13 @@ export const marketingConfig = {
   featureSection: {
     badge: "Enterprise Capabilities",
     title: "Precision Engineering for",
-    titleAccent: "UK eBay Dominance",
-    description: "We've built the most advanced toolset specifically for the UK market. Automate the mundane, optimize for the algorithm, and scale without limits.",
+    titleAccent: "Global eBay Dominance",
+    description: "We've built the most advanced toolset for eBay sellers worldwide. Automate the mundane, optimize for the algorithm, and scale without limits.",
     bento: {
       seo: {
         badge: "Real-time Data",
-        title: "Proprietary UK SEO Algorithm",
-        description: "Our engine is fine-tuned for eBay.co.uk. It understands regional search nuances, UK postage trends, and 'Best Match' signals that US-centric tools miss.",
+        title: "Proprietary Global SEO Algorithm",
+        description: "Our engine is fine-tuned for all eBay marketplaces. It understands regional search nuances, international shipping trends, and 'Best Match' signals that other tools miss.",
         cta: "Run Free SEO Audit",
       },
       uptime: {
@@ -131,26 +131,26 @@ export const marketingConfig = {
     monthly: [
       {
         name: "Starter",
-        price: "£49",
-        description: "Perfect for growing UK eBay sellers.",
+        price: "$49",
+        description: "Perfect for growing eBay sellers worldwide.",
         features: [
           "Up to 500 active listings",
           "AI Title Optimizer",
           "Daily Inventory Sync",
           "Email Support",
-          "Royal Mail Integration",
+          "USPS Integration",
         ],
       },
       {
         name: "Professional",
-        price: "£149",
+        price: "$149",
         description: "Our most popular plan for established businesses.",
         features: [
           "Up to 5,000 active listings",
           "Advanced AI Content Engine",
           "Real-time Multi-account Sync",
           "Priority Chat Support",
-          "All UK Carrier Integrations",
+          "Global Shipping Integrations",
           "Sales Performance Analytics",
         ],
         isPopular: true,
@@ -158,7 +158,7 @@ export const marketingConfig = {
       {
         name: "Enterprise",
         price: "Custom",
-        description: "Unlimited scale for UK's largest retailers.",
+        description: "Unlimited scale for the world's largest retailers.",
         features: [
           "Unlimited active listings",
           "Custom AI Model Training",
@@ -172,26 +172,26 @@ export const marketingConfig = {
     yearly: [
       {
         name: "Starter",
-        price: "£39",
-        description: "Perfect for growing UK eBay sellers.",
+        price: "$39",
+        description: "Perfect for growing eBay sellers worldwide.",
         features: [
           "Up to 500 active listings",
           "AI Title Optimizer",
           "Daily Inventory Sync",
           "Email Support",
-          "Royal Mail Integration",
+          "USPS Integration",
         ],
       },
       {
         name: "Professional",
-        price: "£119",
+        price: "$119",
         description: "Our most popular plan for established businesses.",
         features: [
           "Up to 5,000 active listings",
           "Advanced AI Content Engine",
           "Real-time Multi-account Sync",
           "Priority Chat Support",
-          "All UK Carrier Integrations",
+          "Global Shipping Integrations",
           "Sales Performance Analytics",
         ],
         isPopular: true,
@@ -199,7 +199,7 @@ export const marketingConfig = {
       {
         name: "Enterprise",
         price: "Custom",
-        description: "Unlimited scale for UK's largest retailers.",
+        description: "Unlimited scale for the world's largest retailers.",
         features: [
           "Unlimited active listings",
           "Custom AI Model Training",
@@ -214,15 +214,15 @@ export const marketingConfig = {
       badge: "Flexible Plans",
       title: "Invest in Your",
       titleAccent: "eBay Empire",
-      description: "Transparent pricing tailored for UK sellers of all sizes. No hidden fees, no credit card required to start.",
+      description: "Transparent pricing tailored for eBay sellers of all sizes worldwide. No hidden fees, no credit card required to start.",
       guaranteeBadge: "Save 20%",
       trustSignals: [
         { label: "Safe & Secure", value: "100%" },
-        { label: "Support UK", value: "24/7" },
+        { label: "Support", value: "24/7" },
         { label: "Commission", value: "0%" },
       ],
       ctaText: "Have questions?",
-      ctaLinkText: "Chat with our UK team",
+      ctaLinkText: "Chat with our team",
     },
     guarantees: [
       {
@@ -264,12 +264,12 @@ export const marketingConfig = {
     badge: "Loved by Sellers",
     title: "Trusted by",
     titleAccent: "10,000+ Sellers",
-    description: "See why thousands of UK eBay sellers choose eBay Flow to power their business.",
+    description: "See why thousands of eBay sellers worldwide choose eBay Flow to power their business.",
     items: [
       {
         name: "James Mitchell",
         role: "eBay PowerSeller",
-        company: "TechDeals UK",
+        company: "TechDeals Global",
         image: "JM",
         rating: 5,
         content: "eBay Flow has completely transformed how I manage my eBay business. The AI listing generator alone saves me 10+ hours per week. My sales have increased by 40% since switching.",
@@ -416,7 +416,7 @@ export const marketingConfig = {
         ["eBay Accounts", "1", "3", "Unlimited"],
         ["AI Title Optimizer", "Basic", "Advanced", "Custom Training"],
         ["Inventory Sync", "Daily", "Real-time", "Priority Sync"],
-        ["UK Carrier Integrations", "Royal Mail", "All Carriers", "Full API Access"],
+        ["Global Shipping Integrations", "USPS", "All Carriers", "Full API Access"],
         ["Support", "Email", "Priority Chat", "Dedicated Manager"],
         ["API Access", "None", "Standard", "Full Access"],
         ["SLA Guarantee", "None", "99.9%", "99.99%"],
@@ -429,8 +429,8 @@ export const marketingConfig = {
         title: "Marketplaces",
         items: [
           {
-            name: "eBay UK",
-            description: "Full integration with eBay.co.uk. List, manage, and optimize your UK listings.",
+            name: "eBay",
+            description: "Full integration with all eBay marketplaces. List, manage, and optimize your listings globally.",
             icon: "ShoppingCart",
             status: "Active",
             features: ["Listing sync", "Order management", "Inventory sync", "Analytics"],
@@ -448,18 +448,18 @@ export const marketingConfig = {
         title: "Shipping",
         items: [
           {
-            name: "Royal Mail",
-            description: "Print labels, track parcels, and manage deliveries with Royal Mail.",
+            name: "USPS",
+            description: "Print labels, track parcels, and manage deliveries with USPS.",
             icon: "Truck",
             status: "Active",
-            features: ["Label printing", "Tracking", "Click & Drop integration"],
+            features: ["Label printing", "Tracking", "API integration"],
           },
           {
-            name: "Evri",
-            description: "Generate Evri shipping labels and track deliveries automatically.",
+            name: "FedEx",
+            description: "Generate FedEx shipping labels and track deliveries automatically.",
             icon: "Truck",
             status: "Active",
-            features: ["Label printing", "Tracking", "Collection booking"],
+            features: ["Label printing", "Tracking", "Pickup scheduling"],
           },
         ],
       },
@@ -467,10 +467,10 @@ export const marketingConfig = {
   },
   aboutPage: {
     milestones: [
-      { year: "2022", event: "eBay Flow AI founded in London", detail: "Started with a mission to help UK sellers leverage AI" },
-      { year: "2023", event: "Series A Funding", detail: "Raised £5M to expand our platform and team" },
-      { year: "2024", event: "10,000+ sellers milestone", detail: "Became the #1 AI-powered eBay tool in the UK" },
-      { year: "2025", event: "Global expansion", detail: "Now serving sellers across UK, US, EU, and Australia" },
+      { year: "2022", event: "eBay Flow AI founded", detail: "Started with a mission to help eBay sellers leverage AI" },
+      { year: "2023", event: "Series A Funding", detail: "Raised $5M to expand our platform and team" },
+      { year: "2024", event: "10,000+ sellers milestone", detail: "Became the #1 AI-powered eBay tool globally" },
+      { year: "2025", event: "Global expansion", detail: "Now serving sellers across US, UK, EU, Australia, and beyond" },
     ],
     values: [
       {
@@ -577,7 +577,7 @@ export const marketingConfig = {
           },
           {
             q: "Where is my data stored?",
-            a: "All data is stored in secure data centers within the UK and EU, ensuring compliance with GDPR and UK data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.",
+            a: "All data is stored in secure data centers with global coverage, ensuring compliance with GDPR, CCPA, and international data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.",
           },
           {
             q: "Can I export or delete my data?",
@@ -608,12 +608,12 @@ export const marketingConfig = {
     badge: "Contact Us",
     title: "Get in",
     titleAccent: "Touch",
-    description: "Have a question, feedback, or need help? Our UK-based team typically responds within 24 hours.",
+    description: "Have a question, feedback, or need help? Our global team typically responds within 24 hours.",
     form: {
       title: "Send us a message",
       fields: {
         name: { label: "Full Name", placeholder: "John Smith" },
-        email: { label: "Work Email", placeholder: "john@company.co.uk" },
+        email: { label: "Work Email", placeholder: "john@company.com" },
         company: { label: "Company (Optional)", placeholder: "Enterprise Sellers Ltd" },
         subject: { 
           label: "Subject", 
@@ -648,36 +648,36 @@ export const marketingConfig = {
   },
   trustSignals: [
     { label: "eBay Solution Partner", icon: "CheckCircle2", color: "text-blue-500" },
-    { label: "UK Based Support", icon: "Shield", color: "text-blue-500" },
+    { label: "Global Support", icon: "Shield", color: "text-blue-500" },
     { label: "4.9/5 Trustpilot", icon: "Star", color: "text-yellow-500" },
   ],
   logos: [
     { name: "eBay", color: "text-[#E53238]" },
     { name: "PayPal", color: "text-[#003087]" },
     { name: "Shopify", color: "text-[#96BF48]" },
-    { name: "Royal Mail", color: "text-[#DC291E]" },
-    { name: "Evri", color: "text-[#ED7902]" },
+    { name: "USPS", color: "text-[#333366]" },
+    { name: "FedEx", color: "text-[#4D148C]" },
     { name: "Stripe", color: "text-[#635BFF]" },
   ],
   ctaSection: {
     badge: "Join the eBay Revolution",
-    title: "Scale Your UK Business",
+    title: "Scale Your Global Business",
     titleAccent: "at the Speed of AI",
-    description: "Experience the enterprise listing engine trusted by the UK's top retailers. Start your 14-day masterclass in automation today.",
+    description: "Experience the enterprise listing engine trusted by top retailers worldwide. Start your 14-day masterclass in automation today.",
     primaryCta: "Get Started Now",
     secondaryCta: "Talk to Sales",
     benefits: ["Instant Setup", "No Card Required", "Cancel Anytime"],
   },
   audit: {
-    badge: "Exclusive for UK Sellers",
+    badge: "Exclusive for eBay Sellers",
     title: "Is Your eBay Store Performing",
     titleAccent: "at its Peak?",
-    description: "Our AI diagnostic tool analyzes your listings against the latest eBay.co.uk 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
+    description: "Our AI diagnostic tool analyzes your listings against the latest eBay 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
     features: [
       {
         icon: "BarChart3",
         title: "Detailed Sales Gap Analysis",
-        description: "See exactly where you're losing out to competitors in the UK search results.",
+        description: "See exactly where you're losing out to competitors in global search results.",
       },
       {
         icon: "ShieldCheck",
@@ -694,21 +694,21 @@ export const marketingConfig = {
       title: "Get Your Free eBay Audit",
       description: "Discover hidden optimization opportunities. Our specialists will review your current listing performance.",
       successTitle: "Request Received",
-      successDescription: "Our UK-based eBay specialists will analyze your store and contact you within 24 hours with your free audit.",
+      successDescription: "Our eBay specialists will analyze your store and contact you within 24 hours with your free audit.",
       fields: {
         name: { label: "Full Name", placeholder: "John Smith" },
-        email: { label: "Work Email", placeholder: "john@company.co.uk" },
+        email: { label: "Work Email", placeholder: "john@company.com" },
         business: { label: "Business Name", placeholder: "Enterprise Sellers Ltd" },
-        url: { label: "eBay Store URL (Optional)", placeholder: "ebay.co.uk/str/yourstore" },
+        url: { label: "eBay Store URL (Optional)", placeholder: "ebay.com/str/yourstore" },
       },
       cta: "Claim My Free Audit",
       loadingCta: "Analyzing...",
-      guarantees: ["No Obligation", "UK Based Team", "GDPR Compliant"],
+      guarantees: ["No Obligation", "Global Support Team", "GDPR Compliant"],
     },
   },
   footer: {
-    description: "The high-performance listing engine for the modern UK eBay entrepreneur. Built for speed, scale, and sales.",
-    copyright: `© ${new Date().getFullYear()} eBay Flow AI. Registered in England & Wales.`,
+    description: "The high-performance listing engine for the modern eBay entrepreneur. Built for speed, scale, and sales worldwide.",
+    copyright: `© ${new Date().getFullYear()} eBay Flow AI. All rights reserved.`,
     status: "Service Status: Peak",
     globalOps: "Global Ops",
     links: {

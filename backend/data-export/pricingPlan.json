@@ -4,7 +4,7 @@
     "name": "Enterprise",
     "price": "Custom",
     "period": "monthly",
-    "description": "Unlimited scale for UK's largest retailers.",
+    "description": "Unlimited scale for the world's largest retailers.",
     "features": [
       "Unlimited active listings",
       "Custom AI Model Training",
@@ -25,7 +25,7 @@
     "name": "Enterprise",
     "price": "Custom",
     "period": "yearly",
-    "description": "Unlimited scale for UK's largest retailers.",
+    "description": "Unlimited scale for the world's largest retailers.",
     "features": [
       "Unlimited active listings",
       "Custom AI Model Training",
@@ -44,7 +44,7 @@
   {
     "id": "plan-professional-monthly",
     "name": "Professional",
-    "price": "£149",
+    "price": "$149",
     "period": "monthly",
     "description": "Our most popular plan for established businesses.",
     "features": [
@@ -52,7 +52,7 @@
       "Advanced AI Content Engine",
       "Real-time Multi-account Sync",
       "Priority Chat Support",
-      "All UK Carrier Integrations",
+      "Global Shipping Integrations",
       "Sales Performance Analytics"
     ],
     "isPopular": true,
@@ -65,7 +65,7 @@
   {
     "id": "plan-professional-yearly",
     "name": "Professional",
-    "price": "£119",
+    "price": "$119",
     "period": "yearly",
     "description": "Our most popular plan for established businesses.",
     "features": [
@@ -73,7 +73,7 @@
       "Advanced AI Content Engine",
       "Real-time Multi-account Sync",
       "Priority Chat Support",
-      "All UK Carrier Integrations",
+      "Global Shipping Integrations",
       "Sales Performance Analytics"
     ],
     "isPopular": true,
@@ -86,15 +86,15 @@
   {
     "id": "plan-starter-monthly",
     "name": "Starter",
-    "price": "£49",
+    "price": "$49",
     "period": "monthly",
-    "description": "Perfect for growing UK eBay sellers.",
+    "description": "Perfect for growing eBay sellers worldwide.",
     "features": [
       "Up to 500 active listings",
       "AI Title Optimizer",
       "Daily Inventory Sync",
       "Email Support",
-      "Royal Mail Integration"
+      "USPS Integration"
     ],
     "isPopular": false,
     "ctaText": "Get Started",
@@ -106,15 +106,15 @@
   {
     "id": "plan-starter-yearly",
     "name": "Starter",
-    "price": "£39",
+    "price": "$39",
     "period": "yearly",
-    "description": "Perfect for growing UK eBay sellers.",
+    "description": "Perfect for growing eBay sellers worldwide.",
     "features": [
       "Up to 500 active listings",
       "AI Title Optimizer",
       "Daily Inventory Sync",
       "Email Support",
-      "Royal Mail Integration"
+      "USPS Integration"
     ],
     "isPopular": false,
     "ctaText": "Get Started",

@@ -6,11 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 
+import { fetchApi } from "@/lib/api";
+import toast from "react-hot-toast";
+
 export default function OnboardingPage() {
   const router = useRouter();
 
-  const handleLinkEbay = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/ebay/auth-url`;
+  const handleLinkEbay = async () => {
+    try {
+      const result = await fetchApi<{ authUrl: string }>("/ebay?action=auth-url");
+      if (result?.authUrl) {
+        window.location.href = result.authUrl;
+      } else {
+        toast.error("Failed to get eBay authorization URL");
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to connect eBay");
+    }
   };
 
   return (
