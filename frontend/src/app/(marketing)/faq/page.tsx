@@ -8,12 +8,13 @@ import { ChevronDown, Search, MessageCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
-import { useFAQs } from "@/lib/admin/use-site-content";
+import { useFAQs, usePageMetadata } from "@/lib/admin/use-site-content";
 
 export default function FAQPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [openQuestions, setOpenQuestions] = useState<Record<string, boolean>>({});
   const { categories, loading } = useFAQs();
+  const { data: metadata, loading: metadataLoading } = usePageMetadata("faq");
 
   const faqData = loading ? marketingConfig.faqPage.categories : (categories.length > 0 ? categories : marketingConfig.faqPage.categories);
 
@@ -32,6 +33,26 @@ export default function FAQPage() {
     }))
     .filter((category: any) => category.questions.length > 0);
 
+  const metaBadge = metadataLoading || metadata?.fallback ? "Help Center" : metadata?.badge || "Help Center";
+  const metaH1 = metadataLoading || metadata?.fallback ? (
+    <>
+      Frequently Asked <br />
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+        Questions
+      </span>
+    </>
+  ) : metadata?.h1 || (
+    <>
+      Frequently Asked <br />
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+        Questions
+      </span>
+    </>
+  );
+  const metaDescription = metadataLoading || metadata?.fallback
+    ? "Find answers to common questions about eBay Flow AI. Can't find what you're looking for? Contact our UK support team."
+    : metadata?.description || "Find answers to common questions about eBay Flow AI. Can't find what you're looking for? Contact our UK support team.";
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -44,21 +65,13 @@ export default function FAQPage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold uppercase tracking-wider text-primary mb-6">
                 <MessageCircle className="h-3.5 w-3.5" />
-                Help Center
+                {metaBadge}
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-6">
-                Frequently Asked <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                  Questions
-                </span>
+                {metaH1}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Find answers to common questions about eBay Flow AI.
-                Can't find what you're looking for?{" "}
-                <a href="/contact" className="text-primary hover:underline">
-                  Contact our UK support team
-                </a>
-                .
+                {metaDescription}
               </p>
             </div>
 

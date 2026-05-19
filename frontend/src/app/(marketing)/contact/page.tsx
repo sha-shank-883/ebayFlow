@@ -12,9 +12,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import toast from "react-hot-toast";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
+import { useContactPageContent, useSettings } from "@/lib/admin/use-site-content";
 
 export default function ContactPage() {
-  const { contactPage } = marketingConfig;
+  const { data: contactData, loading } = useContactPageContent();
+  const { settings, loading: settingsLoading } = useSettings();
+
+  const contactPage = loading ? marketingConfig.contactPage : (contactData || marketingConfig.contactPage);
+
+  const contactEmail = settingsLoading ? marketingConfig.contact.email : settings.contactEmail || marketingConfig.contact.email;
+  const contactPhone = settingsLoading ? marketingConfig.contact.phone : settings.contactPhone || marketingConfig.contact.phone;
+  const contactAddress = settingsLoading ? marketingConfig.contact.address : {
+    line1: settings.contactAddress?.split(",")[0] || marketingConfig.contact.address.line1,
+    city: settings.contactAddress?.split(",")[1]?.trim() || marketingConfig.contact.address.city,
+    postcode: settings.contactAddress?.split(",")[2]?.trim() || marketingConfig.contact.address.postcode,
+    country: settings.contactAddress?.split(",")[3]?.trim() || marketingConfig.contact.address.country,
+  };
   
   const [formData, setFormData] = useState({
     name: "",
@@ -111,7 +124,7 @@ export default function ContactPage() {
                           <SelectValue placeholder={contactPage.form.fields.subject.placeholder} />
                         </SelectTrigger>
                         <SelectContent className="bg-popover border-border text-popover-foreground">
-                          {contactPage.form.fields.subject.options.map((option) => (
+                          {contactPage.form.fields.subject.options.map((option: any) => (
                             <SelectItem key={option.value} value={option.value} className="focus:bg-primary">
                               {option.label}
                             </SelectItem>
@@ -161,8 +174,8 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm font-bold text-foreground mb-1">Email</p>
-                        <a href={`mailto:${marketingConfig.contact.email}`} className="text-muted-foreground hover:text-primary transition-colors">
-                          {marketingConfig.contact.email}
+                        <a href={`mailto:${contactEmail}`} className="text-muted-foreground hover:text-primary transition-colors">
+                          {contactEmail}
                         </a>
                       </div>
                     </div>
@@ -172,8 +185,8 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <p className="text-sm font-bold text-foreground mb-1">Phone</p>
-                        <a href={`tel:${marketingConfig.contact.phone.replace(/\s/g, '')}`} className="text-muted-foreground hover:text-primary transition-colors">
-                          {marketingConfig.contact.phone}
+                        <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="text-muted-foreground hover:text-primary transition-colors">
+                          {contactPhone}
                         </a>
                       </div>
                     </div>
@@ -184,9 +197,9 @@ export default function ContactPage() {
                       <div>
                         <p className="text-sm font-bold text-foreground mb-1">Office</p>
                         <p className="text-muted-foreground leading-relaxed">
-                          {marketingConfig.contact.address.line1}<br />
-                          {marketingConfig.contact.address.city}, {marketingConfig.contact.address.postcode}<br />
-                          {marketingConfig.contact.address.country}
+                          {contactAddress.line1}<br />
+                          {contactAddress.city}, {contactAddress.postcode}<br />
+                          {contactAddress.country}
                         </p>
                       </div>
                     </div>

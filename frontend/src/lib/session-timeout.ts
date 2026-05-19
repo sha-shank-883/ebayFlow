@@ -71,7 +71,7 @@ export class SessionTimeout {
     this.isRunning = false;
     this.clearTimers();
 
-    for (const [event, handler] of this.boundHandlers) {
+    for (const [event, handler] of Array.from(this.boundHandlers)) {
       document.removeEventListener(event, handler);
     }
     this.boundHandlers.clear();

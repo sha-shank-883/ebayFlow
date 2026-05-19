@@ -5,44 +5,49 @@ import { Twitter, Linkedin, Github, Mail, MapPin, Phone } from "lucide-react";
 import { marketingConfig } from "@/config/marketing";
 import { useNavigation, useSettings } from "@/lib/admin/use-site-content";
 
-const footerLinks = {
-  product: [
-    { label: "Features", href: "/features" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Integrations", href: "/integrations" },
-    { label: "Changelog", href: "/changelog" },
-    { label: "Roadmap", href: "/roadmap" },
-  ],
-  resources: [
-    { label: "Documentation", href: "/docs" },
-    { label: "API Reference", href: "/docs/api" },
-    { label: "Blog", href: "/blog" },
-    { label: "Help Center", href: "/faq" },
-    { label: "Community", href: "/community" },
-  ],
-  company: [
-    { label: "About", href: "/about" },
-    { label: "Careers", href: "/careers" },
-    { label: "Contact", href: "/contact" },
-    { label: "Press Kit", href: "/press" },
-    { label: "Partners", href: "/partners" },
-  ],
-  legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
-    { label: "GDPR", href: "/gdpr" },
-    { label: "Security", href: "/security" },
-  ],
-};
-
 export function Footer() {
-  const { items: footerNav } = useNavigation("footer");
+  const { items: footerNav, loading: navLoading } = useNavigation("footer");
   const { settings, loading: settingsLoading } = useSettings();
 
   const contactEmail = settingsLoading ? marketingConfig.contact.email : settings.contactEmail || marketingConfig.contact.email;
   const contactPhone = settingsLoading ? marketingConfig.contact.phone : settings.contactPhone || marketingConfig.contact.phone;
-  const contactAddress = settingsLoading ? marketingConfig.contact.address : { line1: settings.contactAddress?.split(",")[0] || "", city: settings.contactAddress?.split(",")[1]?.trim() || "" };
+  const contactAddress = settingsLoading
+    ? { line1: marketingConfig.contact.address.line1, city: marketingConfig.contact.address.city }
+    : {
+        line1: settings.contactAddress?.split(",")[0] || marketingConfig.contact.address.line1,
+        city: settings.contactAddress?.split(",")[1]?.trim() || marketingConfig.contact.address.city,
+      };
+
+  const description = settingsLoading ? marketingConfig.footer.description : settings.description || marketingConfig.footer.description;
+  const copyright = settingsLoading ? marketingConfig.footer.copyright : settings.copyright || marketingConfig.footer.copyright;
+
+  const navItems = navLoading
+    ? [
+        ...marketingConfig.footer.links.platform.map((l: any) => ({ ...l, group: "platform" })),
+        ...marketingConfig.footer.links.engine.map((l: any) => ({ ...l, group: "engine" })),
+        ...marketingConfig.footer.links.company.map((l: any) => ({ ...l, group: "company" })),
+        ...marketingConfig.footer.links.compliance.map((l: any) => ({ ...l, group: "compliance" })),
+      ]
+    : (footerNav.length > 0 ? footerNav : [
+        ...marketingConfig.footer.links.platform.map((l: any) => ({ ...l, group: "platform" })),
+        ...marketingConfig.footer.links.engine.map((l: any) => ({ ...l, group: "engine" })),
+        ...marketingConfig.footer.links.company.map((l: any) => ({ ...l, group: "company" })),
+        ...marketingConfig.footer.links.compliance.map((l: any) => ({ ...l, group: "compliance" })),
+      ]);
+
+  const groups = {
+    platform: navItems.filter((item: any) => item.group === "platform" || (!item.group && marketingConfig.footer.links.platform.some((l: any) => l.href === item.href))),
+    engine: navItems.filter((item: any) => item.group === "engine" || (!item.group && marketingConfig.footer.links.engine.some((l: any) => l.href === item.href))),
+    company: navItems.filter((item: any) => item.group === "company" || (!item.group && marketingConfig.footer.links.company.some((l: any) => l.href === item.href))),
+    compliance: navItems.filter((item: any) => item.group === "compliance" || (!item.group && marketingConfig.footer.links.compliance.some((l: any) => l.href === item.href))),
+  };
+
+  const groupLabels: Record<string, string> = {
+    platform: "Platform",
+    engine: "Engine",
+    company: "Company",
+    compliance: "Compliance",
+  };
 
   return (
     <footer className="bg-background border-t border-border relative overflow-hidden">
@@ -62,8 +67,7 @@ export function Footer() {
             </Link>
             
             <p className="text-sm text-muted-foreground max-w-xs mb-8 leading-relaxed">
-              The high-performance listing engine for the modern UK eBay entrepreneur. 
-              Built for speed, scale, and sales.
+              {description}
             </p>
 
             <div className="space-y-4">
@@ -82,75 +86,29 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
-            <h4 className="text-xs font-black text-foreground uppercase tracking-[0.2em] mb-6">Platform</h4>
-            <ul className="space-y-4">
-              {footerLinks.product.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-black text-foreground uppercase tracking-[0.2em] mb-6">Engine</h4>
-            <ul className="space-y-4">
-              {footerLinks.resources.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-black text-foreground uppercase tracking-[0.2em] mb-6">Company</h4>
-            <ul className="space-y-4">
-              {footerLinks.company.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-xs font-black text-foreground uppercase tracking-[0.2em] mb-6">Compliance</h4>
-            <ul className="space-y-4">
-              {footerLinks.legal.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {Object.entries(groups).map(([key, links]) => (
+            <div key={key}>
+              <h4 className="text-xs font-black text-foreground uppercase tracking-[0.2em] mb-6">{groupLabels[key]}</h4>
+              <ul className="space-y-4">
+                {(links as any[]).map((link: any) => (
+                  <li key={link.label || link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div className="pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex flex-col md:flex-row items-center gap-6">
             <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-              &copy; {new Date().getFullYear()} eBay Flow AI. Registered in England & Wales.
+              {copyright}
             </p>
             <div className="flex gap-4">
                {[Twitter, Linkedin, Github].map((Icon, i) => (

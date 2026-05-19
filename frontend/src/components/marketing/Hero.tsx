@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, TrendingUp, Shield, Zap, CheckCircle2, Star, Users, Globe } from "lucide-react";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
-import { useSiteContent } from "@/lib/admin/use-site-content";
+import { useSiteContent, useTrustSignals } from "@/lib/admin/use-site-content";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -38,8 +38,9 @@ const floatingVariants = {
 
 export function Hero() {
   const { content, loading } = useSiteContent("home");
+  const { items: trustSignals, loading: trustLoading } = useTrustSignals();
   const heroData = content?.sections?.find((s: any) => s.sectionKey === "hero")?.content || marketingConfig.hero;
-  const trustSignals = marketingConfig.trustSignals;
+  const displayTrustSignals = trustLoading ? marketingConfig.trustSignals : (trustSignals.length > 0 ? trustSignals : marketingConfig.trustSignals);
 
   const hero = loading ? marketingConfig.hero : heroData;
 
@@ -113,7 +114,7 @@ export function Hero() {
 
             {/* Trust Badges */}
             <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-8 pt-8 border-t border-border">
-              {marketingConfig.trustSignals.map((signal, i) => {
+              {displayTrustSignals.map((signal: any, i: number) => {
                 const Icon = signal.icon === "CheckCircle2" ? CheckCircle2 : signal.icon === "Shield" ? Shield : Star;
                 return (
                   <div key={i} className="flex items-center gap-2 text-muted-foreground">
@@ -152,13 +153,13 @@ export function Hero() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-muted/50 p-5 rounded-2xl border border-border">
                       <div className="text-muted-foreground text-xs mb-1 uppercase tracking-wider">UK Revenue</div>
-                      <div className="text-2xl font-bold text-foreground">{hero.preview.revenue}</div>
-                      <div className="text-emerald-400 text-[10px] mt-1 font-medium">{hero.preview.revenueGrowth}</div>
+                      <div className="text-2xl font-bold text-foreground">{hero.preview?.revenue || "£42,850.00"}</div>
+                      <div className="text-emerald-400 text-[10px] mt-1 font-medium">{hero.preview?.revenueGrowth || "+12.5% vs last month"}</div>
                     </div>
                     <div className="bg-muted/50 p-5 rounded-2xl border border-border">
                       <div className="text-muted-foreground text-xs mb-1 uppercase tracking-wider">AI Listings</div>
-                      <div className="text-2xl font-bold text-foreground">{hero.preview.listings}</div>
-                      <div className="text-blue-400 text-[10px] mt-1 font-medium">{hero.preview.listingStatus}</div>
+                      <div className="text-2xl font-bold text-foreground">{hero.preview?.listings || "1,248"}</div>
+                      <div className="text-blue-400 text-[10px] mt-1 font-medium">{hero.preview?.listingStatus || "98% SEO Optimized"}</div>
                     </div>
                   </div>
                   {/* Chart Mockup */}
@@ -196,7 +197,7 @@ export function Hero() {
                 </div>
                 <div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-widest">ROI Increase</div>
-                  <div className="text-lg font-bold text-foreground">{hero.preview.roi}</div>
+                  <div className="text-lg font-bold text-foreground">{hero.preview?.roi || "3.4x"}</div>
                 </div>
               </div>
             </motion.div>
@@ -213,7 +214,7 @@ export function Hero() {
                 </div>
                 <div>
                   <div className="text-[10px] text-muted-foreground uppercase tracking-widest">Sync Speed</div>
-                  <div className="text-lg font-bold text-foreground">{hero.preview.syncSpeed}</div>
+                  <div className="text-lg font-bold text-foreground">{hero.preview?.syncSpeed || "250ms"}</div>
                 </div>
               </div>
             </motion.div>
@@ -227,7 +228,7 @@ export function Hero() {
           animate="visible"
           className="mt-32 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12"
         >
-          {hero.stats.map((stat, i) => (
+          {(hero.stats || marketingConfig.hero.stats).map((stat: any, i: number) => (
             <div key={i} className="relative group">
               <div className="text-4xl md:text-5xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                 {stat.value}

@@ -7,15 +7,29 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
-import { usePricing } from "@/lib/admin/use-site-content";
+import { usePricing, usePricingSection } from "@/lib/admin/use-site-content";
 
 export function PricingCards() {
   const [isYearly, setIsYearly] = useState(true);
   const { plans: apiPlans, loading } = usePricing(isYearly ? "yearly" : "monthly");
+  const { data: pricingSectionData, loading: sectionLoading } = usePricingSection();
 
   const plans = loading 
     ? (isYearly ? marketingConfig.pricing.yearly : marketingConfig.pricing.monthly)
     : (apiPlans.length > 0 ? apiPlans : (isYearly ? marketingConfig.pricing.yearly : marketingConfig.pricing.monthly));
+
+  const pricingSection = sectionLoading ? {
+    section: marketingConfig.pricing.section,
+    guarantees: marketingConfig.pricing.guarantees,
+    faqs: marketingConfig.pricing.faqs,
+  } : (pricingSectionData || {
+    section: marketingConfig.pricing.section,
+    guarantees: marketingConfig.pricing.guarantees,
+    faqs: marketingConfig.pricing.faqs,
+  });
+
+  const sectionContent = pricingSection.section || marketingConfig.pricing.section;
+  const trustSignals = sectionContent.trustSignals || marketingConfig.pricing.section.trustSignals;
 
   return (
     <section id="pricing" className="py-24 md:py-32 relative overflow-hidden bg-background">
@@ -30,14 +44,13 @@ export function PricingCards() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-6">
-              Invest in Your <br />
+              {sectionContent.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                eBay Empire
+                {sectionContent.titleAccent}
               </span>
             </h2>
             <p className="text-lg text-muted-foreground mb-10">
-              Transparent pricing tailored for UK sellers of all sizes. 
-              No hidden fees, no credit card required to start.
+              {sectionContent.description}
             </p>
 
             {/* Toggle */}
@@ -55,7 +68,7 @@ export function PricingCards() {
               <div className="flex items-center gap-2">
                 <span className={cn("text-sm transition-colors", isYearly ? "text-foreground" : "text-muted-foreground")}>Yearly</span>
                 <span className="bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  Save 20%
+                  {sectionContent.guaranteeBadge || "Save 20%"}
                 </span>
               </div>
             </div>
@@ -63,7 +76,7 @@ export function PricingCards() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {plans.map((plan, index) => {
+          {plans.map((plan: any, index: number) => {
             const isEnterprise = plan.name === "Enterprise";
             const isPopular = plan.isPopular;
 
@@ -113,7 +126,7 @@ export function PricingCards() {
 
                 <div className="space-y-4 mb-10 flex-grow">
                   <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">What's included:</p>
-                  {plan.features.map((feature) => (
+                  {plan.features.map((feature: string) => (
                     <div key={feature} className="flex items-start gap-3 group/item">
                       <div className="mt-1 w-4 h-4 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center transition-colors group-hover/item:bg-primary/20">
                         <Check className="h-2.5 w-2.5 text-primary" />
@@ -146,26 +159,19 @@ export function PricingCards() {
           })}
         </div>
 
-        {/* Pricing FAQ / Trust */}
+        {/* Pricing Trust Row */}
         <div className="mt-24 text-center">
           <div className="inline-flex items-center gap-8 px-8 py-4 rounded-3xl bg-card/50 border border-border backdrop-blur-sm">
-             <div className="flex flex-col items-center">
-               <p className="text-2xl font-bold text-foreground">100%</p>
-               <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Safe & Secure</p>
-             </div>
-             <div className="w-px h-8 bg-border" />
-             <div className="flex flex-col items-center">
-               <p className="text-2xl font-bold text-foreground">24/7</p>
-               <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Support UK</p>
-             </div>
-             <div className="w-px h-8 bg-border" />
-             <div className="flex flex-col items-center">
-               <p className="text-2xl font-bold text-foreground">0%</p>
-               <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Commission</p>
-             </div>
+             {trustSignals.map((signal: any, i: number) => (
+               <div key={i} className="flex flex-col items-center">
+                 <p className="text-2xl font-bold text-foreground">{signal.value}</p>
+                 <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{signal.label}</p>
+               </div>
+             ))}
           </div>
           <p className="text-sm text-muted-foreground mt-8 flex items-center justify-center gap-2">
-            Have questions? <Link href="/contact" className="text-primary hover:underline">Chat with our UK team</Link>
+            {sectionContent.ctaText || marketingConfig.pricing.section.ctaText}{" "}
+            <Link href="/contact" className="text-primary hover:underline">{sectionContent.ctaLinkText || marketingConfig.pricing.section.ctaLinkText}</Link>
             <HelpCircle className="h-3.5 w-3.5" />
           </p>
         </div>

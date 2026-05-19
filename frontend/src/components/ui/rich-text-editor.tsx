@@ -7,7 +7,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
-import { useCallback } from "react";
+import { useCallback, type ComponentType, type SVGProps } from "react";
 import { cn } from "@/lib/utils";
 import {
   Bold,
@@ -73,7 +73,11 @@ export function RichTextEditor({ content, onChange, placeholder = "Start writing
 
   if (!editor) return null;
 
-  const buttons = [
+  type ToolbarButton =
+    | { icon: ComponentType<SVGProps<SVGSVGElement>>; action: () => void; active: boolean; label: string; divider?: false; disabled?: boolean }
+    | { divider: true };
+
+  const buttons: ToolbarButton[] = [
     { icon: Bold, action: () => editor.chain().focus().toggleBold().run(), active: editor.isActive("bold"), label: "Bold" },
     { icon: Italic, action: () => editor.chain().focus().toggleItalic().run(), active: editor.isActive("italic"), label: "Italic" },
     { icon: UnderlineIcon, action: () => editor.chain().focus().toggleUnderline().run(), active: editor.isActive("underline"), label: "Underline" },
@@ -104,7 +108,7 @@ export function RichTextEditor({ content, onChange, placeholder = "Start writing
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-1 p-2 border-b border-border bg-muted/50">
         {buttons.map((btn, i) =>
-          btn.divider ? (
+          "divider" in btn && btn.divider ? (
             <div key={i} className="w-px h-6 bg-border mx-1" />
           ) : (
             <button

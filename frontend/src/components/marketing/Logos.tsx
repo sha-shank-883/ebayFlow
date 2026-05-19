@@ -1,10 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import { marketingConfig } from "@/config/marketing";
+import { useLogos } from "@/lib/admin/use-site-content";
 
 export function Logos() {
+  const { items, loading } = useLogos();
+  const logos = loading ? marketingConfig.logos : (items.length > 0 ? items : marketingConfig.logos);
+
   return (
     <section className="py-16 border-y border-border bg-muted/20">
       <div className="container px-4">
@@ -17,7 +20,7 @@ export function Logos() {
           Trusted integrations with platforms you already use
         </motion.p>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-          {marketingConfig.logos.map((logo) => (
+          {logos.map((logo: any) => (
             <motion.div
               key={logo.name}
               initial={{ opacity: 0 }}

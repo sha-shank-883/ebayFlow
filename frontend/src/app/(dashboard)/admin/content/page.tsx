@@ -1,31 +1,68 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { adminApi } from "@/lib/admin/api";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Plus, Edit2, Trash2, Eye, EyeOff, Save, X, ChevronDown, ChevronUp } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Plus, Edit2, Trash2, Eye, EyeOff, Save, X, Search } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton";
 import { useSaveShortcut, useCancelShortcut } from "@/hooks/use-keyboard-shortcuts";
 import toast from "react-hot-toast";
-import Link from "next/link";
+
+const PAGE_OPTIONS = [
+  { value: "all", label: "All Pages" },
+  { value: "home", label: "Home" },
+  { value: "about", label: "About" },
+  { value: "contact", label: "Contact" },
+  { value: "pricing", label: "Pricing" },
+  { value: "features", label: "Features" },
+  { value: "faq", label: "FAQ" },
+  { value: "privacy", label: "Privacy" },
+  { value: "terms", label: "Terms" },
+];
+
+const PAGE_SECTION_KEYS: Record<string, string[]> = {
+  home: ["hero", "features", "how-it-works", "trust-signals", "logos", "testimonials", "pricing-preview", "cta", "audit", "audit-features", "audit-form", "cta-benefits"],
+  about: ["about-content", "values", "milestones"],
+  contact: ["contact-form", "contact-info"],
+  pricing: ["pricing-section", "guarantees", "trust-signals", "faqs"],
+  features: ["feature-sections", "comparison"],
+  faq: ["faq-section"],
+  privacy: [],
+  terms: [],
+};
+
+function contentPreview(content: any): string {
+  if (!content) return "No content";
+  const str = typeof content === "string" ? content : JSON.stringify(content);
+  return str.length > 100 ? str.slice(0, 100) + "..." : str;
+}
 
 export default function ContentPage() {
   const [pages, setPages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingPage, setEditingPage] = useState<any>(null);
-  const [sections, setSections] = useState<any[]>([]);
+  const [allSections, setAllSections] = useState<Record<string, any[]>>({});
   const [sectionsLoading, setSectionsLoading] = useState(false);
   const [editingSection, setEditingSection] = useState<any>(null);
   const [newSection, setNewSection] = useState(false);
+  const [selectedPage, setSelectedPage] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     loadPages();
   }, []);
+
+  useEffect(() => {
+    if (pages.length > 0) {
+      loadAllSections();
+    }
+  }, [pages]);
 
   const loadPages = async () => {
     try {
@@ -38,17 +75,63 @@ export default function ContentPage() {
     }
   };
 
-  const loadSections = async (pageId: string) => {
+  const loadAllSections = async () => {
     setSectionsLoading(true);
+    const sectionsMap: Record<string, any[]> = {};
     try {
-      const data = await adminApi.sections.list(pageId, true);
-      setSections(data);
+      const promises = pages.map(async (page) => {
+        try {
+          const data = await adminApi.sections.list(page.id, true);
+          sectionsMap[page.id] = data;
+        } catch {
+          sectionsMap[page.id] = [];
+        }
+      });
+      await Promise.all(promises);
+      setAllSections(sectionsMap);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
       setSectionsLoading(false);
     }
   };
+
+  const getPageBySlug = (slug: string) => pages.find((p) => p.slug === slug);
+
+  const filteredSections = useMemo(() => {
+    const result: Record<string, any[]> = {};
+    const pageSlugs = selectedPage === "all" ? PAGE_OPTIONS.filter((o) => o.value !== "all").map((o) => o.value) : [selectedPage];
+
+    for (const slug of pageSlugs) {
+      const page = getPageBySlug(slug);
+      if (!page) {
+        result[slug] = [];
+        continue;
+      }
+      const sections = allSections[page.id] || [];
+      const filtered = sections.filter((s) => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+          (s.sectionKey || "").toLowerCase().includes(q) ||
+          (s.title || "").toLowerCase().includes(q) ||
+          contentPreview(s.content).toLowerCase().includes(q) ||
+          (s.sectionType || "").toLowerCase().includes(q)
+        );
+      });
+      result[slug] = filtered;
+    }
+    return result;
+  }, [selectedPage, searchQuery, allSections, pages]);
+
+  const totalSectionCount = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const slug of PAGE_OPTIONS.filter((o) => o.value !== "all").map((o) => o.value)) {
+      const page = getPageBySlug(slug);
+      counts[slug] = page ? (allSections[page.id] || []).length : 0;
+    }
+    return counts;
+  }, [allSections, pages]);
 
   const togglePageActive = async (id: string) => {
     try {
@@ -78,51 +161,123 @@ export default function ContentPage() {
 
   const saveSection = async () => {
     try {
+      let parsedContent: any;
+      try {
+        parsedContent = typeof editingSection.content === "string" ? JSON.parse(editingSection.content) : editingSection.content;
+      } catch {
+        toast.error("Invalid JSON in content field");
+        return;
+      }
+
+      let parsedSettings: any = null;
+      if (editingSection.settings) {
+        try {
+          parsedSettings = typeof editingSection.settings === "string" ? JSON.parse(editingSection.settings) : editingSection.settings;
+        } catch {
+          toast.error("Invalid JSON in settings field");
+          return;
+        }
+      }
+
       if (editingSection.id) {
         await adminApi.sections.update(editingSection.id, {
           ...editingSection,
-          content: typeof editingSection.content === 'string' ? JSON.parse(editingSection.content) : editingSection.content,
-          settings: editingSection.settings ? (typeof editingSection.settings === 'string' ? JSON.parse(editingSection.settings) : editingSection.settings) : null,
+          content: parsedContent,
+          settings: parsedSettings,
         });
         toast.success("Section updated");
       } else {
         await adminApi.sections.create(editingSection.pageId, {
           ...editingSection,
-          content: typeof editingSection.content === 'string' ? JSON.parse(editingSection.content) : editingSection.content,
+          content: parsedContent,
+          settings: parsedSettings,
         });
         toast.success("Section created");
       }
       setEditingSection(null);
       setNewSection(false);
-      loadSections(editingSection.pageId);
+      loadAllSections();
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
-  const toggleSectionActive = async (id: string, pageId: string) => {
+  const toggleSectionActive = async (id: string) => {
     try {
       await adminApi.sections.toggleActive(id);
-      loadSections(pageId);
+      loadAllSections();
       toast.success("Section status updated");
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
-  const deleteSection = async (id: string, pageId: string) => {
+  const deleteSection = async (id: string) => {
     if (!confirm("Are you sure? This will soft-delete the section.")) return;
     try {
       await adminApi.sections.delete(id);
-      loadSections(pageId);
+      loadAllSections();
       toast.success("Section deleted");
     } catch (error: any) {
       toast.error(error.message);
     }
   };
 
+  const openNewSection = (pageId: string) => {
+    const pageSections = allSections[pageId] || [];
+    setNewSection(true);
+    setEditingSection({
+      pageId,
+      sectionKey: "",
+      sectionType: "custom-html",
+      title: "",
+      subtitle: "",
+      content: "{}",
+      settings: "",
+      order: pageSections.length,
+    });
+  };
+
+  const openEditSection = (section: any) => {
+    setEditingSection({
+      ...section,
+      content: typeof section.content === "string" ? section.content : JSON.stringify(section.content, null, 2),
+      settings: section.settings ? (typeof section.settings === "string" ? section.settings : JSON.stringify(section.settings, null, 2)) : "",
+    });
+  };
+
   useSaveShortcut(saveSection);
-  useCancelShortcut(() => { setEditingSection(null); setNewSection(false); });
+  useCancelShortcut(() => {
+    setEditingSection(null);
+    setNewSection(false);
+  });
+
+  const renderSectionRow = (section: any, idx: number) => (
+    <div key={section.id} className={`flex items-center justify-between p-3 rounded-lg border ${!section.isActive ? "opacity-50" : ""}`}>
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        <span className="text-sm text-muted-foreground w-6 shrink-0">{idx + 1}</span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">{section.sectionKey || section.sectionType}</Badge>
+            {section.title && <span className="text-sm font-medium truncate">{section.title}</span>}
+            {!section.isActive && <Badge variant="secondary">Hidden</Badge>}
+          </div>
+          <p className="text-xs text-muted-foreground mt-1 truncate font-mono">{contentPreview(section.content)}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1 shrink-0">
+        <Button variant="ghost" size="sm" onClick={() => toggleSectionActive(section.id)} title={section.isActive ? "Hide" : "Show"}>
+          {section.isActive ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => openEditSection(section)} title="Edit">
+          <Edit2 className="h-3.5 w-3.5" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => deleteSection(section.id)} title="Delete">
+          <Trash2 className="h-3.5 w-3.5" />
+        </Button>
+      </div>
+    </div>
+  );
 
   if (loading) {
     return <PageSkeleton content="list" />;
@@ -138,6 +293,45 @@ export default function ContentPage() {
         <Button onClick={() => setEditingPage({ slug: "", title: "", description: "", template: "default", sortOrder: pages.length })}>
           <Plus className="mr-2 h-4 w-4" /> New Page
         </Button>
+      </div>
+
+      {/* Page Selector & Search */}
+      <div className="flex gap-4 items-end">
+        <div className="space-y-2 flex-1 max-w-xs">
+          <Label>Filter by Page</Label>
+          <Select value={selectedPage} onValueChange={setSelectedPage}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {PAGE_OPTIONS.map((opt) => (
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                  {opt.value !== "all" && totalSectionCount[opt.value] !== undefined && (
+                    <Badge variant="secondary" className="ml-2 text-xs">
+                      {totalSectionCount[opt.value]}
+                    </Badge>
+                  )}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-2 flex-1 max-w-md">
+          <Label>Search Sections</Label>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by key, title, content..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+        </div>
+        {sectionsLoading && (
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        )}
       </div>
 
       {/* Page Editor Modal */}
@@ -179,68 +373,78 @@ export default function ContentPage() {
         </Card>
       )}
 
-      {/* Pages List */}
-      <div className="space-y-4">
-        {pages.map((page) => (
-          <Card key={page.id}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <CardTitle className="text-lg">{page.title}</CardTitle>
-                  <Badge variant={page.isActive ? "default" : "secondary"}>/{page.slug}</Badge>
-                  {!page.isActive && <Badge variant="outline">Inactive</Badge>}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm" onClick={() => togglePageActive(page.id)}>
-                    {page.isActive ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => setEditingPage(page)}>
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="sm" onClick={() => loadSections(page.id)}>
-                    {sectionsLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <ChevronDown className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
+      {/* Sections by Page */}
+      <div className="space-y-6">
+        {Object.entries(filteredSections).map(([slug, sections]) => {
+          const page = getPageBySlug(slug);
+          const expectedKeys = PAGE_SECTION_KEYS[slug] || [];
+          const pageLabel = PAGE_OPTIONS.find((o) => o.value === slug)?.label || slug;
 
-            {/* Sections */}
-            {sections.length > 0 && (
-              <CardContent className="pt-0">
-                <div className="space-y-2">
-                  {sections.map((section, idx) => (
-                    <div key={section.id} className={`flex items-center justify-between p-3 rounded-lg border ${!section.isActive ? 'opacity-50' : ''}`}>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-muted-foreground w-6">{idx + 1}</span>
-                        <Badge variant="outline">{section.sectionType}</Badge>
-                        <span className="text-sm font-medium">{section.title || section.sectionKey}</span>
-                        {!section.isActive && <Badge variant="secondary">Hidden</Badge>}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => toggleSectionActive(section.id, page.id)}>
-                          {section.isActive ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => { setEditingSection({ ...section, content: JSON.stringify(section.content, null, 2), settings: section.settings ? JSON.stringify(section.settings, null, 2) : '' }); }}>
-                          <Edit2 className="h-3.5 w-3.5" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => deleteSection(section.id, page.id)}>
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                  <Button variant="outline" size="sm" className="w-full" onClick={() => { setNewSection(true); setEditingSection({ pageId: page.id, sectionKey: "", sectionType: "custom-html", title: "", subtitle: "", content: "{}", order: sections.length }); }}>
-                    <Plus className="mr-2 h-3.5 w-3.5" /> Add Section
-                  </Button>
+          return (
+            <Card key={slug}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <CardTitle className="text-lg">{page?.title || pageLabel}</CardTitle>
+                    <Badge variant="secondary">{sections.length} section{sections.length !== 1 ? "s" : ""}</Badge>
+                    {expectedKeys.length > 0 && (
+                      <Badge variant="outline">{expectedKeys.length} expected</Badge>
+                    )}
+                    {page && (
+                      <>
+                        <Badge variant={page.isActive ? "default" : "secondary"}>/{page.slug}</Badge>
+                        {!page.isActive && <Badge variant="outline">Inactive</Badge>}
+                      </>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {page && (
+                      <Button variant="ghost" size="sm" onClick={() => togglePageActive(page.id)}>
+                        {page.isActive ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    )}
+                    {page && (
+                      <Button variant="ghost" size="sm" onClick={() => setEditingPage(page)}>
+                        <Edit2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                    {page && (
+                      <Button variant="outline" size="sm" onClick={() => openNewSection(page.id)}>
+                        <Plus className="mr-1.5 h-3.5 w-3.5" /> Add Section
+                      </Button>
+                    )}
+                  </div>
                 </div>
+                {expectedKeys.length > 0 && (
+                  <CardDescription className="mt-1">
+                    Expected: {expectedKeys.join(", ")}
+                  </CardDescription>
+                )}
+              </CardHeader>
+
+              <CardContent className="pt-0">
+                {sections.length === 0 ? (
+                  <div className="text-center py-6 text-muted-foreground text-sm">
+                    {searchQuery ? "No sections match your search" : "No sections found"}
+                    {page && (
+                      <Button variant="link" className="ml-1 p-0 h-auto" onClick={() => openNewSection(page.id)}>
+                        Add one
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {sections.map((section, idx) => renderSectionRow(section, idx))}
+                  </div>
+                )}
               </CardContent>
-            )}
-          </Card>
-        ))}
+            </Card>
+          );
+        })}
       </div>
 
       {/* Section Editor Modal */}
-      {(editingSection && (newSection || editingSection.id)) && (
+      {editingSection && (newSection || editingSection.id) && (
         <Card className="border-primary/50">
           <CardHeader>
             <CardTitle>{editingSection.id ? "Edit Section" : "New Section"}</CardTitle>
@@ -264,6 +468,12 @@ export default function ContentPage() {
               <div className="space-y-2">
                 <Label>Subtitle</Label>
                 <Input value={editingSection.subtitle || ""} onChange={(e) => setEditingSection({ ...editingSection, subtitle: e.target.value })} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Order</Label>
+                <Input type="number" value={editingSection.order ?? 0} onChange={(e) => setEditingSection({ ...editingSection, order: parseInt(e.target.value) || 0 })} />
               </div>
             </div>
             <div className="space-y-2">

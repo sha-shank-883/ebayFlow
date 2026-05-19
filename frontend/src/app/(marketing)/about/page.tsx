@@ -1,3 +1,5 @@
+"use client";
+
 import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 import { CTASection } from "@/components/marketing/CTASection";
@@ -12,6 +14,7 @@ import {
   Globe
 } from "lucide-react";
 import { marketingConfig } from "@/config/marketing";
+import { useAboutPageContent } from "@/lib/admin/use-site-content";
 
 const iconMap: Record<string, any> = {
   Target,
@@ -21,6 +24,20 @@ const iconMap: Record<string, any> = {
 };
 
 export default function AboutPage() {
+  const { data: aboutData, loading } = useAboutPageContent();
+
+  const about = loading ? {
+    mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+    vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
+    values: marketingConfig.aboutPage.values,
+    milestones: marketingConfig.aboutPage.milestones,
+  } : (aboutData || {
+    mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+    vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
+    values: marketingConfig.aboutPage.values,
+    milestones: marketingConfig.aboutPage.milestones,
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -54,9 +71,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Our Mission</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To democratize enterprise-grade automation for UK eBay sellers. 
-                  We believe that small businesses should have access to the same 
-                  AI-powered optimization as global retail giants.
+                  {about.mission}
                 </p>
               </div>
               <div className="group p-10 rounded-[2.5rem] border border-border bg-card/50 backdrop-blur-md hover:bg-card transition-all">
@@ -65,9 +80,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Our Vision</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  To become the operating system for modern e-commerce. 
-                  A world where listing, inventory, and fulfillment happen 
-                  autonomously, letting you focus on strategy and growth.
+                  {about.vision}
                 </p>
               </div>
             </div>
@@ -77,7 +90,7 @@ export default function AboutPage() {
                 Our Core Values
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {marketingConfig.aboutPage.values.map((value) => {
+                {about.values.map((value: any) => {
                   const Icon = iconMap[value.icon] || Target;
                   return (
                     <div
@@ -105,7 +118,7 @@ export default function AboutPage() {
                 From a small London office to powering thousands of UK businesses.
               </p>
               <div className="space-y-12">
-                {marketingConfig.aboutPage.milestones.map((milestone, index) => (
+                {about.milestones.map((milestone: any, index: number) => (
                   <div key={index} className="flex gap-8 group">
                     <div className="w-24 shrink-0 pt-1 text-right">
                       <span className="text-xl font-black text-primary/50 group-hover:text-primary transition-colors">{milestone.year}</span>

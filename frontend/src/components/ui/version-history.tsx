@@ -67,7 +67,7 @@ function computeDiff(
   const allKeys = new Set([...Object.keys(oldContent), ...Object.keys(newContent)]);
   const diffs: FieldDiff[] = [];
 
-  for (const key of allKeys) {
+  for (const key of Array.from(allKeys)) {
     const hasOld = key in oldContent;
     const hasNew = key in newContent;
 

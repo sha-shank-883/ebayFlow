@@ -16,6 +16,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
+import { useFeatures, useLogos } from "@/lib/admin/use-site-content";
 
 const iconMap = {
   Sparkles,
@@ -42,6 +43,29 @@ const itemVariants = {
 };
 
 export function Features() {
+  const { data: featuresData, loading: featuresLoading } = useFeatures();
+  const { items: logos, loading: logosLoading } = useLogos();
+
+  const features = featuresLoading ? {
+    badge: marketingConfig.featureSection.badge,
+    title: marketingConfig.featureSection.title,
+    titleAccent: marketingConfig.featureSection.titleAccent,
+    description: marketingConfig.featureSection.description,
+    bento: marketingConfig.featureSection.bento,
+    services: marketingConfig.services,
+  } : (featuresData || {
+    badge: marketingConfig.featureSection.badge,
+    title: marketingConfig.featureSection.title,
+    titleAccent: marketingConfig.featureSection.titleAccent,
+    description: marketingConfig.featureSection.description,
+    bento: marketingConfig.featureSection.bento,
+    services: marketingConfig.services,
+  });
+
+  const displayLogos = logosLoading ? marketingConfig.logos : (logos.length > 0 ? logos : marketingConfig.logos);
+
+  const bento = features.bento || marketingConfig.featureSection.bento;
+
   return (
     <section id="features" className="py-24 md:py-32 relative overflow-hidden bg-background">
       {/* Background Orbs */}
@@ -58,16 +82,16 @@ export function Features() {
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold uppercase tracking-wider text-primary mb-6">
               <Zap className="h-3.5 w-3.5 fill-primary" />
-              {marketingConfig.featureSection.badge}
+              {features.badge}
             </span>
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground mb-6">
-              {marketingConfig.featureSection.title} <br />
+              {features.title} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                {marketingConfig.featureSection.titleAccent}
+                {features.titleAccent}
               </span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              {marketingConfig.featureSection.description}
+              {features.description}
             </p>
           </motion.div>
         </div>
@@ -79,7 +103,7 @@ export function Features() {
           viewport={{ once: true, margin: "-100px" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          {marketingConfig.services.map((service, index) => {
+          {features.services.map((service: any, index: number) => {
             const Icon = iconMap[service.icon as keyof typeof iconMap] || Sparkles;
             
             return (
@@ -89,8 +113,7 @@ export function Features() {
                 className={cn(
                   "group relative p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm transition-all duration-500",
                   "hover:bg-card hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/10",
-                  index === 0 || index === 3 ? "lg:col-span-1" : "lg:col-span-1" 
-                  // Note: Could make a true bento grid by adjusting col-spans based on index
+                  index === 0 || index === 3 ? "lg:col-span-1" : "lg:col-span-1"
                 )}
               >
                 <div className="relative z-10">
@@ -122,6 +145,23 @@ export function Features() {
           })}
         </motion.div>
 
+        {/* Logos Section */}
+        <div className="mt-20 py-12 border-y border-border">
+          <p className="text-center text-sm font-medium text-muted-foreground mb-8">
+            Trusted integrations with platforms you already use
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            {displayLogos.map((logo: any) => (
+              <div
+                key={logo.name}
+                className={`text-xl md:text-2xl font-bold ${logo.color} opacity-60 hover:opacity-100 transition-opacity cursor-default`}
+              >
+                {logo.name}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Feature Highlights / Bento Bottom */}
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
           <motion.div
@@ -134,15 +174,14 @@ export function Features() {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-4">
                 <div className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-                <span className="text-xs font-bold text-primary uppercase tracking-widest">Real-time Data</span>
+                <span className="text-xs font-bold text-primary uppercase tracking-widest">{bento.seo.badge}</span>
               </div>
-              <h3 className="text-2xl font-bold text-foreground mb-4">Proprietary UK SEO Algorithm</h3>
+              <h3 className="text-2xl font-bold text-foreground mb-4">{bento.seo.title}</h3>
               <p className="text-muted-foreground mb-6">
-                Our engine is fine-tuned for eBay.co.uk. It understands regional search nuances, 
-                UK postage trends, and "Best Match" signals that US-centric tools miss.
+                {bento.seo.description}
               </p>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8">
-                Run Free SEO Audit
+                {bento.seo.cta}
               </Button>
             </div>
             <div className="w-full md:w-1/2 aspect-video rounded-2xl bg-card border border-border overflow-hidden shadow-2xl">
@@ -169,10 +208,9 @@ export function Features() {
             <div className="mb-6 inline-flex mx-auto p-4 rounded-2xl bg-green-500/10 border border-green-500/20">
               <ShieldCheck className="h-10 w-10 text-green-400" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">99.9% Uptime SLA</h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">{bento.uptime.title}</h3>
             <p className="text-sm text-muted-foreground">
-              Enterprise-grade reliability for your high-volume business. 
-              We never miss an inventory sync.
+              {bento.uptime.description}
             </p>
           </motion.div>
         </div>

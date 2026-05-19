@@ -13,7 +13,6 @@ export function useSiteContent(pageSlug: string) {
         if (data && data.sections) {
           setContent(data);
         } else {
-          // Fallback to hardcoded config
           setContent({ fallback: true, pageSlug });
         }
       } catch {
@@ -39,9 +38,16 @@ export function useNavigation(location: string) {
         if (data && data.length > 0) {
           setItems(data);
         } else {
-          // Fallback to hardcoded config
           if (location === 'header') {
             setItems(marketingConfig.mainNav.map((item, i) => ({ ...item, order: i })));
+          } else if (location === 'footer') {
+            const footerLinks = [
+              ...marketingConfig.footer.links.platform.map((l: any) => ({ ...l, location: 'footer', group: 'platform' })),
+              ...marketingConfig.footer.links.engine.map((l: any) => ({ ...l, location: 'footer', group: 'engine' })),
+              ...marketingConfig.footer.links.company.map((l: any) => ({ ...l, location: 'footer', group: 'company' })),
+              ...marketingConfig.footer.links.compliance.map((l: any) => ({ ...l, location: 'footer', group: 'compliance' })),
+            ];
+            setItems(footerLinks);
           } else {
             setItems([]);
           }
@@ -49,6 +55,14 @@ export function useNavigation(location: string) {
       } catch {
         if (location === 'header') {
           setItems(marketingConfig.mainNav.map((item, i) => ({ ...item, order: i })));
+        } else if (location === 'footer') {
+          const footerLinks = [
+            ...marketingConfig.footer.links.platform.map((l: any) => ({ ...l, location: 'footer', group: 'platform' })),
+            ...marketingConfig.footer.links.engine.map((l: any) => ({ ...l, location: 'footer', group: 'engine' })),
+            ...marketingConfig.footer.links.company.map((l: any) => ({ ...l, location: 'footer', group: 'company' })),
+            ...marketingConfig.footer.links.compliance.map((l: any) => ({ ...l, location: 'footer', group: 'compliance' })),
+          ];
+          setItems(footerLinks);
         } else {
           setItems([]);
         }
@@ -156,6 +170,8 @@ export function useSettings() {
             contactPhone: marketingConfig.contact.phone,
             contactAddress: `${marketingConfig.contact.address.line1}, ${marketingConfig.contact.address.city}, ${marketingConfig.contact.address.postcode}, ${marketingConfig.contact.address.country}`,
             socialLinks: marketingConfig.links,
+            description: marketingConfig.footer.description,
+            copyright: marketingConfig.footer.copyright,
           });
         }
       } catch {
@@ -165,6 +181,8 @@ export function useSettings() {
           contactPhone: marketingConfig.contact.phone,
           contactAddress: `${marketingConfig.contact.address.line1}, ${marketingConfig.contact.address.city}, ${marketingConfig.contact.address.postcode}, ${marketingConfig.contact.address.country}`,
           socialLinks: marketingConfig.links,
+          description: marketingConfig.footer.description,
+          copyright: marketingConfig.footer.copyright,
         });
       } finally {
         setLoading(false);
@@ -174,6 +192,329 @@ export function useSettings() {
   }, []);
 
   return { settings, loading };
+}
+
+export function useFeatures() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.features();
+        if (result) {
+          setData(result);
+        } else {
+          setData({
+            badge: marketingConfig.featureSection.badge,
+            title: marketingConfig.featureSection.title,
+            titleAccent: marketingConfig.featureSection.titleAccent,
+            description: marketingConfig.featureSection.description,
+            bento: marketingConfig.featureSection.bento,
+            services: marketingConfig.services,
+          });
+        }
+      } catch {
+        setData({
+          badge: marketingConfig.featureSection.badge,
+          title: marketingConfig.featureSection.title,
+          titleAccent: marketingConfig.featureSection.titleAccent,
+          description: marketingConfig.featureSection.description,
+          bento: marketingConfig.featureSection.bento,
+          services: marketingConfig.services,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useHowItWorks() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.howItWorks();
+        if (result) {
+          setData(result);
+        } else {
+          setData(marketingConfig.howItWorks);
+        }
+      } catch {
+        setData(marketingConfig.howItWorks);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useCTASection() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.ctaSection();
+        if (result) {
+          setData(result);
+        } else {
+          setData(marketingConfig.ctaSection);
+        }
+      } catch {
+        setData(marketingConfig.ctaSection);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useAuditSection() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.auditSection();
+        if (result) {
+          setData(result);
+        } else {
+          setData(marketingConfig.audit);
+        }
+      } catch {
+        setData(marketingConfig.audit);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useLogos() {
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.logos();
+        if (result && result.length > 0) {
+          setItems(result);
+        } else {
+          setItems(marketingConfig.logos);
+        }
+      } catch {
+        setItems(marketingConfig.logos);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { items, loading };
+}
+
+export function useTrustSignals() {
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.trustSignals();
+        if (result && result.length > 0) {
+          setItems(result);
+        } else {
+          setItems(marketingConfig.trustSignals);
+        }
+      } catch {
+        setItems(marketingConfig.trustSignals);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { items, loading };
+}
+
+export function usePageMetadata(pageSlug: string) {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.pageMetadata(pageSlug);
+        if (result) {
+          setData(result);
+        } else {
+          setData({ fallback: true, pageSlug });
+        }
+      } catch {
+        setData({ fallback: true, pageSlug });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, [pageSlug]);
+
+  return { data, loading };
+}
+
+export function usePricingSection() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.pricingSection();
+        if (result) {
+          setData(result);
+        } else {
+          setData({
+            section: marketingConfig.pricing.section,
+            guarantees: marketingConfig.pricing.guarantees,
+            faqs: marketingConfig.pricing.faqs,
+          });
+        }
+      } catch {
+        setData({
+          section: marketingConfig.pricing.section,
+          guarantees: marketingConfig.pricing.guarantees,
+          faqs: marketingConfig.pricing.faqs,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useContactPageContent() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.contactPage();
+        if (result) {
+          setData(result);
+        } else {
+          setData({
+            ...marketingConfig.contactPage,
+            fallback: true,
+          });
+        }
+      } catch {
+        setData({
+          ...marketingConfig.contactPage,
+          fallback: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useAboutPageContent() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.aboutPage();
+        if (result) {
+          setData(result);
+        } else {
+          setData({
+            mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+            vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
+            values: marketingConfig.aboutPage.values,
+            milestones: marketingConfig.aboutPage.milestones,
+            fallback: true,
+          });
+        }
+      } catch {
+        setData({
+          mission: "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants.",
+          vision: "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth.",
+          values: marketingConfig.aboutPage.values,
+          milestones: marketingConfig.aboutPage.milestones,
+          fallback: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
+}
+
+export function useFeaturePageContent() {
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetch() {
+      try {
+        const result = await publicApi.featurePage();
+        if (result) {
+          setData(result);
+        } else {
+          setData({
+            sections: marketingConfig.featurePage.sections,
+            comparison: marketingConfig.featurePage.comparison,
+            fallback: true,
+          });
+        }
+      } catch {
+        setData({
+          sections: marketingConfig.featurePage.sections,
+          comparison: marketingConfig.featurePage.comparison,
+          fallback: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetch();
+  }, []);
+
+  return { data, loading };
 }
 
 export { invalidateCache };

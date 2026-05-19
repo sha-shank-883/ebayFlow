@@ -12,6 +12,7 @@ import {
   RefreshCw
 } from "lucide-react";
 import { marketingConfig } from "@/config/marketing";
+import { useHowItWorks } from "@/lib/admin/use-site-content";
 
 const iconMap: Record<string, any> = {
   Upload,
@@ -24,7 +25,8 @@ const iconMap: Record<string, any> = {
 };
 
 export function HowItWorks() {
-  const { howItWorks } = marketingConfig;
+  const { data: apiData, loading } = useHowItWorks();
+  const howItWorks = loading ? marketingConfig.howItWorks : (apiData || marketingConfig.howItWorks);
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-background">
@@ -54,7 +56,7 @@ export function HowItWorks() {
         </motion.div>
 
         <div className="max-w-5xl mx-auto">
-          {howItWorks.steps.map((step, index) => {
+          {howItWorks.steps.map((step: any, index: number) => {
             const Icon = iconMap[step.icon] || Rocket;
             return (
               <motion.div
@@ -84,7 +86,7 @@ export function HowItWorks() {
                     {step.description}
                   </p>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {step.details.map((detail) => (
+                    {step.details.map((detail: string) => (
                       <div
                         key={detail}
                         className="flex items-center gap-3 group"

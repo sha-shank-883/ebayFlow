@@ -1,3 +1,5 @@
+"use client";
+
 import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 import { CTASection } from "@/components/marketing/CTASection";
@@ -19,6 +21,7 @@ import {
 } from "lucide-react";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
+import { useFeaturePageContent } from "@/lib/admin/use-site-content";
 
 const iconMap: Record<string, any> = {
   Brain,
@@ -36,6 +39,16 @@ const iconMap: Record<string, any> = {
 };
 
 export default function FeaturesPage() {
+  const { data: featureData, loading } = useFeaturePageContent();
+
+  const featurePage = loading ? {
+    sections: marketingConfig.featurePage.sections,
+    comparison: marketingConfig.featurePage.comparison,
+  } : (featureData || {
+    sections: marketingConfig.featurePage.sections,
+    comparison: marketingConfig.featurePage.comparison,
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -63,7 +76,7 @@ export default function FeaturesPage() {
             </div>
 
             <div className="space-y-32">
-              {marketingConfig.featurePage.sections.map((section, idx) => {
+              {featurePage.sections.map((section: any, idx: number) => {
                 const SectionIcon = iconMap[section.icon] || Zap;
                 return (
                   <div key={section.id} id={section.id} className="relative">
@@ -78,7 +91,7 @@ export default function FeaturesPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                      {section.features.map((feature) => {
+                      {section.features.map((feature: any) => {
                         const FeatureIcon = iconMap[feature.icon] || CheckCircle;
                         return (
                           <div
@@ -119,7 +132,7 @@ export default function FeaturesPage() {
                 <table className="w-full text-left">
                   <thead>
                     <tr className="border-b border-border bg-muted/50">
-                      {marketingConfig.featurePage.comparison.headers.map((header, i) => (
+                      {featurePage.comparison.headers.map((header: string, i: number) => (
                         <th 
                           key={header} 
                           className={cn(
@@ -133,9 +146,9 @@ export default function FeaturesPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {marketingConfig.featurePage.comparison.rows.map((row, i) => (
+                    {featurePage.comparison.rows.map((row: string[], i: number) => (
                       <tr key={i} className="hover:bg-muted/20 transition-colors">
-                        {row.map((cell, j) => (
+                        {row.map((cell: string, j: number) => (
                           <td 
                             key={j} 
                             className={cn(

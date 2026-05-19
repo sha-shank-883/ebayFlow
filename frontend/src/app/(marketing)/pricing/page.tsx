@@ -1,10 +1,13 @@
+"use client";
+
+import { ShieldCheck, CreditCard, Headphones, Zap, ChevronDown } from "lucide-react";
+import { marketingConfig } from "@/config/marketing";
+import { motion } from "framer-motion";
 import { Navbar } from "@/components/marketing/Navbar";
 import { Footer } from "@/components/marketing/Footer";
 import { CTASection } from "@/components/marketing/CTASection";
 import { PricingCards } from "@/components/marketing/PricingCards";
-import { ShieldCheck, CreditCard, Headphones, Zap, ChevronDown } from "lucide-react";
-import { marketingConfig } from "@/config/marketing";
-import { motion } from "framer-motion";
+import { usePricingSection } from "@/lib/admin/use-site-content";
 import { FAQPageJsonLd, OrganizationJsonLd, ProductJsonLd } from "@/components/marketing/JsonLd";
 
 const iconMap = {
@@ -14,9 +17,25 @@ const iconMap = {
 };
 
 export default function PricingPage() {
+  const { data: pricingSectionData, loading } = usePricingSection();
+
+  const pricingSection = loading ? {
+    section: marketingConfig.pricing.section,
+    guarantees: marketingConfig.pricing.guarantees,
+    faqs: marketingConfig.pricing.faqs,
+  } : (pricingSectionData || {
+    section: marketingConfig.pricing.section,
+    guarantees: marketingConfig.pricing.guarantees,
+    faqs: marketingConfig.pricing.faqs,
+  });
+
+  const guarantees = pricingSection.guarantees || marketingConfig.pricing.guarantees;
+  const faqs = pricingSection.faqs || marketingConfig.pricing.faqs;
+  const sectionContent = pricingSection.section || marketingConfig.pricing.section;
+
   return (
     <div className="min-h-screen bg-background">
-      <FAQPageJsonLd faqs={marketingConfig.pricing.faqs} />
+      <FAQPageJsonLd faqs={faqs} />
       <Navbar />
       <main className="pt-20">
         <section className="py-20 relative overflow-hidden">
@@ -27,24 +46,23 @@ export default function PricingPage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold uppercase tracking-wider text-primary mb-6">
                 <Zap className="h-3.5 w-3.5 fill-primary" />
-                Scalable Pricing
+                {sectionContent.badge || "Scalable Pricing"}
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight text-foreground mb-6">
-                Investment in your <br />
+                {sectionContent.title} <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-                  Business Growth
+                  {sectionContent.titleAccent}
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Choose the plan that fits your business. Start with a 14-day free trial. 
-                No credit card required to start your audit.
+                {sectionContent.description}
               </p>
             </div>
 
             <PricingCards />
 
             <div className="mt-32 grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {marketingConfig.pricing.guarantees.map((item) => {
+              {guarantees.map((item: any) => {
                 const Icon = iconMap[item.icon as keyof typeof iconMap] || ShieldCheck;
                 return (
                   <div key={item.title} className="group relative p-8 rounded-3xl border border-border bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-300 text-center">
@@ -73,7 +91,7 @@ export default function PricingPage() {
               </div>
               
               <div className="grid gap-4">
-                {marketingConfig.pricing.faqs.map((faq) => (
+                {faqs.map((faq: any) => (
                   <div key={faq.q} className="group bg-card/50 border border-border rounded-2xl p-8 hover:bg-card transition-all">
                     <h3 className="text-lg font-bold text-foreground mb-3 flex items-center justify-between">
                       {faq.q}

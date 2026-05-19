@@ -112,11 +112,19 @@ export const adminApi = {
     update: (id: string, data: any) => adminFetch(`/admin/blog/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     delete: (id: string) => adminFetch(`/admin/blog/${id}`, { method: 'DELETE' }),
     toggleActive: (id: string) => adminFetch(`/admin/blog/${id}/toggle-active`, { method: 'PATCH' }),
+    restoreVersion: (id: string, versionId: string) => adminFetch(`/admin/blog/${id}/versions/${versionId}/restore`, { method: 'POST' }),
   },
 
   // Testimonials
   testimonials: {
-    list: (includeInactive = false) => adminFetch(`/admin/testimonials?includeInactive=${includeInactive}`),
+    list: (queryParams?: string, includeInactive = false) => {
+      const base = queryParams || '';
+      const sep = base.includes('?') ? '&' : '?';
+      return adminFetch(`/admin/testimonials${base}${sep}includeInactive=${includeInactive}`).then((res: any) => ({
+        items: res.data,
+        pagination: res.pagination,
+      }));
+    },
     create: (data: any) => adminFetch('/admin/testimonials', { method: 'POST', body: JSON.stringify(data) }),
     update: (id: string, data: any) => adminFetch(`/admin/testimonials/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     delete: (id: string) => adminFetch(`/admin/testimonials/${id}`, { method: 'DELETE' }),
