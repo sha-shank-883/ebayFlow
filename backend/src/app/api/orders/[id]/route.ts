@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { OrdersService } from '../../../../../modules/orders/orders.service';
-import { getAuthenticatedUser, unauthorized } from '../../_auth';
+import { OrdersService } from '@/modules/orders/orders.service';
+import { getAuthenticatedUser, unauthorized } from '@/app/api/_auth';
 
 const ordersService = new OrdersService();
 

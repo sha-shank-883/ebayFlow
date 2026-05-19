@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { ListingsService } from '../../../../modules/listings/listings.service';
-import { getAuthenticatedUser, unauthorized, noWorkspace } from '../../_auth';
+import { ListingsService } from '@/modules/listings/listings.service';
+import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
 const listingsService = new ListingsService();
 

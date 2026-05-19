@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { EbaySyncService } from '../../../../modules/ebay/ebay-sync.service';
-import { getAuthenticatedUser, unauthorized, noWorkspace } from '../../_auth';
+import { EbaySyncService } from '@/modules/ebay/ebay-sync.service';
+import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
 export async function POST(request: Request) {
   const user = await getAuthenticatedUser(request);

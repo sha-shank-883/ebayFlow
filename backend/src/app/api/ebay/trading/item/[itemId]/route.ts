@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { EbayTradingService } from '../../../../../../modules/ebay/ebay-trading.service';
-import { EbayXmlUtils } from '../../../../../../modules/ebay/ebay-xml.utils';
+import { EbayTradingService } from '@/modules/ebay/ebay-trading.service';
+import { EbayXmlUtils } from '@/modules/ebay/ebay-xml.utils';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';

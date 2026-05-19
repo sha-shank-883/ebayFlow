@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { AnalyticsService } from '../../../modules/analytics/analytics.service';
+import { AnalyticsService } from '@/modules/analytics/analytics.service';
 import jwt from 'jsonwebtoken';
-import { prisma } from '../../../lib/prisma';
+import { prisma } from '@/lib/prisma';
 
 const analyticsService = new AnalyticsService();
 const JWT_SECRET = process.env.JWT_SECRET;

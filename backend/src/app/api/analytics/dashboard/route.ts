@@ -1,6 +1,6 @@
 // backend/src/app/api/analytics/dashboard/route.ts
 import { NextResponse } from 'next/server';
-import { AnalyticsService } from '../../../../../modules/analytics/analytics.service';
+import { AnalyticsService } from '@/modules/analytics/analytics.service';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { NotificationsService } from '../../../modules/notifications/notifications.service';
+import { NotificationsService } from '@/modules/notifications/notifications.service';
 import jwt from 'jsonwebtoken';
 
 const notificationsService = new NotificationsService();

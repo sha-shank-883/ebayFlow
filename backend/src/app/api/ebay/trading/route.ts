@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { EbayTradingService } from '../../../../../modules/ebay/ebay-trading.service';
-import { EbayXmlUtils } from '../../../../../modules/ebay/ebay-xml.utils';
-import { getAuthenticatedUser, unauthorized } from '../../_auth';
+import { EbayTradingService } from '@/modules/ebay/ebay-trading.service';
+import { EbayXmlUtils } from '@/modules/ebay/ebay-xml.utils';
+import { getAuthenticatedUser, unauthorized } from '@/app/api/_auth';
 
 export async function GET(request: Request) {
   const user = await getAuthenticatedUser(request);

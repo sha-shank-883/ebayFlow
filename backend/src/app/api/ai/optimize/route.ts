@@ -1,6 +1,6 @@
 // backend/src/app/api/ai/optimize/route.ts
 import { NextResponse } from 'next/server';
-import { optimizeListing } from '../../../../lib/openai';
+import { optimizeListing } from '@/lib/openai';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';

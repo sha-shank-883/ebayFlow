@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { AiService } from '../../../../../modules/ai/ai.service';
+import { AiService } from '@/modules/ai/ai.service';
 import jwt from 'jsonwebtoken';
 
 const aiService = new AiService();

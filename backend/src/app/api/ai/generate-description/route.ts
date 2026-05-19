@@ -1,7 +1,7 @@
 // backend/src/app/api/ai/generate-description/route.ts
 import { NextResponse } from 'next/server';
-import { AiService } from '../../../../../modules/ai/ai.service';
-import { descriptionPrompt } from '../../../../../modules/ai/prompts/description.prompt';
+import { AiService } from '@/modules/ai/ai.service';
+import { descriptionPrompt } from '@/modules/ai/prompts/description.prompt';
 import jwt from 'jsonwebtoken';
 
 const aiService = new AiService();

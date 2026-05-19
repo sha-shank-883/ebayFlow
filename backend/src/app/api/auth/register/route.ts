@@ -1,7 +1,7 @@
 // backend/src/app/api/auth/register/route.ts
 import { NextResponse } from 'next/server';
-import { AuthService } from '../../../../../modules/auth/auth.service';
-import { RegisterDto } from '../../../../../modules/auth/dto/register.dto';
+import { AuthService } from '@/modules/auth/auth.service';
+import { RegisterDto } from '@/modules/auth/dto/register.dto';
 
 const authService = new AuthService();
 

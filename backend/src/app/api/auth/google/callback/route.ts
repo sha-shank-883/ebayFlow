@@ -1,6 +1,6 @@
 // backend/src/app/api/auth/google/callback/route.ts
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../../lib/prisma';
+import { prisma } from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 

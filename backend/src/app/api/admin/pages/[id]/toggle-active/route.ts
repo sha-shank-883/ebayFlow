@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../../_auth';
+import { requireSuperAdmin } from '@/app/api/_auth';
 import { atomicToggleActive } from '@/lib/transaction';
 
 /**

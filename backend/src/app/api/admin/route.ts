@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { AdminService } from '../../../modules/admin/admin.service';
+import { AdminService } from '@/modules/admin/admin.service';
 import jwt from 'jsonwebtoken';
 
 const adminService = new AdminService();

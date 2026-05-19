@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { ListingsService } from '../../../../../modules/listings/listings.service';
+import { ListingsService } from '@/modules/listings/listings.service';
 import jwt from 'jsonwebtoken';
 
 const listingsService = new ListingsService();

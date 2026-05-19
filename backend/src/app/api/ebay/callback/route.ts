@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { EbayService } from '../../../../../modules/ebay/ebay.service';
+import { EbayService } from '@/modules/ebay/ebay.service';
 
 const ebayService = new EbayService();
 

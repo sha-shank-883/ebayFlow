@@ -1,12 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
+import { requireSuperAdmin } from '../../_auth';
+import { prisma } from '../../../../lib/prisma';
 
-/**
- * GET /api/admin/versions
- * List versions for an entity.
- * Query params: entityType, entityId, page, limit
- */
 export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
@@ -15,73 +10,38 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const entityType = searchParams.get('entityType');
     const entityId = searchParams.get('entityId');
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const pageSize = Math.min(50, Math.max(1, parseInt(searchParams.get('pageSize') || '10')));
+    const skip = (page - 1) * pageSize;
 
-    if (!entityType || !entityId) {
-      return NextResponse.json(
-        { message: 'Missing required query params: entityType and entityId' },
-        { status: 400 }
-      );
-    }
+    const where: Record<string, unknown> = {};
+    if (entityType) where.entityType = entityType;
+    if (entityId) where.entityId = entityId;
 
     const [versions, total] = await Promise.all([
       prisma.contentVersion.findMany({
-        where: { entityType, entityId },
-        orderBy: { version: 'desc' },
-        skip: (page - 1) * limit,
-        take: limit,
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: pageSize,
       }),
-      prisma.contentVersion.count({ where: { entityType, entityId } }),
+      prisma.contentVersion.count({ where }),
     ]);
 
-    return NextResponse.json({ versions, total, page, totalPages: Math.ceil(total / limit) });
-  } catch (error) {
-    console.error('Error listing versions:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
-  }
-}
-
-/**
- * POST /api/admin/versions
- * Create a new version snapshot for an entity.
- * Body: entityType, entityId, content, notes?
- */
-export async function POST(request: Request) {
-  try {
-    const admin = await requireSuperAdmin(request);
-    if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-
-    const body = await request.json();
-    const { entityType, entityId, content, notes } = body;
-
-    if (!entityType || !entityId || !content) {
-      return NextResponse.json(
-        { message: 'Missing required fields: entityType, entityId, content' },
-        { status: 400 }
-      );
-    }
-
-    const latestVersion = await prisma.contentVersion.findFirst({
-      where: { entityType, entityId },
-      orderBy: { version: 'desc' },
-      select: { version: true },
+    return NextResponse.json({
+      versions: versions.map((v) => ({
+        id: v.id,
+        versionNumber: v.version,
+        createdAt: v.createdAt.toISOString(),
+        author: v.createdBy || 'Unknown',
+        notes: v.notes || '',
+        content: v.content as Record<string, unknown>,
+      })),
+      total,
+      page,
+      pageSize,
     });
-
-    const newVersion = await prisma.contentVersion.create({
-      data: {
-        entityType,
-        entityId,
-        version: (latestVersion?.version ?? 0) + 1,
-        content,
-        createdBy: admin.userId,
-        notes,
-      },
-    });
-
-    return NextResponse.json({ version: newVersion }, { status: 201 });
   } catch (error) {
-    console.error('Error creating version:', error);
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

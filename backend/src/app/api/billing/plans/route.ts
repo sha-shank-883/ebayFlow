@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { BillingService } from '../../../../../modules/billing/billing.service';
+import { BillingService } from '@/modules/billing/billing.service';
 
 const billingService = new BillingService();
 

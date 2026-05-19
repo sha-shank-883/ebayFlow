@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
-import { createAuditLog } from '../_audit';
+import { requireSuperAdmin } from '@/app/api/_auth';
+import { prisma } from '@/lib/prisma';
+import { createAuditLog } from '@/app/api/admin/_audit';
 import { atomicDeleteBlog, withTransaction } from '@/lib/transaction';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
@@ -33,6 +33,12 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const body = await request.json();
 
     const post = await withTransaction(async (tx) => {
+      const maxVersion = await tx.contentVersion.aggregate({
+        where: { entityType: 'blog', entityId: params.id },
+        _max: { version: true },
+      });
+      const nextVersion = (maxVersion._max.version || 0) + 1;
+
       const updated = await tx.blogPost.update({
         where: { id: params.id },
         data: {
@@ -47,6 +53,16 @@ export async function PUT(request: Request, { params }: { params: { id: string }
           metaTitle: body.metaTitle,
           metaDescription: body.metaDescription,
           isActive: body.isActive,
+        },
+      });
+
+      await tx.contentVersion.create({
+        data: {
+          entityType: 'blog',
+          entityId: params.id,
+          version: nextVersion,
+          content: { title: updated.title, slug: updated.slug, excerpt: updated.excerpt, content: updated.content, status: updated.status, metaTitle: updated.metaTitle, metaDescription: updated.metaDescription },
+          createdBy: admin.id,
         },
       });
 

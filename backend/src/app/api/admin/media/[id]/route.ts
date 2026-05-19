@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
-import { createAuditLog } from '../../_audit';
+import { requireSuperAdmin } from '@/app/api/_auth';
+import { prisma } from '@/lib/prisma';
+import { createAuditLog } from '@/app/api/admin/_audit';
 import { unlink } from 'fs/promises';
 import { join } from 'path';
 

@@ -1,6 +1,6 @@
 // backend/src/app/api/billing/subscription/route.ts
 import { NextResponse } from 'next/server';
-import { BillingService } from '../../../../../modules/billing/billing.service';
+import { BillingService } from '@/modules/billing/billing.service';
 import jwt from 'jsonwebtoken';
 
 const billingService = new BillingService();

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { AnalyticsService } from '../../../../../modules/analytics/analytics.service';
+import { AnalyticsService } from '@/modules/analytics/analytics.service';
 import jwt from 'jsonwebtoken';
 
 const analyticsService = new AnalyticsService();

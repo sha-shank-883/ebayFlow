@@ -1,7 +1,7 @@
 // backend/src/app/api/auth/me/route.ts
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { AuthService } from '../../../../../modules/auth/auth.service';
+import { AuthService } from '@/modules/auth/auth.service';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 

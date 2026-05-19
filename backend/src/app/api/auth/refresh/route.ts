@@ -1,6 +1,6 @@
 // backend/src/app/api/auth/refresh/route.ts
 import { NextResponse } from 'next/server';
-import { AuthService } from '../../../../../modules/auth/auth.service';
+import { AuthService } from '@/modules/auth/auth.service';
 
 const authService = new AuthService();
 

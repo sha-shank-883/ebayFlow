@@ -1,7 +1,7 @@
 // backend/src/app/api/stripe/webhook/route.ts
 import { NextResponse } from 'next/server';
-import { stripe } from '../../../../../lib/stripe';
-import { prisma } from '../../../../../lib/prisma';
+import { stripe } from '@/lib/stripe';
+import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;

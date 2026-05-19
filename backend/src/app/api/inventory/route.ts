@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { InventoryService } from '../../../modules/inventory/inventory.service';
-import { getAuthenticatedUser, unauthorized, noWorkspace } from '../_auth';
+import { InventoryService } from '@/modules/inventory/inventory.service';
+import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
 const inventoryService = new InventoryService();
 

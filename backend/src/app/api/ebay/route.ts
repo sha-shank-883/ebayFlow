@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { EbayService } from '../../../modules/ebay/ebay.service';
-import { getAuthenticatedUser, unauthorized, noWorkspace } from '../_auth';
+import { EbayService } from '@/modules/ebay/ebay.service';
+import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
 const ebayService = new EbayService();
 

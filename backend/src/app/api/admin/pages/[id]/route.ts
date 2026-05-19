@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
-import { createAuditLog } from '../_audit';
+import { requireSuperAdmin } from '@/app/api/_auth';
+import { prisma } from '@/lib/prisma';
+import { createAuditLog } from '@/app/api/admin/_audit';
 import { atomicDeletePage, withTransaction } from '@/lib/transaction';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {

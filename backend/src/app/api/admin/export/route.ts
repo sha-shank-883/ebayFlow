@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
-import { createAuditLog } from '../../_audit';
+import { requireSuperAdmin } from '../../_auth';
+import { prisma } from '../../../../lib/prisma';
+import { createAuditLog } from '../_audit';
 
 const EXPORT_VERSION = '1.0.0';
 
@@ -497,16 +497,19 @@ export async function POST(request: Request) {
                 if (Array.isArray(items)) {
                   for (const faqItem of items as Record<string, unknown>[]) {
                     const { id: itemId, createdAt: itemCreatedAt, updatedAt: itemUpdatedAt, ...faqData } = faqItem;
-                    await tx.fAQItem.upsert({
-                      where: {
-                        categoryId_question: {
-                          categoryId: existing.id,
-                          question: faqData.question as string,
-                        },
-                      },
-                      update: { ...faqData, categoryId: existing.id } as any,
-                      create: { ...faqData, categoryId: existing.id } as any,
+                    const existingItem = await tx.fAQItem.findFirst({
+                      where: { categoryId: existing.id, question: faqData.question as string },
                     });
+                    if (existingItem) {
+                      await tx.fAQItem.update({
+                        where: { id: existingItem.id },
+                        data: { ...faqData, categoryId: existing.id } as any,
+                      });
+                    } else {
+                      await tx.fAQItem.create({
+                        data: { ...faqData, categoryId: existing.id } as any,
+                      });
+                    }
                     summary.updated++;
                   }
                 }

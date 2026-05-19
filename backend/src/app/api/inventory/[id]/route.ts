@@ -1,6 +1,6 @@
 // backend/src/app/api/inventory/[id]/route.ts
 import { NextResponse } from 'next/server';
-import { InventoryService } from '../../../modules/inventory/inventory.service';
+import { InventoryService } from '@/modules/inventory/inventory.service';
 import jwt from 'jsonwebtoken';
 
 const inventoryService = new InventoryService();
