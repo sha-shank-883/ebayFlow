@@ -1,8 +1,10 @@
 // backend/src/app/api/ai/generate-description/route.ts
 import { NextResponse } from 'next/server';
 import { AiService } from '@/modules/ai/ai.service';
-import { descriptionPrompt } from '@/modules/ai/prompts/description.prompt';
+import { DESCRIPTION_PROMPT } from '@/modules/ai/prompts/description.prompt';
 import jwt from 'jsonwebtoken';
+
+export const dynamic = 'force-dynamic';
 
 const aiService = new AiService();
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
@@ -25,10 +27,9 @@ export async function POST(request: Request) {
     
     if (!title) throw new Error('Title is required');
 
-    const prompt = descriptionPrompt(title, features, tone);
-    const result = await aiService.generateContent({
-      prompt,
-      type: 'description'
+    const prompt = DESCRIPTION_PROMPT(title, tone || 'professional', features || []);
+    const result = await aiService.generateDescription({
+      prompt
     });
 
     return NextResponse.json(result);

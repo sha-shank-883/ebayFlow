@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../_auth';
-import { prisma } from '../../../../lib/prisma';
-import { createAuditLog } from '../_audit';
+import { requireSuperAdmin } from '../../../_auth';
+import { prisma } from '../../../../../lib/prisma';
+import { createAuditLog } from '../../_audit';
+import { sanitizeObject, validateSlug } from '@/lib/sanitize';
 import { invalidateCache } from '@/lib/cache';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {
@@ -10,59 +13,68 @@ export async function GET(request: Request) {
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
     const { searchParams } = new URL(request.url);
-    const period = searchParams.get('period');
     const includeInactive = searchParams.get('includeInactive') === 'true';
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')));
+    const skip = (page - 1) * limit;
 
-    const plans = await prisma.pricingPlan.findMany({
-      where: {
-        ...(period && { period }),
-        ...(includeInactive ? { deletedAt: null } : { isActive: true, deletedAt: null }),
-      },
-      orderBy: [{ period: 'asc' }, { order: 'asc' }],
+    const where = includeInactive ? { deletedAt: null } : { isActive: true, deletedAt: null };
+
+    const [pages, total] = await Promise.all([
+      prisma.page.findMany({
+        where,
+        include: { seo: true, _count: { select: { sections: true } } },
+        orderBy: { sortOrder: 'asc' },
+        skip,
+        take: limit,
+      }),
+      prisma.page.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: pages,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     });
-
-    return NextResponse.json(plans);
   } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const body = await request.json();
-    const plan = await prisma.pricingPlan.update({
-      where: { id: params.id },
+    const sanitizedBody = sanitizeObject(await request.json()) as Record<string, unknown>;
+    const body = sanitizedBody as { slug?: string; title?: string; description?: string; template?: string; sortOrder?: number };
+    if (body.slug && !validateSlug(body.slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
+    const page = await prisma.page.create({
       data: {
-        name: body.name,
-        price: body.price,
-        period: body.period,
-        description: body.description,
-        features: body.features,
-        isPopular: body.isPopular,
-        ctaText: body.ctaText,
-        ctaLink: body.ctaLink,
-        order: body.order,
-        isActive: body.isActive,
+        slug: body.slug,
+        title: body.title,
+        description: body.description || '',
+        template: body.template || 'default',
+        sortOrder: body.sortOrder || 0,
       },
     });
 
     await createAuditLog({
       userId: admin.id,
       userEmail: admin.email,
-      action: 'UPDATE',
-      entityType: 'PricingPlan',
-      entityId: plan.id,
-      entityName: plan.name,
-      changes: { before: {}, after: plan },
+      action: 'CREATE',
+      entityType: 'Page',
+      entityId: page.id,
+      entityName: page.title,
+      changes: { after: page },
     });
 
-    try { await invalidateCache('public:pricing:*'); } catch {}
+    try { await invalidateCache('public:sections:*'); await invalidateCache('public:seo:*'); } catch {}
 
-    return NextResponse.json(plan);
-  } catch (error) {
+    return NextResponse.json(page, { status: 201 });
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      return NextResponse.json({ message: 'Page slug already exists' }, { status: 409 });
+    }
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

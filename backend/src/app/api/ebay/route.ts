@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { EbayService } from '@/modules/ebay/ebay.service';
 import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
+export const dynamic = 'force-dynamic';
+
 const ebayService = new EbayService();
 
 export async function GET(request: Request) {

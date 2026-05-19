@@ -1,89 +1,80 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '@/app/api/_auth';
-import { prisma } from '@/lib/prisma';
-import { createAuditLog } from '@/app/api/admin/_audit';
-import { atomicDeletePage, withTransaction } from '@/lib/transaction';
+import { requireSuperAdmin } from '../../../_auth';
+import { prisma } from '../../../../../lib/prisma';
+import { createAuditLog } from '../../_audit';
+import { sanitizeObject, validateSlug } from '@/lib/sanitize';
+import { invalidateCache } from '@/lib/cache';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const page = await prisma.page.findUnique({
-      where: { id: params.id },
-      include: { seo: true, sections: { where: { deletedAt: null }, orderBy: { order: 'asc' } } },
-    });
+    const { searchParams } = new URL(request.url);
+    const includeInactive = searchParams.get('includeInactive') === 'true';
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')));
+    const skip = (page - 1) * limit;
 
-    if (!page) return NextResponse.json({ message: 'Page not found' }, { status: 404 });
-    return NextResponse.json(page);
+    const where = includeInactive ? { deletedAt: null } : { isActive: true, deletedAt: null };
+
+    const [pages, total] = await Promise.all([
+      prisma.page.findMany({
+        where,
+        include: { seo: true, _count: { select: { sections: true } } },
+        orderBy: { sortOrder: 'asc' },
+        skip,
+        take: limit,
+      }),
+      prisma.page.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: pages,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
 
-/**
- * Updates a page with transactional safety.
- * Wraps the page update and audit log creation in a single transaction
- * to ensure atomicity - either both succeed or both roll back.
- */
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const existing = await prisma.page.findUnique({ where: { id: params.id } });
-    if (!existing) return NextResponse.json({ message: 'Page not found' }, { status: 404 });
-
-    const body = await request.json();
-
-    const page = await withTransaction(async (tx) => {
-      const updated = await tx.page.update({
-        where: { id: params.id },
-        data: {
-          title: body.title,
-          slug: body.slug,
-          description: body.description,
-          template: body.template,
-          sortOrder: body.sortOrder,
-        },
-      });
-
-      await tx.contentAudit.create({
-        data: {
-          action: 'UPDATE',
-          entityType: 'Page',
-          entityId: updated.id,
-          entityName: updated.title,
-          changes: { before: existing, after: updated },
-        },
-      });
-
-      return updated;
+    const sanitizedBody = sanitizeObject(await request.json()) as Record<string, unknown>;
+    const body = sanitizedBody as { slug?: string; title?: string; description?: string; template?: string; sortOrder?: number };
+    if (body.slug && !validateSlug(body.slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
+    const page = await prisma.page.create({
+      data: {
+        slug: body.slug,
+        title: body.title,
+        description: body.description || '',
+        template: body.template || 'default',
+        sortOrder: body.sortOrder || 0,
+      },
     });
 
-    return NextResponse.json(page);
+    await createAuditLog({
+      userId: admin.id,
+      userEmail: admin.email,
+      action: 'CREATE',
+      entityType: 'Page',
+      entityId: page.id,
+      entityName: page.title,
+      changes: { after: page },
+    });
+
+    try { await invalidateCache('public:sections:*'); await invalidateCache('public:seo:*'); } catch {}
+
+    return NextResponse.json(page, { status: 201 });
   } catch (error: any) {
     if (error.code === 'P2002') {
       return NextResponse.json({ message: 'Page slug already exists' }, { status: 409 });
     }
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
-  }
-}
-
-/**
- * Deletes a page atomically using transaction wrapper.
- * Uses atomicDeletePage to ensure the page, its sections, and audit log
- * are all handled in a single transaction.
- */
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  try {
-    const admin = await requireSuperAdmin(request);
-    if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-
-    await atomicDeletePage(params.id);
-
-    return NextResponse.json({ message: 'Page deleted' });
-  } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

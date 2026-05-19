@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { AnalyticsService } from '@/modules/analytics/analytics.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const analyticsService = new AnalyticsService();
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 

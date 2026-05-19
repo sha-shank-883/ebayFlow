@@ -2,6 +2,8 @@
 import { NextResponse } from 'next/server';
 import { AuthService } from '@/modules/auth/auth.service';
 
+export const dynamic = 'force-dynamic';
+
 const authService = new AuthService();
 
 export async function POST(request: Request) {

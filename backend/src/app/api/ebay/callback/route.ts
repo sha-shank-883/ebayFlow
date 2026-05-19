@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { EbayService } from '@/modules/ebay/ebay.service';
 
+export const dynamic = 'force-dynamic';
+
 const ebayService = new EbayService();
 
 export async function GET(request: Request) {

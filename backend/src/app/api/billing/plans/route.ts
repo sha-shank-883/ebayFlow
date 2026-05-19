@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { BillingService } from '@/modules/billing/billing.service';
 
+export const dynamic = 'force-dynamic';
+
 const billingService = new BillingService();
 
 export async function GET() {

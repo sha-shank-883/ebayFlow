@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '../../_auth';
-import { prisma } from '../../../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 import { createAuditLog } from '../_audit';
 import { sanitizeObject, validateSlug } from '@/lib/sanitize';
+import { invalidateCache } from '@/lib/cache';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {

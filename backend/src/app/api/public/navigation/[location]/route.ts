@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { withRateLimit } from '@/lib/rate-limit';
 import { withCache } from '@/lib/cache';
 
+export const dynamic = 'force-dynamic';
+
 async function handler(request: Request, { params }: { params: { location: string } }) {
   try {
     const items = await withCache(`public:nav:${params.location}`, 300, async () => {

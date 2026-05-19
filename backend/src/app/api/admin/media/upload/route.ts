@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { requireSuperAdmin } from '../../../../../_auth';
-import { prisma } from '../../../../../../lib/prisma';
+import { requireSuperAdmin } from '../../../_auth';
+import { prisma } from '../../../../../lib/prisma';
 import { createAuditLog } from '../../_audit';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
@@ -13,6 +13,8 @@ import {
   generateSafeFilename,
 } from '@/lib/upload-validator';
 import { optimizeImage, generateThumbnail, getImageMetadata } from '@/lib/image-optimizer';
+
+export const dynamic = 'force-dynamic';
 
 /**
  * POST handler for media upload endpoint.

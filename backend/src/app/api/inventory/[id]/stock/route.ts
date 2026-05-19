@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { InventoryService } from '@/modules/inventory/inventory.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const inventoryService = new InventoryService();
 const JWT_SECRET = process.env.JWT_SECRET;
 

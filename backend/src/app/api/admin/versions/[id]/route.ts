@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '@/app/api/_auth';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/admin/versions/[id]
  * Get specific version details.
@@ -77,7 +79,7 @@ export async function POST(
           entityId: targetVersion.entityId,
           version: (latestVersion?.version ?? 0) + 1,
           content,
-          createdBy: admin.userId,
+          createdBy: admin.id,
           notes: `Restored from version ${targetVersion.version}`,
         },
       });

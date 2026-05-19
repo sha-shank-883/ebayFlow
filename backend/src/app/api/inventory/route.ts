@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { InventoryService } from '@/modules/inventory/inventory.service';
 import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
+export const dynamic = 'force-dynamic';
+
 const inventoryService = new InventoryService();
 
 export async function GET(request: Request) {

@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { AiService } from '@/modules/ai/ai.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const aiService = new AiService();
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 

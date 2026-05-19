@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { ListingsService } from '@/modules/listings/listings.service';
 import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
+export const dynamic = 'force-dynamic';
+
 const listingsService = new ListingsService();
 
 export async function POST(request: Request) {

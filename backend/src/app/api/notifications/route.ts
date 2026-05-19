@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { NotificationsService } from '@/modules/notifications/notifications.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const notificationsService = new NotificationsService();
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 

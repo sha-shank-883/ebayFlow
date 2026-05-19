@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { optimizeListing } from '@/lib/openai';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 
 export async function POST(request: Request) {

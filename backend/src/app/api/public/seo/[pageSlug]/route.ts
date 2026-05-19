@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { withRateLimit } from '@/lib/rate-limit';
 import { withCache } from '@/lib/cache';
 
+export const dynamic = 'force-dynamic';
+
 async function handler(request: Request, { params }: { params: { pageSlug: string } }) {
   try {
     const result = await withCache(`public:seo:${params.pageSlug}`, 300, async () => {

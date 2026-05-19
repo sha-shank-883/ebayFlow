@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { AuthService } from '@/modules/auth/auth.service';
 import { LoginDto } from '@/modules/auth/dto/login.dto';
 
+export const dynamic = 'force-dynamic';
+
 const authService = new AuthService();
 
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();

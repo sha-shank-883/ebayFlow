@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { EbayService } from '@/modules/ebay/ebay.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const ebayService = new EbayService();
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 

@@ -4,6 +4,8 @@ import { prisma } from '../../../../lib/prisma';
 import { createAuditLog } from '../_audit';
 import { invalidateCache } from '@/lib/cache';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);

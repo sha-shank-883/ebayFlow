@@ -5,6 +5,8 @@ import { createAuditLog } from '@/app/api/admin/_audit';
 import { sanitizeObject } from '@/lib/sanitize';
 import { invalidateCache } from '@/lib/cache';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);

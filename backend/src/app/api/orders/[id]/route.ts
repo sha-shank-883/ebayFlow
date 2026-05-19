@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { OrdersService } from '@/modules/orders/orders.service';
 import { getAuthenticatedUser, unauthorized } from '@/app/api/_auth';
 
+export const dynamic = 'force-dynamic';
+
 const ordersService = new OrdersService();
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {

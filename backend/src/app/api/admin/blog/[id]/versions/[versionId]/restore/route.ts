@@ -2,47 +2,88 @@ import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '@/app/api/_auth';
 import { prisma } from '@/lib/prisma';
 import { createAuditLog } from '@/app/api/admin/_audit';
+import { sanitizeObject, validateSlug } from '@/lib/sanitize';
+import { invalidateCache } from '@/lib/cache';
 
-export async function POST(request: Request, { params }: { params: { id: string; versionId: string } }) {
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const version = await prisma.contentVersion.findUnique({
-      where: { id: params.versionId },
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
+    const includeInactive = searchParams.get('includeInactive') === 'true';
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')));
+    const skip = (page - 1) * limit;
+
+    const where = {
+      ...(status && { status }),
+      ...(includeInactive ? { deletedAt: null } : { isActive: true, deletedAt: null }),
+    };
+
+    const [posts, total] = await Promise.all([
+      prisma.blogPost.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.blogPost.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: posts,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     });
+  } catch (error) {
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+  }
+}
 
-    if (!version || version.entityId !== params.id || version.entityType !== 'blog') {
-      return NextResponse.json({ message: 'Version not found' }, { status: 404 });
-    }
+export async function POST(request: Request) {
+  try {
+    const admin = await requireSuperAdmin(request);
+    if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const content = version.content as Record<string, unknown>;
-
-    const restored = await prisma.blogPost.update({
-      where: { id: params.id },
+    const sanitizedBody = sanitizeObject(await request.json()) as Record<string, unknown>;
+    const body = sanitizedBody as { title?: string; slug?: string; excerpt?: string; content?: string; featuredImage?: string | null; status?: string; scheduledAt?: string; metaTitle?: string; metaDescription?: string };
+    if (body.slug && !validateSlug(body.slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
+    const post = await prisma.blogPost.create({
       data: {
-        title: (content.title as string) || '',
-        slug: (content.slug as string) || '',
-        excerpt: (content.excerpt as string) || '',
-        content: (content.content as string) || '',
-        status: (content.status as string) || 'DRAFT',
-        metaTitle: (content.metaTitle as string) || null,
-        metaDescription: (content.metaDescription as string) || null,
+        title: body.title,
+        slug: body.slug,
+        excerpt: body.excerpt || '',
+        content: body.content || '',
+        featuredImage: body.featuredImage || null,
+        authorId: admin.id,
+        status: body.status || 'DRAFT',
+        publishedAt: body.status === 'PUBLISHED' ? new Date() : null,
+        scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
+        metaTitle: body.metaTitle || body.title,
+        metaDescription: body.metaDescription || body.excerpt,
       },
     });
 
     await createAuditLog({
       userId: admin.id,
       userEmail: admin.email,
-      action: 'RESTORE',
+      action: 'CREATE',
       entityType: 'BlogPost',
-      entityId: restored.id,
-      entityName: restored.title,
-      changes: { versionId: params.versionId, versionNumber: version.version },
+      entityId: post.id,
+      entityName: post.title,
+      changes: { after: post },
     });
 
-    return NextResponse.json(restored);
-  } catch (error) {
+    try { await invalidateCache('public:blog:*'); } catch {}
+
+    return NextResponse.json(post, { status: 201 });
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      return NextResponse.json({ message: 'Slug already exists' }, { status: 409 });
+    }
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

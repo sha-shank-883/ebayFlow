@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { ListingsService } from '@/modules/listings/listings.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const listingsService = new ListingsService();
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-for-dev-only';
 

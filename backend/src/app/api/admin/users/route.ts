@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import * as bcrypt from 'bcryptjs';
 import { sanitizeObject, validateEmail } from '@/lib/sanitize';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
         email: body.email,
         name: body.name,
         password: hashedPassword,
-        role: body.role || 'EDITOR',
+        role: (body.role || 'EDITOR') as any,
         isVerified: true,
       },
     });

@@ -3,6 +3,8 @@ import { AnalyticsService } from '@/modules/analytics/analytics.service';
 import jwt from 'jsonwebtoken';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 const analyticsService = new AnalyticsService();
 const JWT_SECRET = process.env.JWT_SECRET;
 

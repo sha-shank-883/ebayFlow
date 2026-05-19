@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '../../../../_auth';
 import { prisma } from '../../../../../../lib/prisma';
-import { createAuditLog } from '../../_audit';
+import { createAuditLog } from '../../../_audit';
+
+export const dynamic = 'force-dynamic';
 
 export async function PATCH(request: Request, { params }: { params: { id: string } }) {
   try {

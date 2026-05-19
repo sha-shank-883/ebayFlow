@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { EbaySyncService } from '@/modules/ebay/ebay-sync.service';
 import { getAuthenticatedUser, unauthorized, noWorkspace } from '@/app/api/_auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   const user = await getAuthenticatedUser(request);
   if (!user) return unauthorized();

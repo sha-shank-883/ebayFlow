@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
+export const dynamic = 'force-dynamic';
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';

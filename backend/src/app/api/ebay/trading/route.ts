@@ -3,6 +3,8 @@ import { EbayTradingService } from '@/modules/ebay/ebay-trading.service';
 import { EbayXmlUtils } from '@/modules/ebay/ebay-xml.utils';
 import { getAuthenticatedUser, unauthorized } from '@/app/api/_auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const user = await getAuthenticatedUser(request);
   if (!user) return unauthorized();

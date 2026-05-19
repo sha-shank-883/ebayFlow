@@ -6,6 +6,8 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
@@ -85,7 +87,8 @@ export async function POST(request: Request) {
     if (file.type.startsWith('image/') && !file.type.includes('svg')) {
       try {
         const { imageSize } = await import('image-size');
-        const dimensions = imageSize(filePath);
+        const fileBuffer = await import('fs/promises').then(fs => fs.readFile(filePath));
+        const dimensions = imageSize(fileBuffer);
         width = dimensions.width;
         height = dimensions.height;
       } catch {

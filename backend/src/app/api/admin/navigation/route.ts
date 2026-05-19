@@ -5,6 +5,8 @@ import { createAuditLog } from '@/app/api/admin/_audit';
 import { sanitizeObject } from '@/lib/sanitize';
 import { invalidateCache } from '@/lib/cache';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
@@ -34,7 +36,7 @@ export async function POST(request: Request) {
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
     const sanitizedBody = sanitizeObject(await request.json()) as Record<string, unknown>;
-    const item = await prisma.navigationItem.create({ data: sanitizedBody });
+    const item = await prisma.navigationItem.create({ data: sanitizedBody as any });
 
     await createAuditLog({
       userId: admin.id,

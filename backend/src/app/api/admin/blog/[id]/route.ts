@@ -2,106 +2,88 @@ import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '@/app/api/_auth';
 import { prisma } from '@/lib/prisma';
 import { createAuditLog } from '@/app/api/admin/_audit';
-import { atomicDeleteBlog, withTransaction } from '@/lib/transaction';
+import { sanitizeObject, validateSlug } from '@/lib/sanitize';
+import { invalidateCache } from '@/lib/cache';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const post = await prisma.blogPost.findUnique({ where: { id: params.id } });
-    if (!post) return NextResponse.json({ message: 'Not found' }, { status: 404 });
-    return NextResponse.json(post);
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get('status');
+    const includeInactive = searchParams.get('includeInactive') === 'true';
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')));
+    const skip = (page - 1) * limit;
+
+    const where = {
+      ...(status && { status }),
+      ...(includeInactive ? { deletedAt: null } : { isActive: true, deletedAt: null }),
+    };
+
+    const [posts, total] = await Promise.all([
+      prisma.blogPost.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.blogPost.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: posts,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
 
-/**
- * Updates a blog post with transactional safety.
- * Wraps the post update and audit log creation in a single transaction
- * to ensure atomicity - either both succeed or both roll back.
- */
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const existing = await prisma.blogPost.findUnique({ where: { id: params.id } });
-    if (!existing) return NextResponse.json({ message: 'Not found' }, { status: 404 });
-
-    const body = await request.json();
-
-    const post = await withTransaction(async (tx) => {
-      const maxVersion = await tx.contentVersion.aggregate({
-        where: { entityType: 'blog', entityId: params.id },
-        _max: { version: true },
-      });
-      const nextVersion = (maxVersion._max.version || 0) + 1;
-
-      const updated = await tx.blogPost.update({
-        where: { id: params.id },
-        data: {
-          title: body.title,
-          slug: body.slug,
-          excerpt: body.excerpt,
-          content: body.content,
-          featuredImage: body.featuredImage,
-          status: body.status,
-          publishedAt: body.status === 'PUBLISHED' && existing.status !== 'PUBLISHED' ? new Date() : existing.publishedAt,
-          scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
-          metaTitle: body.metaTitle,
-          metaDescription: body.metaDescription,
-          isActive: body.isActive,
-        },
-      });
-
-      await tx.contentVersion.create({
-        data: {
-          entityType: 'blog',
-          entityId: params.id,
-          version: nextVersion,
-          content: { title: updated.title, slug: updated.slug, excerpt: updated.excerpt, content: updated.content, status: updated.status, metaTitle: updated.metaTitle, metaDescription: updated.metaDescription },
-          createdBy: admin.id,
-        },
-      });
-
-      await tx.contentAudit.create({
-        data: {
-          action: 'UPDATE',
-          entityType: 'BlogPost',
-          entityId: updated.id,
-          entityName: updated.title,
-          changes: { before: existing, after: updated },
-        },
-      });
-
-      return updated;
+    const sanitizedBody = sanitizeObject(await request.json()) as Record<string, unknown>;
+    const body = sanitizedBody as { title?: string; slug?: string; excerpt?: string; content?: string; featuredImage?: string | null; status?: string; scheduledAt?: string; metaTitle?: string; metaDescription?: string };
+    if (body.slug && !validateSlug(body.slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
+    const post = await prisma.blogPost.create({
+      data: {
+        title: body.title,
+        slug: body.slug,
+        excerpt: body.excerpt || '',
+        content: body.content || '',
+        featuredImage: body.featuredImage || null,
+        authorId: admin.id,
+        status: body.status || 'DRAFT',
+        publishedAt: body.status === 'PUBLISHED' ? new Date() : null,
+        scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : null,
+        metaTitle: body.metaTitle || body.title,
+        metaDescription: body.metaDescription || body.excerpt,
+      },
     });
 
-    return NextResponse.json(post);
+    await createAuditLog({
+      userId: admin.id,
+      userEmail: admin.email,
+      action: 'CREATE',
+      entityType: 'BlogPost',
+      entityId: post.id,
+      entityName: post.title,
+      changes: { after: post },
+    });
+
+    try { await invalidateCache('public:blog:*'); } catch {}
+
+    return NextResponse.json(post, { status: 201 });
   } catch (error: any) {
     if (error.code === 'P2002') {
       return NextResponse.json({ message: 'Slug already exists' }, { status: 409 });
     }
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
-  }
-}
-
-/**
- * Deletes a blog post atomically using transaction wrapper.
- * Uses atomicDeleteBlog to ensure the post and related audit entries
- * are all handled in a single transaction.
- */
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  try {
-    const admin = await requireSuperAdmin(request);
-    if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-
-    await atomicDeleteBlog(params.id);
-
-    return NextResponse.json({ message: 'Post deleted' });
-  } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

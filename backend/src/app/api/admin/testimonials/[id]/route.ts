@@ -3,6 +3,8 @@ import { requireSuperAdmin } from '@/app/api/_auth';
 import { prisma } from '@/lib/prisma';
 import { createAuditLog } from '@/app/api/admin/_audit';
 
+export const dynamic = 'force-dynamic';
+
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
     const admin = await requireSuperAdmin(request);

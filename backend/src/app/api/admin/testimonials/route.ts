@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '@/app/api/_auth';
 import { prisma } from '@/lib/prisma';
 import { createAuditLog } from '@/app/api/admin/_audit';
+import { invalidateCache } from '@/lib/cache';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {

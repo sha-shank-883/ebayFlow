@@ -3,6 +3,8 @@ import { requireSuperAdmin } from '../../_auth';
 import { prisma } from '../../../../lib/prisma';
 import { createAuditLog } from '../_audit';
 
+export const dynamic = 'force-dynamic';
+
 const EXPORT_VERSION = '1.0.0';
 
 /**

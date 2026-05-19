@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { AdminService } from '@/modules/admin/admin.service';
 import jwt from 'jsonwebtoken';
 
+export const dynamic = 'force-dynamic';
+
 const adminService = new AdminService();
 const JWT_SECRET = process.env.JWT_SECRET;
 
