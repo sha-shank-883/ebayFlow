@@ -1,0 +1,899 @@
+[
+  {
+    "id": "cmpbr97g5001x58giy5gzaz6b",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "hero",
+    "sectionType": "hero",
+    "title": "The Enterprise AI Engine for",
+    "subtitle": "UK eBay Sellers",
+    "content": {
+      "cta": "Start Your Free Audit",
+      "badge": "Scale Your eBay Business in the UK",
+      "stats": [
+        {
+          "label": "UK Sellers",
+          "value": "5,000+"
+        },
+        {
+          "label": "Listings Optimized",
+          "value": "1.2M+"
+        },
+        {
+          "label": "Avg. Sales Growth",
+          "value": "34%"
+        },
+        {
+          "label": "Uptime Guarantee",
+          "value": "99.99%"
+        }
+      ],
+      "ctaLink": "/register",
+      "preview": {
+        "roi": "3.4x",
+        "revenue": "£42,850.00",
+        "listings": "1,248",
+        "syncSpeed": "250ms",
+        "listingStatus": "98% SEO Optimized",
+        "revenueGrowth": "+12.5% vs last month"
+      },
+      "description": "Automate listing creation, optimize for eBay SEO, and sync inventory in real-time. The only listing management tool built specifically for the high-volume UK market.",
+      "secondaryCta": "View Case Studies",
+      "secondaryCtaLink": "/case-studies"
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 1,
+    "updatedAt": "2026-05-18T22:07:55.637Z"
+  },
+  {
+    "id": "cmpbr97hu001z58gihcce3zdg",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "features",
+    "sectionType": "features",
+    "title": "Precision Engineering for",
+    "subtitle": "UK eBay Dominance",
+    "content": {
+      "badge": "Enterprise Capabilities",
+      "items": [
+        {
+          "icon": "Sparkles",
+          "title": "AI Listing Optimization",
+          "description": "Our AI analyzes thousands of top-performing UK listings to generate titles and descriptions that convert."
+        },
+        {
+          "icon": "RefreshCw",
+          "title": "Bulk Inventory Sync",
+          "description": "Real-time synchronization across multiple eBay accounts and warehouses with millisecond latency."
+        },
+        {
+          "icon": "TrendingUp",
+          "title": "eBay SEO Dominance",
+          "description": "Proprietary algorithms designed for eBay.co.uk's 'Best Match' search system to keep you at the top."
+        },
+        {
+          "icon": "Truck",
+          "title": "Automated Fulfillment",
+          "description": "Streamline your UK shipping with direct integrations into Royal Mail, Evri, and DPD."
+        }
+      ],
+      "description": "We've built the most advanced toolset specifically for the UK market. Automate the mundane, optimize for the algorithm, and scale without limits."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 2,
+    "updatedAt": "2026-05-18T22:07:55.697Z"
+  },
+  {
+    "id": "cmpbr97i3002158gip4j0a6mx",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "how-it-works",
+    "sectionType": "how-it-works",
+    "title": "Get Started in",
+    "subtitle": "3 Easy Steps",
+    "content": {
+      "badge": "Simple Setup",
+      "steps": [
+        {
+          "icon": "Upload",
+          "title": "Connect Your eBay Account",
+          "details": [
+            "One-click OAuth connection",
+            "No passwords stored",
+            "Bank-level encryption",
+            "Instant sync of existing listings"
+          ],
+          "description": "Securely link your eBay seller account in under 2 minutes. We support multiple accounts and marketplaces including eBay UK, US, DE, and more."
+        },
+        {
+          "icon": "Wand2",
+          "title": "AI Optimizes Your Listings",
+          "details": [
+            "SEO-optimized titles",
+            "Compelling descriptions",
+            "Competitive pricing analysis",
+            "Image enhancement suggestions"
+          ],
+          "description": "Our AI analyzes millions of successful listings to generate optimized titles, descriptions, and pricing recommendations automatically."
+        },
+        {
+          "icon": "Rocket",
+          "title": "Publish & Scale",
+          "details": [
+            "One-click publish to eBay",
+            "Bulk listing operations",
+            "Real-time performance tracking",
+            "Automated repricing"
+          ],
+          "description": "Publish optimized listings instantly and watch your visibility and sales grow. Monitor performance with real-time analytics."
+        }
+      ],
+      "description": "No complex setup, no technical knowledge required. Start optimizing your eBay business in minutes."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 3,
+    "updatedAt": "2026-05-18T22:07:55.707Z"
+  },
+  {
+    "id": "cmpbr97ik002358gieommfj5n",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "testimonials",
+    "sectionType": "testimonials",
+    "title": "Trusted by",
+    "subtitle": "10,000+ Sellers",
+    "content": {
+      "badge": "Loved by Sellers",
+      "description": "See why thousands of UK eBay sellers choose eBay Flow to power their business."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 4,
+    "updatedAt": "2026-05-18T22:07:55.724Z"
+  },
+  {
+    "id": "cmpbr97jc002558giyio3x4ou",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "pricing-preview",
+    "sectionType": "pricing",
+    "title": "Invest in Your",
+    "subtitle": "eBay Empire",
+    "content": {
+      "badge": "Flexible Plans",
+      "description": "Transparent pricing tailored for UK sellers of all sizes. No hidden fees, no credit card required to start."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 5,
+    "updatedAt": "2026-05-18T22:07:55.752Z"
+  },
+  {
+    "id": "cmpbr97jr002758gibp1rwzzn",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "cta",
+    "sectionType": "cta",
+    "title": "Scale Your UK Business",
+    "subtitle": "at the Speed of AI",
+    "content": {
+      "badge": "Join the eBay Revolution",
+      "benefits": [
+        "Instant Setup",
+        "No Card Required",
+        "Cancel Anytime"
+      ],
+      "primaryCta": "Get Started Now",
+      "description": "Experience the enterprise listing engine trusted by the UK's top retailers. Start your 14-day masterclass in automation today.",
+      "secondaryCta": "Talk to Sales",
+      "primaryCtaLink": "/register",
+      "secondaryCtaLink": "/contact"
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 6,
+    "updatedAt": "2026-05-18T22:07:55.767Z"
+  },
+  {
+    "id": "cmpbr97kg002958gi4bdbeag9",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "cta-benefits",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "benefits": [
+        "Instant Setup",
+        "No Card Required",
+        "Cancel Anytime"
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 7,
+    "updatedAt": "2026-05-18T22:07:55.792Z"
+  },
+  {
+    "id": "cmpbr97ls002b58givi2rhoi5",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "audit",
+    "sectionType": "audit",
+    "title": "Is Your eBay Store Performing",
+    "subtitle": "at its Peak?",
+    "content": {
+      "badge": "Exclusive for UK Sellers",
+      "features": [
+        {
+          "icon": "BarChart3",
+          "title": "Detailed Sales Gap Analysis",
+          "description": "See exactly where you're losing out to competitors in the UK search results."
+        },
+        {
+          "icon": "ShieldCheck",
+          "title": "Listing Health Check",
+          "description": "We scan for missing item specifics and title optimization errors."
+        },
+        {
+          "icon": "Zap",
+          "title": "Instant Scaling Roadmap",
+          "description": "Receive a step-by-step plan to automate your growth with eBay Flow."
+        }
+      ],
+      "formTitle": "Get Your Free eBay Audit",
+      "description": "Our AI diagnostic tool analyzes your listings against the latest eBay.co.uk 'Best Match' algorithms. Get a comprehensive report on your SEO, pricing, and conversion health.",
+      "formDescription": "Discover hidden optimization opportunities. Our specialists will review your current listing performance."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 8,
+    "updatedAt": "2026-05-18T22:07:55.840Z"
+  },
+  {
+    "id": "cmpbr97mt002d58gik9qxdrih",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "audit-features",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "features": [
+        {
+          "icon": "BarChart3",
+          "title": "Detailed Sales Gap Analysis",
+          "description": "See exactly where you're losing out to competitors in the UK search results."
+        },
+        {
+          "icon": "ShieldCheck",
+          "title": "Listing Health Check",
+          "description": "We scan for missing item specifics and title optimization errors."
+        },
+        {
+          "icon": "Zap",
+          "title": "Instant Scaling Roadmap",
+          "description": "Receive a step-by-step plan to automate your growth with eBay Flow."
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 9,
+    "updatedAt": "2026-05-18T22:07:55.876Z"
+  },
+  {
+    "id": "cmpbr97ni002f58gielhd2o22",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "audit-form",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "cta": "Claim My Free Audit",
+      "title": "Get Your Free eBay Audit",
+      "fields": {
+        "url": {
+          "label": "eBay Store URL (Optional)",
+          "placeholder": "ebay.co.uk/str/yourstore"
+        },
+        "name": {
+          "label": "Full Name",
+          "placeholder": "John Smith"
+        },
+        "email": {
+          "label": "Work Email",
+          "placeholder": "john@company.co.uk"
+        },
+        "business": {
+          "label": "Business Name",
+          "placeholder": "Enterprise Sellers Ltd"
+        }
+      },
+      "guarantees": [
+        "No Obligation",
+        "UK Based Team",
+        "GDPR Compliant"
+      ],
+      "loadingCta": "Analyzing...",
+      "description": "Discover hidden optimization opportunities. Our specialists will review your current listing performance.",
+      "successTitle": "Request Received",
+      "successDescription": "Our UK-based eBay specialists will analyze your store and contact you within 24 hours with your free audit."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 10,
+    "updatedAt": "2026-05-18T22:07:55.902Z"
+  },
+  {
+    "id": "cmpbr97om002h58gi0v3pafwb",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "trust-signals",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "trustSignals": [
+        {
+          "icon": "CheckCircle2",
+          "color": "text-blue-500",
+          "label": "eBay Solution Partner"
+        },
+        {
+          "icon": "Shield",
+          "color": "text-blue-500",
+          "label": "UK Based Support"
+        },
+        {
+          "icon": "Star",
+          "color": "text-yellow-500",
+          "label": "4.9/5 Trustpilot"
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 11,
+    "updatedAt": "2026-05-18T22:07:55.942Z"
+  },
+  {
+    "id": "cmpbr97py002j58giafrpzbdw",
+    "pageId": "cmpbr97ec001v58gitvz7dble",
+    "sectionKey": "logos",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "logos": [
+        {
+          "name": "eBay",
+          "color": "text-[#E53238]"
+        },
+        {
+          "name": "PayPal",
+          "color": "text-[#003087]"
+        },
+        {
+          "name": "Shopify",
+          "color": "text-[#96BF48]"
+        },
+        {
+          "name": "Royal Mail",
+          "color": "text-[#DC291E]"
+        },
+        {
+          "name": "Evri",
+          "color": "text-[#ED7902]"
+        },
+        {
+          "name": "Stripe",
+          "color": "text-[#635BFF]"
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 12,
+    "updatedAt": "2026-05-18T22:07:55.990Z"
+  },
+  {
+    "id": "cmpbr97rj002o58girwa4cj2c",
+    "pageId": "cmpbr97qv002m58gitp85vcc5",
+    "sectionKey": "about-content",
+    "sectionType": "custom-html",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "vision": {
+        "title": "Our Vision",
+        "description": "To become the operating system for modern e-commerce. A world where listing, inventory, and fulfillment happen autonomously, letting you focus on strategy and growth."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "description": "To democratize enterprise-grade automation for UK eBay sellers. We believe that small businesses should have access to the same AI-powered optimization as global retail giants."
+      }
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 1,
+    "updatedAt": "2026-05-18T22:07:56.047Z"
+  },
+  {
+    "id": "cmpbr97sm002q58gi9aeqfrny",
+    "pageId": "cmpbr97qv002m58gitp85vcc5",
+    "sectionKey": "values",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "values": [
+        {
+          "icon": "Target",
+          "title": "Customer Obsession",
+          "description": "Every feature we build starts with our customers' needs. We listen, iterate, and deliver solutions that make a real difference to your business."
+        },
+        {
+          "icon": "Heart",
+          "title": "Integrity First",
+          "description": "Transparent pricing, honest communication, and ethical data practices. We believe trust is the foundation of every great business relationship."
+        },
+        {
+          "icon": "Users",
+          "title": "Collaborative Spirit",
+          "description": "We work closely with our community of sellers to understand challenges and co-create solutions. Your success is our success."
+        },
+        {
+          "icon": "Award",
+          "title": "Relentless Innovation",
+          "description": "We push the boundaries of what's possible with AI and automation. Our team is constantly exploring new ways to help you sell smarter."
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 2,
+    "updatedAt": "2026-05-18T22:07:56.086Z"
+  },
+  {
+    "id": "cmpbr97uu002s58giuqbxhhmf",
+    "pageId": "cmpbr97qv002m58gitp85vcc5",
+    "sectionKey": "milestones",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "milestones": [
+        {
+          "year": "2022",
+          "event": "eBay Flow AI founded in London",
+          "detail": "Started with a mission to help UK sellers leverage AI"
+        },
+        {
+          "year": "2023",
+          "event": "Series A Funding",
+          "detail": "Raised £5M to expand our platform and team"
+        },
+        {
+          "year": "2024",
+          "event": "10,000+ sellers milestone",
+          "detail": "Became the #1 AI-powered eBay tool in the UK"
+        },
+        {
+          "year": "2025",
+          "event": "Global expansion",
+          "detail": "Now serving sellers across UK, US, EU, and Australia"
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 3,
+    "updatedAt": "2026-05-18T22:07:56.166Z"
+  },
+  {
+    "id": "cmpbr98ds002x58gi2nkd2dpa",
+    "pageId": "cmpbr98d8002v58gi4q9c1zz2",
+    "sectionKey": "contact-content",
+    "sectionType": "custom-html",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "badge": "Contact Us",
+      "hours": {
+        "title": "Business Hours",
+        "detail": "Mon-Fri: 9:00 AM - 6:00 PM GMT",
+        "weekend": "Sat-Sun: Closed"
+      },
+      "title": "Get in",
+      "formTitle": "Send us a message",
+      "immediate": {
+        "title": "Need Immediate Help?",
+        "linkText": "Visit Help Center",
+        "description": "Check our help center for instant answers to common questions."
+      },
+      "infoTitle": "Contact Information",
+      "description": "Have a question, feedback, or need help? Our UK-based team typically responds within 24 hours.",
+      "titleAccent": "Touch"
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 1,
+    "updatedAt": "2026-05-18T22:07:56.848Z"
+  },
+  {
+    "id": "cmpbr98hk002z58giy736h7nk",
+    "pageId": "cmpbr98d8002v58gi4q9c1zz2",
+    "sectionKey": "form-schema",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "cta": "Send Message",
+      "title": "Send us a message",
+      "fields": {
+        "name": {
+          "label": "Full Name",
+          "placeholder": "John Smith"
+        },
+        "email": {
+          "label": "Work Email",
+          "placeholder": "john@company.co.uk"
+        },
+        "company": {
+          "label": "Company (Optional)",
+          "placeholder": "Enterprise Sellers Ltd"
+        },
+        "message": {
+          "label": "Message",
+          "placeholder": "Tell us how we can help..."
+        },
+        "subject": {
+          "label": "Subject",
+          "options": [
+            {
+              "label": "General Inquiry",
+              "value": "general"
+            },
+            {
+              "label": "Sales Question",
+              "value": "sales"
+            },
+            {
+              "label": "Technical Support",
+              "value": "support"
+            },
+            {
+              "label": "Partnership",
+              "value": "partnership"
+            },
+            {
+              "label": "Feedback",
+              "value": "feedback"
+            }
+          ],
+          "placeholder": "Select a topic"
+        }
+      },
+      "success": "Message sent! We'll get back to you within 24 hours.",
+      "loadingCta": "Sending..."
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 2,
+    "updatedAt": "2026-05-18T22:07:56.984Z"
+  },
+  {
+    "id": "cmpbr98kl003158gitnswa8r6",
+    "pageId": "cmpbr98d8002v58gi4q9c1zz2",
+    "sectionKey": "contact-info",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "email": "hello@ebayflow.ai",
+      "hours": {
+        "title": "Business Hours",
+        "detail": "Mon-Fri: 9:00 AM - 6:00 PM GMT",
+        "weekend": "Sat-Sun: Closed"
+      },
+      "phone": "+44 20 8123 4567",
+      "title": "Contact Information",
+      "address": {
+        "city": "London",
+        "line1": "71-75 Shelton Street",
+        "country": "United Kingdom",
+        "postcode": "WC2H 9JQ"
+      },
+      "immediate": {
+        "title": "Need Immediate Help?",
+        "linkText": "Visit Help Center",
+        "description": "Check our help center for instant answers to common questions."
+      }
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 3,
+    "updatedAt": "2026-05-18T22:07:57.093Z"
+  },
+  {
+    "id": "cmpbr98tu003658gip8am7gkg",
+    "pageId": "cmpbr98qn003458giuerbs9w5",
+    "sectionKey": "guarantees",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "guarantees": [
+        {
+          "icon": "ShieldCheck",
+          "title": "30-Day Money Back",
+          "description": "Full refund if you're not satisfied within the first 30 days."
+        },
+        {
+          "icon": "CreditCard",
+          "title": "No Hidden Fees",
+          "description": "The price you see is the price you pay. Always."
+        },
+        {
+          "icon": "Headphones",
+          "title": "24/7 Support",
+          "description": "Our team is always here to help when you need it."
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 1,
+    "updatedAt": "2026-05-18T22:07:57.426Z"
+  },
+  {
+    "id": "cmpbr98wk003858giv97z8110",
+    "pageId": "cmpbr98qn003458giuerbs9w5",
+    "sectionKey": "trust-signals",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "badge": "Save 20%",
+      "ctaText": "Have questions?",
+      "ctaLinkText": "Chat with our UK team",
+      "trustSignals": [
+        {
+          "label": "Safe & Secure",
+          "value": "100%"
+        },
+        {
+          "label": "Support UK",
+          "value": "24/7"
+        },
+        {
+          "label": "Commission",
+          "value": "0%"
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 2,
+    "updatedAt": "2026-05-18T22:07:57.524Z"
+  },
+  {
+    "id": "cmpbr9936003a58gitahlxuzr",
+    "pageId": "cmpbr98qn003458giuerbs9w5",
+    "sectionKey": "faqs",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "faqs": [
+        {
+          "a": "Yes, you can upgrade or downgrade at any time. Changes take effect immediately for upgrades and at the next billing cycle for downgrades.",
+          "q": "Can I switch plans later?"
+        },
+        {
+          "a": "Your data is preserved for 30 days after cancellation. You can reactivate your account anytime within this period and everything will be as you left it.",
+          "q": "What happens to my data if I cancel?"
+        },
+        {
+          "a": "Yes! Save approximately 20% when you choose annual billing. The discount is applied automatically at checkout.",
+          "q": "Do you offer discounts for annual billing?"
+        },
+        {
+          "a": "No contracts or long-term commitments. All plans are month-to-month unless you choose annual billing. Cancel anytime.",
+          "q": "Is there a contract or commitment?"
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 3,
+    "updatedAt": "2026-05-18T22:07:57.762Z"
+  },
+  {
+    "id": "cmpbr99h8003f58gid8x32c5e",
+    "pageId": "cmpbr99di003d58git4mnuu9j",
+    "sectionKey": "feature-sections",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "sections": [
+        {
+          "id": "ai-listings",
+          "icon": "Brain",
+          "title": "AI-Powered Listing Generation",
+          "features": [
+            {
+              "icon": "FileText",
+              "title": "Smart Title Generation",
+              "description": "AI creates SEO-optimized titles that maximize search visibility. Our algorithm analyzes top-performing listings in your category to craft titles that get noticed."
+            },
+            {
+              "icon": "Layers",
+              "title": "Compelling Descriptions",
+              "description": "Generate professional, persuasive descriptions that highlight key selling points. Automatically formatted with HTML for maximum visual impact."
+            },
+            {
+              "icon": "Tag",
+              "title": "Intelligent Pricing",
+              "description": "Get AI-powered pricing recommendations based on competitor analysis, market trends, and historical sales data to maximize your profits."
+            },
+            {
+              "icon": "Image",
+              "title": "Image Optimization",
+              "description": "AI suggests the best image order and provides enhancement recommendations to make your listings stand out from the competition."
+            }
+          ],
+          "description": "Create high-converting listings in seconds with our advanced AI that analyzes millions of successful eBay listings."
+        },
+        {
+          "id": "inventory",
+          "icon": "Package",
+          "title": "Smart Inventory Management",
+          "features": [
+            {
+              "icon": "RefreshCw",
+              "title": "Real-Time Sync",
+              "description": "Inventory levels update instantly across all connected accounts. When you sell an item, stock levels adjust everywhere automatically."
+            },
+            {
+              "icon": "Bell",
+              "title": "Low Stock Alerts",
+              "description": "Get notified before you run out of stock. Set custom thresholds for each product and receive alerts via email or dashboard notifications."
+            },
+            {
+              "icon": "Layers",
+              "title": "Bulk Operations",
+              "description": "Update hundreds of listings at once. Change prices, quantities, or details across your entire inventory with just a few clicks."
+            },
+            {
+              "icon": "Search",
+              "title": "Smart Search & Filter",
+              "description": "Find any product instantly with powerful search and filtering. Filter by SKU, category, stock level, status, and more."
+            }
+          ],
+          "description": "Never oversell again with real-time inventory tracking, automated alerts, and seamless multi-account synchronization."
+        },
+        {
+          "id": "analytics",
+          "icon": "BarChart3",
+          "title": "Advanced Analytics & Insights",
+          "features": [
+            {
+              "icon": "TrendingUp",
+              "title": "Revenue Analytics",
+              "description": "Track revenue, profit margins, and growth trends over time. See exactly which products and categories drive the most profit."
+            },
+            {
+              "icon": "BarChart3",
+              "title": "Sales by Channel",
+              "description": "Compare performance across different eBay marketplaces. Understand which markets are most profitable for your business."
+            },
+            {
+              "icon": "Download",
+              "title": "Export & Reports",
+              "description": "Generate detailed reports and export data in CSV or PDF format. Share insights with your team or stakeholders."
+            },
+            {
+              "icon": "Brain",
+              "title": "AI Predictions",
+              "description": "Get AI-powered forecasts for sales trends, seasonal demand, and inventory needs. Plan ahead with confidence."
+            }
+          ],
+          "description": "Make data-driven decisions with comprehensive analytics that show exactly how your business is performing."
+        }
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 1,
+    "updatedAt": "2026-05-18T22:07:58.268Z"
+  },
+  {
+    "id": "cmpbr99ia003h58gisvw0k2lu",
+    "pageId": "cmpbr99di003d58git4mnuu9j",
+    "sectionKey": "comparison",
+    "sectionType": "custom",
+    "title": null,
+    "subtitle": null,
+    "content": {
+      "rows": [
+        [
+          "Active Listings",
+          "500",
+          "5,000",
+          "Unlimited"
+        ],
+        [
+          "eBay Accounts",
+          "1",
+          "3",
+          "Unlimited"
+        ],
+        [
+          "AI Title Optimizer",
+          "Basic",
+          "Advanced",
+          "Custom Training"
+        ],
+        [
+          "Inventory Sync",
+          "Daily",
+          "Real-time",
+          "Priority Sync"
+        ],
+        [
+          "UK Carrier Integrations",
+          "Royal Mail",
+          "All Carriers",
+          "Full API Access"
+        ],
+        [
+          "Support",
+          "Email",
+          "Priority Chat",
+          "Dedicated Manager"
+        ],
+        [
+          "API Access",
+          "None",
+          "Standard",
+          "Full Access"
+        ],
+        [
+          "SLA Guarantee",
+          "None",
+          "99.9%",
+          "99.99%"
+        ]
+      ],
+      "headers": [
+        "Feature",
+        "Starter",
+        "Professional",
+        "Enterprise"
+      ]
+    },
+    "settings": null,
+    "isActive": true,
+    "deletedAt": null,
+    "order": 2,
+    "updatedAt": "2026-05-18T22:07:58.306Z"
+  }
+]

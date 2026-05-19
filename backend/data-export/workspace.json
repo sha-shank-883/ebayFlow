@@ -1,0 +1,20 @@
+[
+  {
+    "id": "cmpbr965a000258gi8zdn3ovx",
+    "name": "SellerFlow Demo Store",
+    "slug": "demo-store",
+    "logo": null,
+    "plan": "PROFESSIONAL",
+    "stripeCustomerId": null,
+    "stripeSubscriptionId": null,
+    "subscriptionStatus": "inactive",
+    "trialEndsAt": null,
+    "currentPeriodEnd": null,
+    "listingsLimit": 1000,
+    "accountsLimit": 5,
+    "aiCreditsLimit": 500,
+    "aiCreditsUsed": 0,
+    "createdAt": "2026-05-18T22:07:53.950Z",
+    "updatedAt": "2026-05-18T22:07:53.950Z"
+  }
+]

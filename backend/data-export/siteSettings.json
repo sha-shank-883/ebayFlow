@@ -1,0 +1,21 @@
+[
+  {
+    "id": "default",
+    "siteName": "eBay Flow AI",
+    "tagline": "AI-Powered eBay Listing Management & Automation for UK Sellers",
+    "logoUrl": null,
+    "faviconUrl": null,
+    "contactEmail": "hello@ebayflow.ai",
+    "contactPhone": "+44 20 8123 4567",
+    "contactAddress": "71-75 Shelton Street, London, WC2H 9JQ, United Kingdom",
+    "socialLinks": {
+      "github": "https://github.com/ebayflow-ai",
+      "twitter": "https://twitter.com/ebayflowai"
+    },
+    "analyticsId": null,
+    "customCSS": null,
+    "announcementBar": null,
+    "createdAt": "2026-05-18T22:07:55.552Z",
+    "updatedAt": "2026-05-18T22:07:55.552Z"
+  }
+]

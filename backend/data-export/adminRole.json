@@ -1,0 +1,57 @@
+[
+  {
+    "id": "cmpbr9bkt003p58giawdhrp3w",
+    "name": "Super Admin",
+    "description": "Full access to everything",
+    "permissions": [
+      "*"
+    ],
+    "isSystem": true,
+    "isActive": true,
+    "createdAt": "2026-05-18T22:08:00.989Z",
+    "updatedAt": "2026-05-18T22:08:00.989Z"
+  },
+  {
+    "id": "cmpbr9bmb003q58gip6nlk998",
+    "name": "Editor",
+    "description": "Can manage content, blog, media",
+    "permissions": [
+      "content:read",
+      "content:write",
+      "blog:read",
+      "blog:write",
+      "media:read",
+      "media:write",
+      "testimonials:read",
+      "testimonials:write",
+      "faqs:read",
+      "faqs:write",
+      "pricing:read",
+      "pricing:write"
+    ],
+    "isSystem": true,
+    "isActive": true,
+    "createdAt": "2026-05-18T22:08:01.043Z",
+    "updatedAt": "2026-05-18T22:08:01.043Z"
+  },
+  {
+    "id": "cmpbr9bmn003r58gix2st3jhc",
+    "name": "Viewer",
+    "description": "Read-only access",
+    "permissions": [
+      "content:read",
+      "blog:read",
+      "media:read",
+      "testimonials:read",
+      "faqs:read",
+      "pricing:read",
+      "seo:read",
+      "navigation:read",
+      "settings:read"
+    ],
+    "isSystem": true,
+    "isActive": true,
+    "createdAt": "2026-05-18T22:08:01.055Z",
+    "updatedAt": "2026-05-18T22:08:01.055Z"
+  }
+]

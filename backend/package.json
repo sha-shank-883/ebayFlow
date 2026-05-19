@@ -10,6 +10,9 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "db:seed": "ts-node prisma/seed.ts",
+    "db:export": "ts-node scripts/export-data.ts",
+    "db:import": "ts-node scripts/import-data.ts",
+    "db:verify": "ts-node scripts/verify-data.ts",
     "worker": "ts-node src/modules/jobs/worker.ts"
   },
   "dependencies": {

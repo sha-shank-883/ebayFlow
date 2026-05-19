@@ -1,0 +1,38 @@
+[
+  {
+    "id": "cmpbr95mr000058gi8lp273xi",
+    "email": "demo@sellerflow.ai",
+    "name": "Demo Seller",
+    "password": "$2a$10$PCxt/UOYKDDypHmY81DtjOK01b.Kkem8Cetg3IpVkzpomGOJZpwGS",
+    "avatar": null,
+    "role": "USER",
+    "googleId": null,
+    "phone": null,
+    "timezone": "Europe/London",
+    "isVerified": true,
+    "isActive": true,
+    "failedLoginAttempts": 0,
+    "lockoutUntil": null,
+    "lastLoginAt": null,
+    "createdAt": "2026-05-18T22:07:53.270Z",
+    "updatedAt": "2026-05-18T22:07:53.270Z"
+  },
+  {
+    "id": "cmpbr964a000158gikftnxa2r",
+    "email": "contact@ebayflow.com",
+    "name": "Super Admin",
+    "password": "$2a$12$tRdSKua7T9NcSDhlfEykb.BIC3/MBB4iCStTKcazhJJwpm6lUNtQO",
+    "avatar": null,
+    "role": "SUPER_ADMIN",
+    "googleId": null,
+    "phone": null,
+    "timezone": "Europe/London",
+    "isVerified": true,
+    "isActive": true,
+    "failedLoginAttempts": 0,
+    "lockoutUntil": null,
+    "lastLoginAt": null,
+    "createdAt": "2026-05-18T22:07:53.915Z",
+    "updatedAt": "2026-05-19T21:23:39.066Z"
+  }
+]

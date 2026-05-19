@@ -1,0 +1,182 @@
+[
+  {
+    "id": "faq-faq-cat-billing-&-plans-0",
+    "categoryId": "faq-cat-billing-&-plans",
+    "question": "What payment methods do you accept?",
+    "answer": "We accept all major credit and debit cards (Visa, Mastercard, American Express), PayPal, and bank transfers for annual plans. All payments are processed securely through Stripe.",
+    "order": 0,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-billing-&-plans-1",
+    "categoryId": "faq-cat-billing-&-plans",
+    "question": "Can I change my plan at any time?",
+    "answer": "Yes, you can upgrade or downgrade your plan at any time. When upgrading, you'll get immediate access to new features and we'll prorate the difference. When downgrading, the change takes effect at the start of your next billing cycle.",
+    "order": 1,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-billing-&-plans-2",
+    "categoryId": "faq-cat-billing-&-plans",
+    "question": "What happens when my trial ends?",
+    "answer": "When your 14-day trial ends, you'll be prompted to choose a plan. If you don't select a plan, your account will be paused but your data will be preserved for 30 days. You can reactivate at any time.",
+    "order": 2,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-billing-&-plans-3",
+    "categoryId": "faq-cat-billing-&-plans",
+    "question": "Do you offer refunds?",
+    "answer": "We offer a 30-day money-back guarantee on all plans. If you're not satisfied with eBay Flow within the first 30 days of your paid subscription, contact us for a full refund. No questions asked.",
+    "order": 3,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-billing-&-plans-4",
+    "categoryId": "faq-cat-billing-&-plans",
+    "question": "Are there any hidden fees?",
+    "answer": "No hidden fees, ever. The price you see is the price you pay. There are no setup fees, no per-listing fees, and no surprise charges. We believe in transparent pricing.",
+    "order": 4,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-features-&-ai-0",
+    "categoryId": "faq-cat-features-&-ai",
+    "question": "How does the AI listing generator work?",
+    "answer": "Our AI analyzes millions of successful eBay listings across your category to understand what works. It then generates optimized titles, descriptions, and pricing recommendations based on proven patterns. The more you use it, the better it gets at understanding your specific products.",
+    "order": 0,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-features-&-ai-1",
+    "categoryId": "faq-cat-features-&-ai",
+    "question": "How accurate is the AI-generated content?",
+    "answer": "Our AI generates highly accurate and relevant content. However, we always recommend reviewing and personalizing the output before publishing. Most sellers find the AI content is 90-95% ready to use, needing only minor tweaks for their specific products.",
+    "order": 1,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-features-&-ai-2",
+    "categoryId": "faq-cat-features-&-ai",
+    "question": "Can I customize the AI output?",
+    "answer": "Yes! You can set tone preferences (professional, casual, enthusiastic), specify key features to highlight, add brand guidelines, and even provide example listings for the AI to learn from. The more context you provide, the better the output.",
+    "order": 2,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-features-&-ai-3",
+    "categoryId": "faq-cat-features-&-ai",
+    "question": "Does the AI work for all product categories?",
+    "answer": "Our AI is trained on data from all major eBay categories including electronics, fashion, home & garden, automotive, sports, collectibles, and more. It adapts its recommendations based on the specific category and subcategory of each listing.",
+    "order": 3,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-getting-started-0",
+    "categoryId": "faq-cat-getting-started",
+    "question": "How do I get started with eBay Flow AI?",
+    "answer": "Simply create a free account, connect your eBay seller account through our secure OAuth integration, and you're ready to go. The entire setup takes less than 2 minutes. No credit card required for the 14-day free trial.",
+    "order": 0,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-getting-started-1",
+    "categoryId": "faq-cat-getting-started",
+    "question": "Do I need technical knowledge to use eBay Flow?",
+    "answer": "Not at all. eBay Flow is designed to be intuitive and user-friendly. If you can use eBay, you can use eBay Flow. Our interface is clean and straightforward, and we provide helpful tooltips and guides throughout the platform.",
+    "order": 1,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-getting-started-2",
+    "categoryId": "faq-cat-getting-started",
+    "question": "Can I try eBay Flow before committing to a paid plan?",
+    "answer": "Absolutely! We offer a 14-day free trial on all plans with full access to every feature. No credit card required to start. You can explore the platform, connect your eBay account, and see the value before making any commitment.",
+    "order": 2,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-getting-started-3",
+    "categoryId": "faq-cat-getting-started",
+    "question": "Is eBay Flow available outside the UK?",
+    "answer": "Yes! While we started in the UK, eBay Flow now supports eBay marketplaces worldwide including the US, Germany, France, Italy, Spain, and Australia. Our platform handles currency conversion and marketplace-specific requirements automatically.",
+    "order": 3,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-security-&-data-0",
+    "categoryId": "faq-cat-security-&-data",
+    "question": "Is my data secure with eBay Flow?",
+    "answer": "Security is our top priority. We use AES-256 encryption for all data at rest, TLS 1.3 for data in transit, and never store your eBay passwords. We're GDPR compliant, undergo regular security audits, and maintain SOC 2 Type II certification.",
+    "order": 0,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-security-&-data-1",
+    "categoryId": "faq-cat-security-&-data",
+    "question": "Do you store my eBay credentials?",
+    "answer": "No. We use eBay's official OAuth authentication, which means we never see or store your eBay password. We receive a secure access token that can be revoked at any time from your eBay account settings.",
+    "order": 1,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-security-&-data-2",
+    "categoryId": "faq-cat-security-&-data",
+    "question": "Where is my data stored?",
+    "answer": "All data is stored in secure data centers within the UK and EU, ensuring compliance with GDPR and UK data protection regulations. We use AWS infrastructure with automatic backups and disaster recovery.",
+    "order": 2,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-security-&-data-3",
+    "categoryId": "faq-cat-security-&-data",
+    "question": "Can I export or delete my data?",
+    "answer": "Yes. Under GDPR, you have the right to access, export, and delete your data at any time. You can export all your data from the Settings page, and you can request complete data deletion which we process within 30 days.",
+    "order": 3,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-support-0",
+    "categoryId": "faq-cat-support",
+    "question": "How can I get help if I have an issue?",
+    "answer": "We offer multiple support channels: email support for all plans (response within 24 hours), live chat for Growth and Professional plans, and a dedicated account manager for Professional plans. We also have an extensive help center and community forum.",
+    "order": 0,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-support-1",
+    "categoryId": "faq-cat-support",
+    "question": "Do you offer onboarding assistance?",
+    "answer": "Yes! All new users get access to our onboarding wizard that walks you through connecting your eBay account and setting up your first listings. Growth and Professional plan users also get a free 30-minute onboarding call with our team.",
+    "order": 1,
+    "isActive": true,
+    "deletedAt": null
+  },
+  {
+    "id": "faq-faq-cat-support-2",
+    "categoryId": "faq-cat-support",
+    "question": "Is there a community I can join?",
+    "answer": "Yes! We have an active community forum where sellers share tips, strategies, and best practices. Join thousands of fellow sellers to exchange ideas and get advice from experienced e-commerce entrepreneurs.",
+    "order": 2,
+    "isActive": true,
+    "deletedAt": null
+  }
+]
