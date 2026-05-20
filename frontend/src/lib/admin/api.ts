@@ -184,4 +184,10 @@ export const adminApi = {
     update: (id: string, data: any) => adminFetch(`/admin/users/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     delete: (id: string) => adminFetch(`/admin/users/${id}`, { method: 'DELETE' }),
   },
+
+  // Theme Design
+  theme: {
+    list: () => adminFetch('/admin/theme'),
+    update: (id: string, data: any) => adminFetch(`/admin/theme`, { method: 'PUT', body: JSON.stringify({ id, ...data }) }),
+  },
 };

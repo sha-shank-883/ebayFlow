@@ -20,6 +20,7 @@ export async function GET(request: Request) {
       mediaCount,
       navItemsCount,
       redirectsCount,
+      themeCount,
       recentAudits,
     ] = await Promise.all([
       prisma.page.count({ where: { isActive: true, deletedAt: null } }),
@@ -32,6 +33,7 @@ export async function GET(request: Request) {
       prisma.mediaAsset.count({ where: { isActive: true, deletedAt: null } }),
       prisma.navigationItem.count({ where: { isActive: true, deletedAt: null } }),
       prisma.redirect.count({ where: { isActive: true, deletedAt: null } }),
+      prisma.themeDesign.count({ where: { isActive: true } }),
       prisma.contentAudit.findMany({ take: 10, orderBy: { createdAt: 'desc' } }),
     ]);
 
@@ -46,6 +48,7 @@ export async function GET(request: Request) {
       mediaCount,
       navItemsCount,
       redirectsCount,
+      themeCount,
       recentAudits,
     });
   } catch (error) {

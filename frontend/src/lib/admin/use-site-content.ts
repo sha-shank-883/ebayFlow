@@ -85,7 +85,12 @@ export function useTestimonials() {
       try {
         const data = await publicApi.testimonials();
         if (data && data.length > 0) {
-          setItems(data);
+          const mapped = data.map((t: any) => ({
+            ...t,
+            content: t.quote,
+            image: t.author?.split(' ').map((n: string) => n[0]).join('') || 'U',
+          }));
+          setItems(mapped);
         } else {
           setItems(marketingConfig.testimonials.items.map((t, i) => ({ ...t, order: i })));
         }

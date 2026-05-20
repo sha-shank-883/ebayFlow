@@ -27,7 +27,8 @@ import {
   ScrollText,
   Users,
   Key,
-  ArrowLeftRight
+  ArrowLeftRight,
+  Palette,
 } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useState } from "react";
@@ -49,6 +50,7 @@ const navigation = [
 const adminModules = [
   { name: "Overview", href: "/admin", icon: LayoutDashboard },
   { name: "Site Settings", href: "/admin/settings", icon: Settings },
+  { name: "Theme Design", href: "/admin/theme", icon: Palette },
   { name: "Content", href: "/admin/content", icon: FileText },
   { name: "SEO", href: "/admin/seo", icon: Search },
   { name: "Navigation", href: "/admin/navigation", icon: Menu },

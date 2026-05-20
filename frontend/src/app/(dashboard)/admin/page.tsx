@@ -17,6 +17,7 @@ import {
   ArrowUpRight,
   Loader2,
   ShieldAlert,
+  Palette,
 } from "lucide-react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +32,7 @@ const statsCards = [
   { key: "pricingPlansCount", label: "Pricing Plans", icon: DollarSign, color: "text-emerald-500", bg: "bg-emerald-500/10", href: "/admin/pricing" },
   { key: "mediaCount", label: "Media Assets", icon: Image, color: "text-pink-500", bg: "bg-pink-500/10", href: "/admin/media" },
   { key: "navItemsCount", label: "Nav Items", icon: Navigation, color: "text-cyan-500", bg: "bg-cyan-500/10", href: "/admin/navigation" },
+  { key: "themeCount", label: "Themes", icon: Palette, color: "text-violet-500", bg: "bg-violet-500/10", href: "/admin/theme" },
 ];
 
 export default function AdminPage() {
@@ -164,6 +166,20 @@ export default function AdminPage() {
                 <div>
                   <h3 className="font-semibold">Site Settings</h3>
                   <p className="text-sm text-muted-foreground">Global config and contact info</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/admin/theme" aria-label="Theme Design - Colors, fonts, and layout">
+            <Card className="hover:bg-card/80 transition-colors cursor-pointer p-6" tabIndex={0}>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center" aria-hidden="true">
+                  <Palette className="h-6 w-6 text-violet-500" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Theme Design</h3>
+                  <p className="text-sm text-muted-foreground">Colors, fonts, and layout</p>
                 </div>
               </div>
             </Card>

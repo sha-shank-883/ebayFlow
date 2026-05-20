@@ -49,4 +49,5 @@ export const publicApi = {
   contactPage: () => publicFetch('/public/contact-page', 'contact-page'),
   aboutPage: () => publicFetch('/public/about-page', 'about-page'),
   featurePage: () => publicFetch('/public/feature-page', 'feature-page'),
+  theme: () => publicFetch('/public/theme', 'theme'),
 };

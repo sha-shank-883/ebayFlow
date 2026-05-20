@@ -819,3 +819,35 @@ model ContentVersion {
   @@index([entityType, entityId])
   @@index([createdAt])
 }
+
+model ThemeDesign {
+  id          String   @id @default(cuid())
+  name        String   @default("default")
+  
+  // Colors
+  colors      Json     // { primary, primaryHover, secondary, background, foreground, card, cardForeground, muted, mutedForeground, border, input, ring, destructive, destructiveForeground, accent, accentForeground, popover, popoverForeground, success, warning, info }
+  
+  // Fonts
+  fontFamily  Json     // { heading, body, mono, headingWeight, bodyWeight }
+  fontSizes   Json     // { xs, sm, base, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, 7xl }
+  
+  // Spacing & Sizing
+  spacing     Json     // { xs, sm, md, lg, xl, 2xl, 3xl, 4xl, containerMaxWidth }
+  borderRadius Json    // { none, sm, md, lg, xl, 2xl, 3xl, full }
+  
+  // Shadows
+  shadows     Json     // { sm, md, lg, xl, inner, none }
+  
+  // Animations
+  animations  Json     // { duration, easing, disableAnimations }
+  
+  // Layout
+  layout      Json     // { headerHeight, footerPadding, sectionPadding, sidebarWidth }
+  
+  isActive    Boolean  @default(true)
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive, isDefault])
+}
