@@ -28,18 +28,6 @@ export function HowItWorks() {
   const { data: apiData, loading } = useHowItWorks();
   const howItWorks = loading ? marketingConfig.howItWorks : (apiData || marketingConfig.howItWorks);
   const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
-  const steps = howItWorks.steps || [];
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-background">
