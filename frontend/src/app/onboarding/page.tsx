@@ -14,7 +14,7 @@ export default function OnboardingPage() {
 
   const handleLinkEbay = async () => {
     try {
-      const result = await fetchApi<{ authUrl: string }>("/ebay?action=auth-url");
+      const result = await fetchApi<{ authUrl: string }>("/ebay/auth-url");
       if (result?.authUrl) {
         window.location.href = result.authUrl;
       } else {

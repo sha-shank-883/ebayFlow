@@ -38,12 +38,15 @@ export class EbayController {
     @Query('state') state: string,
     @Res() res: Response,
   ) {
-    // state contains workspaceId
-    await this.ebayService.handleCallback(code, state);
-    
-    // Redirect back to frontend settings page
-    const frontendUrl = this.configService.get('NEXTAUTH_URL') || 'http://localhost:3000';
-    return res.redirect(`${frontendUrl}/settings?success=true`);
+    try {
+      await this.ebayService.handleCallback(code, state);
+      const frontendUrl = this.configService.get('FRONTEND_URL') || 'http://localhost:3000';
+      return res.redirect(`${frontendUrl}/settings?success=true`);
+    } catch (error: any) {
+      console.error('[eBay Callback] Error:', error);
+      const frontendUrl = this.configService.get('FRONTEND_URL') || 'http://localhost:3000';
+      return res.redirect(`${frontendUrl}/settings?error=ebay_auth_failed`);
+    }
   }
 
   @Get('accounts')

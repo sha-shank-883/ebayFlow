@@ -40,7 +40,7 @@ export default function SettingsPage() {
 
   const loadEbayAccounts = async () => {
     try {
-      const accounts = await fetchApi<any[]>("/ebay?action=accounts");
+      const accounts = await fetchApi<any[]>("/ebay/accounts");
       setEbayAccounts(accounts || []);
     } catch (error) {
       console.error("Failed to load eBay accounts:", error);
@@ -51,7 +51,7 @@ export default function SettingsPage() {
 
   const handleConnectEbay = async () => {
     try {
-      const result = await fetchApi<{ authUrl: string }>("/ebay?action=auth-url");
+      const result = await fetchApi<{ authUrl: string }>("/ebay/auth-url");
       if (result?.authUrl) {
         window.location.href = result.authUrl;
       } else {
@@ -65,7 +65,7 @@ export default function SettingsPage() {
   const handleSyncEbay = async (accountId: string) => {
     setSyncing(accountId);
     try {
-      await fetchApi(`/ebay?action=sync&accountId=${accountId}`, { method: "POST" });
+      await fetchApi(`/ebay/accounts/${accountId}/sync`, { method: "POST" });
       toast.success("Sync started");
       loadEbayAccounts();
     } catch (error: any) {

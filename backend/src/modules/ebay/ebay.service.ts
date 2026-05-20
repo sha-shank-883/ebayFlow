@@ -3,27 +3,37 @@ import { encrypt, decrypt } from '../../lib/encryption';
 import { EbayClient } from '../../lib/ebay-client';
 import { ConfigService } from '@nestjs/config';
 
-const config = {
+const getConfig = () => ({
   clientId: process.env.EBAY_CLIENT_ID || '',
   clientSecret: process.env.EBAY_CLIENT_SECRET || '',
   redirectUri: process.env.EBAY_REDIRECT_URI || process.env.EBAY_CALLBACK_URL || '',
   environment: (process.env.EBAY_ENVIRONMENT === 'production' || process.env.EBAY_ENVIRONMENT === 'prod') ? 'production' : 'sandbox',
+});
+
+const getAuthBase = () => {
+  const env = process.env.EBAY_ENVIRONMENT;
+  return (env === 'production' || env === 'prod')
+    ? 'https://auth.ebay.com/oauth2/authorize'
+    : 'https://auth.sandbox.ebay.com/oauth2/authorize';
 };
 
-const EBAY_AUTH_BASE = config.environment === 'production'
-  ? 'https://auth.ebay.com/oauth2/authorize'
-  : 'https://auth.sandbox.ebay.com/oauth2/authorize';
+const getTokenBase = () => {
+  const env = process.env.EBAY_ENVIRONMENT;
+  return (env === 'production' || env === 'prod')
+    ? 'https://api.ebay.com/identity/v1/oauth2/token'
+    : 'https://api.sandbox.ebay.com/identity/v1/oauth2/token';
+};
 
-const EBAY_TOKEN_BASE = config.environment === 'production'
-  ? 'https://api.ebay.com/identity/v1/oauth2/token'
-  : 'https://api.sandbox.ebay.com/identity/v1/oauth2/token';
-
-const API_BASE = config.environment === 'production'
-  ? 'https://api.ebay.com'
-  : 'https://api.sandbox.ebay.com';
+const getApiBase = () => {
+  const env = process.env.EBAY_ENVIRONMENT;
+  return (env === 'production' || env === 'prod')
+    ? 'https://api.ebay.com'
+    : 'https://api.sandbox.ebay.com';
+};
 
 export class EbayService {
   async refreshAccessToken(accountId: string): Promise<string> {
+    const config = getConfig();
     const account = await prisma.ebayAccount.findUnique({
       where: { id: accountId },
     });
@@ -36,9 +46,7 @@ export class EbayService {
       throw new Error('No refresh token available');
     }
 
-    const tokenUrl = config.environment === 'production'
-      ? 'https://api.ebay.com/identity/v1/oauth2/token'
-      : 'https://api.sandbox.ebay.com/identity/v1/oauth2/token';
+    const tokenUrl = getTokenBase();
 
     const response = await fetch(tokenUrl, {
       method: 'POST',
@@ -96,6 +104,7 @@ export class EbayService {
   }
 
   async generateAuthUrl(workspaceId: string) {
+    const config = getConfig();
     const state = Buffer.from(JSON.stringify({ workspaceId })).toString('base64');
     const scopes = [
       'https://api.ebay.com/oauth/api_scope',
@@ -112,10 +121,11 @@ export class EbayService {
       state,
     });
 
-    return { authUrl: `${EBAY_AUTH_BASE}?${params.toString()}` };
+    return { authUrl: `${getAuthBase()}?${params.toString()}` };
   }
 
   async handleCallback(code: string, state: string) {
+    const config = getConfig();
     let workspaceId: string;
     try {
       const parsed = JSON.parse(Buffer.from(state, 'base64').toString());
@@ -124,7 +134,9 @@ export class EbayService {
       throw new Error('Invalid state parameter');
     }
 
-    const tokenResponse = await fetch(EBAY_TOKEN_BASE, {
+    console.log('[eBay OAuth] Token exchange with redirect_uri:', config.redirectUri);
+
+    const tokenResponse = await fetch(getTokenBase(), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -138,7 +150,9 @@ export class EbayService {
     });
 
     if (!tokenResponse.ok) {
-      throw new Error('Failed to exchange code for tokens');
+      const errorData = await tokenResponse.json().catch(() => ({}));
+      console.error('[eBay OAuth] Token exchange failed:', errorData);
+      throw new Error(`Failed to exchange code for tokens: ${errorData.error_description || tokenResponse.statusText}`);
     }
 
     const tokens = await tokenResponse.json();
