@@ -10,17 +10,6 @@ export function AuditSection() {
   const { data: apiData, loading } = useAuditSection();
   const audit = loading ? marketingConfig.audit : (apiData || marketingConfig.audit);
   const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
-  const features = audit.features || [];
 
   return (
     <section id="audit" className="py-24 md:py-32 relative overflow-hidden bg-background">
