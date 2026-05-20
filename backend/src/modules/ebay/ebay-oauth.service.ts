@@ -18,7 +18,7 @@ const EBAY_TOKEN_URLS = {
 export class EbayOauthService {
   getAuthorizationUrl(workspaceId: string) {
     const clientId = process.env.EBAY_CLIENT_ID;
-    const ruName = process.env.EBAY_RU_NAME || process.env.EBAY_REDIRECT_URI;
+    const redirectUri = process.env.EBAY_REDIRECT_URI || process.env.EBAY_CALLBACK_URL;
     const scopes = [
       'https://api.ebay.com/oauth/api_scope',
       'https://api.ebay.com/oauth/api_scope/sell.inventory',
@@ -31,7 +31,7 @@ export class EbayOauthService {
 
     const url = new URL(authUrl);
     url.searchParams.append('client_id', clientId!);
-    url.searchParams.append('redirect_uri', ruName!);
+    url.searchParams.append('redirect_uri', redirectUri!);
     url.searchParams.append('response_type', 'code');
     url.searchParams.append('scope', scopes);
     url.searchParams.append('state', state);
@@ -50,7 +50,7 @@ export class EbayOauthService {
 
     const clientId = process.env.EBAY_CLIENT_ID;
     const clientSecret = process.env.EBAY_CLIENT_SECRET;
-    const ruName = process.env.EBAY_RU_NAME || process.env.EBAY_REDIRECT_URI;
+    const redirectUri = process.env.EBAY_REDIRECT_URI || process.env.EBAY_CALLBACK_URL;
     const tokenUrl = EBAY_TOKEN_URLS[EBAY_ENV as keyof typeof EBAY_TOKEN_URLS] || EBAY_TOKEN_URLS.sandbox;
 
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
@@ -60,7 +60,7 @@ export class EbayOauthService {
       new URLSearchParams({
         grant_type: 'authorization_code',
         code: code,
-        redirect_uri: ruName!,
+        redirect_uri: redirectUri!,
       }).toString(),
       {
         headers: {

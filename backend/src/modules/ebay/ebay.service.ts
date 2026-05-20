@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 const config = {
   clientId: process.env.EBAY_CLIENT_ID || '',
   clientSecret: process.env.EBAY_CLIENT_SECRET || '',
-  ruName: process.env.EBAY_REDIRECT_URI || process.env.EBAY_RU_NAME || '',
+  redirectUri: process.env.EBAY_REDIRECT_URI || process.env.EBAY_CALLBACK_URL || '',
   environment: (process.env.EBAY_ENVIRONMENT === 'production' || process.env.EBAY_ENVIRONMENT === 'prod') ? 'production' : 'sandbox',
 };
 
@@ -106,7 +106,7 @@ export class EbayService {
 
     const params = new URLSearchParams({
       client_id: config.clientId,
-      redirect_uri: config.ruName,
+      redirect_uri: config.redirectUri,
       response_type: 'code',
       scope: scopes.join(' '),
       state,
@@ -133,7 +133,7 @@ export class EbayService {
       body: new URLSearchParams({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: config.ruName,
+        redirect_uri: config.redirectUri,
       }),
     });
 
