@@ -62,8 +62,9 @@ export function Features() {
     services: marketingConfig.services,
   });
 
-  const displayLogos = logosLoading ? marketingConfig.logos : (logos.length > 0 ? logos : marketingConfig.logos);
+  const displayLogos = logosLoading ? marketingConfig.logos : (logos && logos.length > 0 ? logos : marketingConfig.logos);
 
+  const services = features.services || marketingConfig.services;
   const bento = features.bento || marketingConfig.featureSection.bento;
 
   return (

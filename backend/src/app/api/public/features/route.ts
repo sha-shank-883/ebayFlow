@@ -13,16 +13,20 @@ async function handler() {
       const featuresSection = await prisma.sectionContent.findUnique({
         where: { pageId_sectionKey: { pageId: homePage.id, sectionKey: 'features' } },
       });
-      return featuresSection ? {
-        badge: featuresSection.content?.badge,
-        title: featuresSection.title,
-        titleAccent: featuresSection.subtitle,
-        description: featuresSection.content?.description,
-        bento: featuresSection.content?.bento,
-        items: featuresSection.content?.items,
-      } : null;
+      if (!featuresSection) return null;
+      
+      return {
+        badge: featuresSection.content?.badge || null,
+        title: featuresSection.title || null,
+        titleAccent: featuresSection.subtitle || null,
+        description: featuresSection.content?.description || null,
+        bento: featuresSection.content?.bento || null,
+        items: featuresSection.content?.items || [],
+        services: featuresSection.content?.items || [],
+      };
     });
 
+    if (!section) return NextResponse.json(null);
     return NextResponse.json(section);
   } catch (error) {
     return NextResponse.json(null);

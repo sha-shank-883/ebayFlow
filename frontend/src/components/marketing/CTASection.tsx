@@ -10,6 +10,18 @@ import { useCTASection } from "@/lib/admin/use-site-content";
 export function CTASection() {
   const { data: apiData, loading } = useCTASection();
   const cta = loading ? marketingConfig.ctaSection : (apiData || marketingConfig.ctaSection);
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
+  const benefits = cta.benefits || [];
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-background">
@@ -68,7 +80,7 @@ export function CTASection() {
               </div>
 
               <div className="mt-12 flex flex-wrap items-center justify-center gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                {cta.benefits.map((benefit: string, i: number) => (
+                {benefits.map((benefit: string, i: number) => (
                   <div key={i} className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-yellow-400" />
                     <span className="text-xs font-bold text-foreground uppercase tracking-widest">{benefit}</span>

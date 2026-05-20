@@ -9,6 +9,19 @@ import { useAuditSection } from "@/lib/admin/use-site-content";
 export function AuditSection() {
   const { data: apiData, loading } = useAuditSection();
   const audit = loading ? marketingConfig.audit : (apiData || marketingConfig.audit);
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
+  const features = audit.features || [];
 
   return (
     <section id="audit" className="py-24 md:py-32 relative overflow-hidden bg-background">
@@ -39,7 +52,7 @@ export function AuditSection() {
             </p>
 
             <div className="space-y-6">
-              {audit.features.map((item: any, i: number) => {
+              {features.map((item: any, i: number) => {
                 const Icon = (Icons as any)[item.icon];
                 return (
                   <div key={i} className="flex gap-4 group">

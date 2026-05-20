@@ -27,6 +27,19 @@ const iconMap: Record<string, any> = {
 export function HowItWorks() {
   const { data: apiData, loading } = useHowItWorks();
   const howItWorks = loading ? marketingConfig.howItWorks : (apiData || marketingConfig.howItWorks);
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
+  const steps = howItWorks.steps || [];
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-background">
@@ -56,8 +69,9 @@ export function HowItWorks() {
         </motion.div>
 
         <div className="max-w-5xl mx-auto">
-          {howItWorks.steps.map((step: any, index: number) => {
+          {steps.map((step: any, index: number) => {
             const Icon = iconMap[step.icon] || Rocket;
+            const details = step.details || [];
             return (
               <motion.div
                 key={step.title}
@@ -67,7 +81,7 @@ export function HowItWorks() {
                 transition={{ duration: 0.5, delay: index * 0.15 }}
                 className="relative flex flex-col md:flex-row gap-8 items-start mb-16 last:mb-0"
               >
-                {index < howItWorks.steps.length - 1 && (
+                {index < steps.length - 1 && (
                   <div className="hidden md:block absolute left-8 top-16 w-0.5 h-full bg-border" />
                 )}
 
@@ -86,7 +100,7 @@ export function HowItWorks() {
                     {step.description}
                   </p>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    {step.details.map((detail: string) => (
+                    {details.map((detail: string) => (
                       <div
                         key={detail}
                         className="flex items-center gap-3 group"
