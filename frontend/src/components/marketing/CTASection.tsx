@@ -11,17 +11,6 @@ export function CTASection() {
   const { data: apiData, loading } = useCTASection();
   const cta = loading ? marketingConfig.ctaSection : (apiData || marketingConfig.ctaSection);
   const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
-  const benefits = cta.benefits || [];
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-background">
