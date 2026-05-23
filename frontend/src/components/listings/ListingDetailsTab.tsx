@@ -201,7 +201,6 @@ export function ListingDetailsTab({ formData, updateField, listing }: ListingDet
           )}
         </CardContent>
       </Card>
-
       <Card className="shadow-card">
         <CardHeader>
           <CardTitle>Description</CardTitle>
