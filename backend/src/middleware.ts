@@ -1,8 +1,19 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+const configuredOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim().replace(/\/+$/, ''))
+  : [];
+
+if (process.env.FRONTEND_URL) {
+  const feUrl = process.env.FRONTEND_URL.trim().replace(/\/+$/, '');
+  if (!configuredOrigins.includes(feUrl)) {
+    configuredOrigins.push(feUrl);
+  }
+}
+
+const allowedOrigins = configuredOrigins.length > 0
+  ? configuredOrigins
   : ["http://localhost:3000", "http://127.0.0.1:3000"];
 
 export function middleware(request: NextRequest) {
