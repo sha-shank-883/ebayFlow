@@ -9,8 +9,38 @@ export class ApiError extends Error {
   }
 }
 
+export function getAuthToken(): string | null {
+  // 1. Check Zustand in-memory state
+  const stateToken = useAuthStore.getState().token;
+  if (stateToken && typeof stateToken === 'string' && stateToken.trim().length > 0) {
+    return stateToken;
+  }
+
+  // 2. Fallback to localStorage in browser environment
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('token');
+      if (raw && raw !== 'null' && raw !== 'undefined' && raw.trim().length > 0) {
+        return raw;
+      }
+
+      const authStorage = localStorage.getItem('auth-storage');
+      if (authStorage) {
+        const parsed = JSON.parse(authStorage);
+        if (parsed?.state?.token && typeof parsed.state.token === 'string') {
+          return parsed.state.token;
+        }
+      }
+    } catch (err) {
+      console.warn('[getAuthToken] Failed to read token from localStorage:', err);
+    }
+  }
+
+  return null;
+}
+
 export async function fetchApi<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const token = useAuthStore.getState().token;
+  const token = getAuthToken();
 
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
