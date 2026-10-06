@@ -7,7 +7,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-fallback-secret';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || 'dev-fallback-secret';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET || process.env.JWT_SECRET || 'dev-fallback-secret';
 const BCRYPT_ROUNDS = 12;
 const MAX_LOGIN_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
@@ -15,10 +15,12 @@ const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY = '7d';
 
 function requireJwtSecrets() {
-  if (!process.env.JWT_SECRET) {
+  const secret = process.env.JWT_SECRET;
+  const refreshSecret = process.env.JWT_REFRESH_SECRET || process.env.REFRESH_TOKEN_SECRET || secret;
+  if (!secret) {
     throw new Error('JWT_SECRET environment variable is required');
   }
-  if (!process.env.JWT_REFRESH_SECRET) {
+  if (!refreshSecret) {
     throw new Error('JWT_REFRESH_SECRET environment variable is required');
   }
 }
