@@ -33,6 +33,13 @@ export const useAuthStore = create<AuthState>()(
       isInitialized: false,
       setUser: (user, token) => {
         const currentToken = token || get().token;
+        if (typeof window !== 'undefined') {
+          if (currentToken) {
+            localStorage.setItem('token', currentToken);
+          } else {
+            localStorage.removeItem('token');
+          }
+        }
         set({ 
           user, 
           token: currentToken, 
@@ -43,6 +50,9 @@ export const useAuthStore = create<AuthState>()(
       },
       logout: async () => {
         const token = get().token;
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('token');
+        }
         try {
           await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api'}/auth/logout`, {
             method: 'POST',
@@ -76,6 +86,9 @@ export const useAuthStore = create<AuthState>()(
           }
 
           const data = await response.json();
+          if (typeof window !== 'undefined' && data.accessToken) {
+            localStorage.setItem('token', data.accessToken);
+          }
           set({
             token: data.accessToken,
             user: data.user,
@@ -86,6 +99,9 @@ export const useAuthStore = create<AuthState>()(
           return true;
         } catch (error) {
           console.error('Token refresh error:', error);
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('token');
+          }
           set({ user: null, token: null, isAuthenticated: false, isLoading: false, isInitialized: true });
           return false;
         }

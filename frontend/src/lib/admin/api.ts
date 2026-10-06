@@ -1,7 +1,36 @@
+import { useAuthStore } from "@/store/useAuthStore";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
 
+function getAuthToken(): string | null {
+  if (typeof window === 'undefined') return null;
+
+  // 1. Check Zustand store directly
+  try {
+    const storeToken = useAuthStore.getState().token;
+    if (storeToken) return storeToken;
+  } catch {}
+
+  // 2. Check direct localStorage key 'token'
+  try {
+    const directToken = localStorage.getItem('token');
+    if (directToken) return directToken;
+  } catch {}
+
+  // 3. Check Zustand persisted auth-storage
+  try {
+    const authStorage = localStorage.getItem('auth-storage');
+    if (authStorage) {
+      const parsed = JSON.parse(authStorage);
+      if (parsed?.state?.token) return parsed.state.token;
+    }
+  } catch {}
+
+  return null;
+}
+
 async function adminFetch(path: string, options: RequestInit = {}) {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  const token = getAuthToken();
   
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
@@ -17,7 +46,11 @@ async function adminFetch(path: string, options: RequestInit = {}) {
     throw new Error(error.message || `HTTP ${res.status}`);
   }
 
-  return res.json();
+  const json = await res.json();
+  if (json && typeof json === 'object' && 'success' in json && 'data' in json) {
+    return json.data;
+  }
+  return json;
 }
 
 export const adminApi = {
@@ -59,7 +92,7 @@ export const adminApi = {
       return adminFetch(`/admin/media?${params}`);
     },
     upload: async (file: File, alt?: string, category?: string) => {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+      const token = getAuthToken();
       const formData = new FormData();
       formData.append('file', file);
       if (alt) formData.append('alt', alt);
@@ -72,7 +105,11 @@ export const adminApi = {
       });
 
       if (!res.ok) throw new Error('Upload failed');
-      return res.json();
+      const json = await res.json();
+      if (json && typeof json === 'object' && 'success' in json && 'data' in json) {
+        return json.data;
+      }
+      return json;
     },
     update: (id: string, data: any) => adminFetch(`/admin/media/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
     delete: (id: string) => adminFetch(`/admin/media/${id}`, { method: 'DELETE' }),
@@ -120,10 +157,18 @@ export const adminApi = {
     list: (queryParams?: string, includeInactive = false) => {
       const base = queryParams || '';
       const sep = base.includes('?') ? '&' : '?';
-      return adminFetch(`/admin/testimonials${base}${sep}includeInactive=${includeInactive}`).then((res: any) => ({
-        items: res.data,
-        pagination: res.pagination,
-      }));
+      return adminFetch(`/admin/testimonials${base}${sep}includeInactive=${includeInactive}`).then((res: any) => {
+        if (res && res.data && res.pagination) {
+          return { items: res.data, pagination: res.pagination };
+        }
+        if (res && Array.isArray(res.items)) {
+          return res;
+        }
+        return {
+          items: Array.isArray(res) ? res : (res?.data || []),
+          pagination: res?.pagination || { total: 0, totalPages: 1, page: 1, limit: 20 },
+        };
+      });
     },
     create: (data: any) => adminFetch('/admin/testimonials', { method: 'POST', body: JSON.stringify(data) }),
     update: (id: string, data: any) => adminFetch(`/admin/testimonials/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
