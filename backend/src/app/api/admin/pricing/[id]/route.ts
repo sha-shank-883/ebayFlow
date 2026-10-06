@@ -1,80 +1,105 @@
 import { NextResponse } from 'next/server';
 import { requireSuperAdmin } from '../../../_auth';
-import { prisma } from '../../../../../lib/prisma';
+import { prisma } from '@/lib/prisma';
 import { createAuditLog } from '../../_audit';
-import { sanitizeObject, validateSlug } from '@/lib/sanitize';
 import { invalidateCache } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const { searchParams } = new URL(request.url);
-    const includeInactive = searchParams.get('includeInactive') === 'true';
-    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
-    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')));
-    const skip = (page - 1) * limit;
-
-    const where = includeInactive ? { deletedAt: null } : { isActive: true, deletedAt: null };
-
-    const [pages, total] = await Promise.all([
-      prisma.page.findMany({
-        where,
-        include: { seo: true, _count: { select: { sections: true } } },
-        orderBy: { sortOrder: 'asc' },
-        skip,
-        take: limit,
-      }),
-      prisma.page.count({ where }),
-    ]);
-
-    return NextResponse.json({
-      data: pages,
-      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    const plan = await prisma.pricingPlan.findUnique({
+      where: { id: params.id },
     });
+
+    if (!plan || plan.deletedAt) {
+      return NextResponse.json({ message: 'Pricing plan not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(plan);
   } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
     const admin = await requireSuperAdmin(request);
     if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
 
-    const sanitizedBody = sanitizeObject(await request.json()) as Record<string, unknown>;
-    const body = sanitizedBody as { slug?: string; title?: string; description?: string; template?: string; sortOrder?: number };
-    if (body.slug && !validateSlug(body.slug)) return NextResponse.json({ error: 'Invalid slug' }, { status: 400 });
-    const page = await prisma.page.create({
+    const body = await request.json();
+    const existing = await prisma.pricingPlan.findUnique({ where: { id: params.id } });
+    if (!existing) return NextResponse.json({ message: 'Pricing plan not found' }, { status: 404 });
+
+    const updated = await prisma.pricingPlan.update({
+      where: { id: params.id },
       data: {
-        slug: body.slug,
-        title: body.title,
-        description: body.description || '',
-        template: body.template || 'default',
-        sortOrder: body.sortOrder || 0,
+        ...(body.name !== undefined ? { name: body.name } : {}),
+        ...(body.price !== undefined ? { price: body.price } : {}),
+        ...(body.period !== undefined ? { period: body.period } : {}),
+        ...(body.description !== undefined ? { description: body.description } : {}),
+        ...(body.features !== undefined ? { features: Array.isArray(body.features) ? body.features : [] } : {}),
+        ...(body.isPopular !== undefined ? { isPopular: !!body.isPopular } : {}),
+        ...(body.ctaText !== undefined ? { ctaText: body.ctaText } : {}),
+        ...(body.ctaLink !== undefined ? { ctaLink: body.ctaLink } : {}),
+        ...(body.order !== undefined ? { order: body.order } : {}),
+        ...(body.isActive !== undefined ? { isActive: body.isActive } : {}),
       },
     });
 
     await createAuditLog({
       userId: admin.id,
       userEmail: admin.email,
-      action: 'CREATE',
-      entityType: 'Page',
-      entityId: page.id,
-      entityName: page.title,
-      changes: { after: page },
+      action: 'UPDATE',
+      entityType: 'PricingPlan',
+      entityId: updated.id,
+      entityName: updated.name,
+      changes: { before: existing, after: updated },
     });
 
-    try { await invalidateCache('public:sections:*'); await invalidateCache('public:seo:*'); } catch {}
+    try {
+      await invalidateCache('public:pricing:monthly');
+      await invalidateCache('public:pricing:yearly');
+    } catch {}
 
-    return NextResponse.json(page, { status: 201 });
-  } catch (error: any) {
-    if (error.code === 'P2002') {
-      return NextResponse.json({ message: 'Page slug already exists' }, { status: 409 });
-    }
+    return NextResponse.json(updated);
+  } catch (error) {
+    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  try {
+    const admin = await requireSuperAdmin(request);
+    if (!admin) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
+    const existing = await prisma.pricingPlan.findUnique({ where: { id: params.id } });
+    if (!existing) return NextResponse.json({ message: 'Pricing plan not found' }, { status: 404 });
+
+    await prisma.pricingPlan.update({
+      where: { id: params.id },
+      data: { deletedAt: new Date() },
+    });
+
+    await createAuditLog({
+      userId: admin.id,
+      userEmail: admin.email,
+      action: 'DELETE',
+      entityType: 'PricingPlan',
+      entityId: existing.id,
+      entityName: existing.name,
+    });
+
+    try {
+      await invalidateCache('public:pricing:monthly');
+      await invalidateCache('public:pricing:yearly');
+    } catch {}
+
+    return NextResponse.json({ message: 'Pricing plan deleted' });
+  } catch (error) {
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
   }
 }

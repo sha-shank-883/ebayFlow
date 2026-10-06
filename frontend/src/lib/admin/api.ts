@@ -85,11 +85,27 @@ export const adminApi = {
 
   // Media
   media: {
-    list: (category?: string, includeInactive = false) => {
-      const params = new URLSearchParams();
-      if (category) params.set('category', category);
-      if (includeInactive) params.set('includeInactive', 'true');
-      return adminFetch(`/admin/media?${params}`);
+    list: (paramsOrCategory?: string, includeInactive = false) => {
+      let url = '/admin/media';
+      if (paramsOrCategory) {
+        if (paramsOrCategory.startsWith('?') || paramsOrCategory.includes('=')) {
+          const sep = paramsOrCategory.startsWith('?') ? '' : '?';
+          url = `/admin/media${sep}${paramsOrCategory}&includeInactive=${includeInactive}`;
+        } else {
+          url = `/admin/media?category=${paramsOrCategory}&includeInactive=${includeInactive}`;
+        }
+      } else {
+        url = `/admin/media?includeInactive=${includeInactive}`;
+      }
+      return adminFetch(url).then((res: any) => {
+        const items = res?.data || (Array.isArray(res?.items) ? res.items : (Array.isArray(res) ? res : []));
+        const pagination = res?.pagination || { page: 1, limit: 20, total: items.length, totalPages: Math.ceil(items.length / 20) || 1 };
+        return {
+          data: items,
+          items,
+          pagination,
+        };
+      });
     },
     upload: async (file: File, alt?: string, category?: string) => {
       const token = getAuthToken();
@@ -138,11 +154,28 @@ export const adminApi = {
 
   // Blog
   blog: {
-    list: (status?: string, includeInactive = false) => {
-      const params = new URLSearchParams();
-      if (status) params.set('status', status);
-      if (includeInactive) params.set('includeInactive', 'true');
-      return adminFetch(`/admin/blog?${params}`);
+    list: (paramsOrStatus?: string, includeInactive = false) => {
+      let url = '/admin/blog';
+      if (paramsOrStatus) {
+        if (paramsOrStatus.startsWith('?') || paramsOrStatus.includes('=')) {
+          const sep = paramsOrStatus.startsWith('?') ? '' : '?';
+          url = `/admin/blog${sep}${paramsOrStatus}&includeInactive=${includeInactive}`;
+        } else {
+          url = `/admin/blog?status=${paramsOrStatus}&includeInactive=${includeInactive}`;
+        }
+      } else {
+        url = `/admin/blog?includeInactive=${includeInactive}`;
+      }
+      return adminFetch(url).then((res: any) => {
+        const items = res?.data || (Array.isArray(res?.posts) ? res.posts : (Array.isArray(res?.items) ? res.items : (Array.isArray(res) ? res : [])));
+        const pagination = res?.pagination || { page: 1, limit: 20, total: items.length, totalPages: Math.ceil(items.length / 20) || 1 };
+        return {
+          data: items,
+          posts: items,
+          items,
+          pagination,
+        };
+      });
     },
     get: (id: string) => adminFetch(`/admin/blog/${id}`),
     create: (data: any) => adminFetch('/admin/blog', { method: 'POST', body: JSON.stringify(data) }),
@@ -158,15 +191,13 @@ export const adminApi = {
       const base = queryParams || '';
       const sep = base.includes('?') ? '&' : '?';
       return adminFetch(`/admin/testimonials${base}${sep}includeInactive=${includeInactive}`).then((res: any) => {
-        if (res && res.data && res.pagination) {
-          return { items: res.data, pagination: res.pagination };
-        }
-        if (res && Array.isArray(res.items)) {
-          return res;
-        }
+        const items = res?.data || (Array.isArray(res?.items) ? res.items : (Array.isArray(res?.testimonials) ? res.testimonials : (Array.isArray(res) ? res : [])));
+        const pagination = res?.pagination || { page: 1, limit: 20, total: items.length, totalPages: Math.ceil(items.length / 20) || 1 };
         return {
-          items: Array.isArray(res) ? res : (res?.data || []),
-          pagination: res?.pagination || { total: 0, totalPages: 1, page: 1, limit: 20 },
+          data: items,
+          items,
+          testimonials: items,
+          pagination,
         };
       });
     },
