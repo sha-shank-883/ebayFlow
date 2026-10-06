@@ -11,10 +11,35 @@ export async function getAuthenticatedUser(request: Request) {
   try {
     const decoded = jwt.verify(token, JWT_SECRET!) as any;
     if (!decoded.workspaceId && decoded.userId) {
-      const membership = await prisma.workspaceMember.findFirst({
+      let membership = await prisma.workspaceMember.findFirst({
         where: { userId: decoded.userId },
         orderBy: { createdAt: 'asc' },
       });
+      if (!membership) {
+        const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+        if (user) {
+          const workspaceName = `${user.name || 'My'} Store`;
+          const baseSlug = (user.name || 'store').toLowerCase().replace(/[^a-z0-9]/g, '-') || 'my-store';
+          const slug = `${baseSlug}-${Date.now().toString(36)}`;
+          const newWorkspace = await prisma.workspace.create({
+            data: {
+              name: workspaceName,
+              slug,
+              plan: user.role === 'SUPER_ADMIN' ? 'PROFESSIONAL' : 'STARTER',
+              listingsLimit: user.role === 'SUPER_ADMIN' ? 100000 : 200,
+              accountsLimit: user.role === 'SUPER_ADMIN' ? 50 : 1,
+              aiCreditsLimit: user.role === 'SUPER_ADMIN' ? 10000 : 50,
+            },
+          });
+          membership = await prisma.workspaceMember.create({
+            data: {
+              userId: user.id,
+              workspaceId: newWorkspace.id,
+              role: 'OWNER',
+            },
+          });
+        }
+      }
       if (membership) {
         decoded.workspaceId = membership.workspaceId;
       }
