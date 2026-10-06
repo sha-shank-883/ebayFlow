@@ -51,11 +51,16 @@ export default function SettingsPage() {
 
   const handleConnectEbay = async () => {
     try {
-      const result = await fetchApi<{ authUrl: string }>("/ebay/auth-url");
-      if (result?.authUrl) {
-        window.location.href = result.authUrl;
+      const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+      const params = new URLSearchParams();
+      if (currentOrigin) params.append('frontendUrl', currentOrigin);
+
+      const result = await fetchApi<{ authUrl?: string; url?: string }>(`/ebay?action=auth-url&${params.toString()}`);
+      const targetUrl = result?.authUrl || result?.url;
+      if (targetUrl) {
+        window.location.href = targetUrl;
       } else {
-        toast.error("Failed to get eBay authorization URL");
+        toast.error("Failed to get eBay authorization URL. Please verify eBay credentials.");
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to connect eBay");

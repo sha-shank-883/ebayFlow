@@ -3,29 +3,42 @@ import { encrypt, decrypt } from '../../lib/encryption';
 import { EbayClient } from '../../lib/ebay-client';
 import { ConfigService } from '@nestjs/config';
 
-const getConfig = () => ({
-  clientId: process.env.EBAY_CLIENT_ID || '',
-  clientSecret: process.env.EBAY_CLIENT_SECRET || '',
-  redirectUri: process.env.EBAY_REDIRECT_URI || process.env.EBAY_CALLBACK_URL || '',
-  environment: (process.env.EBAY_ENVIRONMENT === 'production' || process.env.EBAY_ENVIRONMENT === 'prod') ? 'production' : 'sandbox',
-});
+export interface DynamicEbayAuthOptions {
+  redirectUri?: string;
+  frontendUrl?: string;
+  clientId?: string;
+  clientSecret?: string;
+  environment?: 'production' | 'sandbox' | string;
+  ruName?: string;
+}
 
-const getAuthBase = () => {
-  const env = process.env.EBAY_ENVIRONMENT;
+const getConfig = (options?: DynamicEbayAuthOptions) => {
+  const envRaw = options?.environment || process.env.EBAY_ENVIRONMENT;
+  const isProd = envRaw === 'production' || envRaw === 'prod';
+  return {
+    clientId: options?.clientId || process.env.EBAY_CLIENT_ID || '',
+    clientSecret: options?.clientSecret || process.env.EBAY_CLIENT_SECRET || '',
+    redirectUri: options?.redirectUri || options?.ruName || process.env.EBAY_REDIRECT_URI || process.env.EBAY_CALLBACK_URL || '',
+    environment: isProd ? 'production' : 'sandbox',
+  };
+};
+
+const getAuthBase = (environment?: string) => {
+  const env = environment || process.env.EBAY_ENVIRONMENT;
   return (env === 'production' || env === 'prod')
     ? 'https://auth.ebay.com/oauth2/authorize'
     : 'https://auth.sandbox.ebay.com/oauth2/authorize';
 };
 
-const getTokenBase = () => {
-  const env = process.env.EBAY_ENVIRONMENT;
+const getTokenBase = (environment?: string) => {
+  const env = environment || process.env.EBAY_ENVIRONMENT;
   return (env === 'production' || env === 'prod')
     ? 'https://api.ebay.com/identity/v1/oauth2/token'
     : 'https://api.sandbox.ebay.com/identity/v1/oauth2/token';
 };
 
-const getApiBase = () => {
-  const env = process.env.EBAY_ENVIRONMENT;
+const getApiBase = (environment?: string) => {
+  const env = environment || process.env.EBAY_ENVIRONMENT;
   return (env === 'production' || env === 'prod')
     ? 'https://api.ebay.com'
     : 'https://api.sandbox.ebay.com';
@@ -103,9 +116,24 @@ export class EbayService {
     return { accessToken: decrypt(account.accessToken), account };
   }
 
-  async generateAuthUrl(workspaceId: string) {
-    const config = getConfig();
-    const state = Buffer.from(JSON.stringify({ workspaceId })).toString('base64');
+  async generateAuthUrl(workspaceId: string, options?: DynamicEbayAuthOptions) {
+    const config = getConfig(options);
+    
+    // Check if client_id is available
+    if (!config.clientId) {
+      console.warn('[eBay OAuth] No EBAY_CLIENT_ID configured. Set it in Settings or env variables.');
+    }
+
+    const statePayload = {
+      workspaceId,
+      frontendUrl: options?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:3000',
+      redirectUri: config.redirectUri,
+      environment: config.environment,
+      ...(options?.clientId ? { clientId: options.clientId } : {}),
+      ...(options?.clientSecret ? { clientSecret: encrypt(options.clientSecret) } : {}),
+    };
+
+    const state = Buffer.from(JSON.stringify(statePayload)).toString('base64');
     const scopes = [
       'https://api.ebay.com/oauth/api_scope',
       'https://api.ebay.com/oauth/api_scope/sell.inventory',
@@ -121,22 +149,43 @@ export class EbayService {
       state,
     });
 
-    return { authUrl: `${getAuthBase()}?${params.toString()}` };
+    const authBase = getAuthBase(config.environment);
+    return {
+      authUrl: `${authBase}?${params.toString()}`,
+      redirectUri: config.redirectUri,
+      frontendUrl: statePayload.frontendUrl,
+      environment: config.environment,
+    };
   }
 
   async handleCallback(code: string, state: string) {
-    const config = getConfig();
-    let workspaceId: string;
+    let stateData: {
+      workspaceId: string;
+      frontendUrl?: string;
+      redirectUri?: string;
+      environment?: string;
+      clientId?: string;
+      clientSecret?: string;
+    };
+
     try {
-      const parsed = JSON.parse(Buffer.from(state, 'base64').toString());
-      workspaceId = parsed.workspaceId;
+      stateData = JSON.parse(Buffer.from(state, 'base64').toString());
+      if (!stateData.workspaceId) throw new Error('Missing workspaceId in state');
     } catch {
       throw new Error('Invalid state parameter');
     }
 
-    console.log('[eBay OAuth] Token exchange with redirect_uri:', config.redirectUri);
+    const decryptedSecret = stateData.clientSecret ? decrypt(stateData.clientSecret) : undefined;
+    const config = getConfig({
+      clientId: stateData.clientId,
+      clientSecret: decryptedSecret,
+      redirectUri: stateData.redirectUri,
+      environment: stateData.environment,
+    });
 
-    const tokenResponse = await fetch(getTokenBase(), {
+    console.log('[eBay OAuth] Dynamic token exchange with redirect_uri:', config.redirectUri, 'env:', config.environment);
+
+    const tokenResponse = await fetch(getTokenBase(config.environment), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',

@@ -16,7 +16,27 @@ export async function GET(request: Request) {
 
   try {
     if (action === 'auth-url') {
-      const result = await ebayService.generateAuthUrl(user.workspaceId);
+      const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'localhost:4000';
+      const proto = request.headers.get('x-forwarded-proto') || (host.includes('localhost') ? 'http' : 'https');
+      const autoRedirectUri = `${proto}://${host}/api/ebay/callback`;
+
+      const referer = request.headers.get('referer');
+      const origin = request.headers.get('origin');
+      let autoFrontendUrl = searchParams.get('frontendUrl') || origin || (referer ? new URL(referer).origin : undefined) || process.env.FRONTEND_URL || 'http://localhost:3000';
+      autoFrontendUrl = autoFrontendUrl.replace(/\/+$/, '');
+
+      const customClientId = searchParams.get('clientId') || undefined;
+      const customClientSecret = searchParams.get('clientSecret') || undefined;
+      const customEnvironment = searchParams.get('environment') || undefined;
+      const customRuName = searchParams.get('ruName') || searchParams.get('redirectUri') || autoRedirectUri;
+
+      const result = await ebayService.generateAuthUrl(user.workspaceId, {
+        frontendUrl: autoFrontendUrl,
+        redirectUri: customRuName,
+        clientId: customClientId,
+        clientSecret: customClientSecret,
+        environment: customEnvironment,
+      });
       return NextResponse.json(result);
     }
 
