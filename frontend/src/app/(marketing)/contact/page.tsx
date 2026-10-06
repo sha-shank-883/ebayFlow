@@ -20,14 +20,13 @@ export default function ContactPage() {
 
   const contactPage = loading ? marketingConfig.contactPage : (contactData || marketingConfig.contactPage);
 
-  const contactEmail = settingsLoading ? marketingConfig.contact.email : settings.contactEmail || marketingConfig.contact.email;
-  const contactPhone = settingsLoading ? marketingConfig.contact.phone : settings.contactPhone || marketingConfig.contact.phone;
-  const contactAddress = settingsLoading ? marketingConfig.contact.address : {
-    line1: settings.contactAddress?.split(",")[0] || marketingConfig.contact.address.line1,
-    city: settings.contactAddress?.split(",")[1]?.trim() || marketingConfig.contact.address.city,
-    postcode: settings.contactAddress?.split(",")[2]?.trim() || marketingConfig.contact.address.postcode,
-    country: settings.contactAddress?.split(",")[3]?.trim() || marketingConfig.contact.address.country,
-  };
+  const contactEmail = settingsLoading ? marketingConfig.contact.email : (settings.contactEmail !== undefined ? settings.contactEmail : marketingConfig.contact.email);
+  const contactPhone = settingsLoading ? marketingConfig.contact.phone : (settings.contactPhone !== undefined ? settings.contactPhone : marketingConfig.contact.phone);
+  const contactAddress = settingsLoading 
+    ? `${marketingConfig.contact.address.line1}, ${marketingConfig.contact.address.city}, ${marketingConfig.contact.address.postcode}, ${marketingConfig.contact.address.country}`
+    : (settings.contactAddress !== undefined && settings.contactAddress !== null && settings.contactAddress.trim() !== ''
+        ? settings.contactAddress
+        : `${marketingConfig.contact.address.line1}, ${marketingConfig.contact.address.city}, ${marketingConfig.contact.address.postcode}, ${marketingConfig.contact.address.country}`);
   
   const [formData, setFormData] = useState({
     name: "",
@@ -168,41 +167,45 @@ export default function ContactPage() {
                 <div className="bg-card rounded-[32px] p-8 border border-border backdrop-blur-xl">
                   <h3 className="text-xl font-bold text-foreground mb-6">{contactPage.info.title}</h3>
                   <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                        <Mail className="h-6 w-6 text-primary" />
+                    {contactEmail && contactEmail.trim() && (
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                          <Mail className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-foreground mb-1">Email</p>
+                          <a href={`mailto:${contactEmail}`} className="text-muted-foreground hover:text-primary transition-colors">
+                            {contactEmail}
+                          </a>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground mb-1">Email</p>
-                        <a href={`mailto:${contactEmail}`} className="text-muted-foreground hover:text-primary transition-colors">
-                          {contactEmail}
-                        </a>
+                    )}
+                    {contactPhone && contactPhone.trim() && (
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                          <Phone className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-foreground mb-1">Phone</p>
+                          <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="text-muted-foreground hover:text-primary transition-colors">
+                            {contactPhone}
+                          </a>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                        <Phone className="h-6 w-6 text-primary" />
+                    )}
+                    {contactAddress && contactAddress.trim() && (
+                      <div className="flex items-start gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                          <MapPin className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-foreground mb-1">Office</p>
+                          <p className="text-muted-foreground leading-relaxed">
+                            {contactAddress}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground mb-1">Phone</p>
-                        <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="text-muted-foreground hover:text-primary transition-colors">
-                          {contactPhone}
-                        </a>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                        <MapPin className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-foreground mb-1">Office</p>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {contactAddress.line1}<br />
-                          {contactAddress.city}, {contactAddress.postcode}<br />
-                          {contactAddress.country}
-                        </p>
-                      </div>
-                    </div>
+                    )}
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                         <Clock className="h-6 w-6 text-primary" />

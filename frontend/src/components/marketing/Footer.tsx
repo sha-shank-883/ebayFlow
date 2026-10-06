@@ -9,17 +9,16 @@ export function Footer() {
   const { items: footerNav, loading: navLoading } = useNavigation("footer");
   const { settings, loading: settingsLoading } = useSettings();
 
-  const contactEmail = settingsLoading ? marketingConfig.contact.email : settings.contactEmail || marketingConfig.contact.email;
-  const contactPhone = settingsLoading ? marketingConfig.contact.phone : settings.contactPhone || marketingConfig.contact.phone;
+  const contactEmail = settingsLoading ? marketingConfig.contact.email : (settings.contactEmail !== undefined ? settings.contactEmail : marketingConfig.contact.email);
+  const contactPhone = settingsLoading ? marketingConfig.contact.phone : (settings.contactPhone !== undefined ? settings.contactPhone : marketingConfig.contact.phone);
   const contactAddress = settingsLoading
-    ? { line1: marketingConfig.contact.address.line1, city: marketingConfig.contact.address.city }
-    : {
-        line1: settings.contactAddress?.split(",")[0] || marketingConfig.contact.address.line1,
-        city: settings.contactAddress?.split(",")[1]?.trim() || marketingConfig.contact.address.city,
-      };
+    ? `${marketingConfig.contact.address.line1}, ${marketingConfig.contact.address.city}, ${marketingConfig.contact.address.postcode}, ${marketingConfig.contact.address.country}`
+    : (settings.contactAddress !== undefined && settings.contactAddress !== null && settings.contactAddress.trim() !== ''
+        ? settings.contactAddress
+        : `${marketingConfig.contact.address.line1}, ${marketingConfig.contact.address.city}, ${marketingConfig.contact.address.postcode}, ${marketingConfig.contact.address.country}`);
 
-  const description = settingsLoading ? marketingConfig.footer.description : settings.description || marketingConfig.footer.description;
-  const copyright = settingsLoading ? marketingConfig.footer.copyright : settings.copyright || marketingConfig.footer.copyright;
+  const description = settingsLoading ? marketingConfig.footer.description : (settings.description || marketingConfig.footer.description);
+  const copyright = settingsLoading ? marketingConfig.footer.copyright : (settings.copyright || marketingConfig.footer.copyright);
 
   const navItems = navLoading
     ? [
@@ -71,18 +70,28 @@ export function Footer() {
             </p>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                 <MapPin className="h-4 w-4 text-primary" />
-                  {contactAddress.line1}, {contactAddress.city}
-              </div>
-              <div className="flex items-center gap-3 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                 <Phone className="h-4 w-4 text-primary" />
-                 {contactPhone}
-              </div>
-              <div className="flex items-center gap-3 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                 <Mail className="h-4 w-4 text-primary" />
-                 {contactEmail}
-              </div>
+              {contactAddress && contactAddress.trim() && (
+                <div className="flex items-start gap-3 text-xs font-medium text-muted-foreground">
+                   <MapPin className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                   <span className="leading-relaxed">{contactAddress}</span>
+                </div>
+              )}
+              {contactPhone && contactPhone.trim() && (
+                <div className="flex items-center gap-3 text-xs font-medium text-muted-foreground">
+                   <Phone className="h-4 w-4 text-primary shrink-0" />
+                   <a href={`tel:${contactPhone.replace(/\s/g, '')}`} className="hover:text-primary transition-colors">
+                     {contactPhone}
+                   </a>
+                </div>
+              )}
+              {contactEmail && contactEmail.trim() && (
+                <div className="flex items-center gap-3 text-xs font-medium text-muted-foreground">
+                   <Mail className="h-4 w-4 text-primary shrink-0" />
+                   <a href={`mailto:${contactEmail}`} className="hover:text-primary transition-colors">
+                     {contactEmail}
+                   </a>
+                </div>
+              )}
             </div>
           </div>
 
