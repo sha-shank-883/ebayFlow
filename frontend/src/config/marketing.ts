@@ -8,7 +8,7 @@ export const marketingConfig = {
     github: "https://github.com/ebayflow-ai",
   },
   contact: {
-    email: "hello@ebayflow.ai",
+    email: "info@ebayflow.com",
     address: {
       line1: "123 Market Street",
       city: "San Francisco",

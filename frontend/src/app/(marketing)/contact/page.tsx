@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { marketingConfig } from "@/config/marketing";
 import { cn } from "@/lib/utils";
 import { useContactPageContent, useSettings } from "@/lib/admin/use-site-content";
+import { fetchApi } from "@/lib/api";
 
 export default function ContactPage() {
   const { data: contactData, loading } = useContactPageContent();
@@ -40,10 +41,18 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    toast.success(contactPage.form.success);
-    setFormData({ name: "", email: "", company: "", subject: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      await fetchApi('/public/contact', {
+        method: 'POST',
+        body: JSON.stringify(formData),
+      });
+      toast.success(contactPage?.form?.success || "Message sent successfully!");
+      setFormData({ name: "", email: "", company: "", subject: "", message: "" });
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send message. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
