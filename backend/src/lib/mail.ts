@@ -1,8 +1,9 @@
 // backend/src/lib/mail.ts
 import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 export function getMailTransporter() {
-  const host = process.env.SMTP_HOST || 'smtp.zoho.com';
+  const host = process.env.SMTP_HOST || 'smtppro.zoho.com';
   const port = Number(process.env.SMTP_PORT) || 587;
   const isSecure = process.env.SMTP_SECURE === 'true' || port === 465;
   const user = process.env.SMTP_USER || '';
@@ -52,6 +53,28 @@ export async function sendEmail({
   text?: string;
   replyTo?: string;
 }) {
+  const resendApiKey = process.env.RESEND_API_KEY;
+
+  // 1. If RESEND_API_KEY is configured, send via HTTP API (Port 443 - never blocked on Render Free tier)
+  if (resendApiKey) {
+    const resend = new Resend(resendApiKey);
+    const from = process.env.SMTP_FROM || 'eBay Flow <onboarding@resend.dev>';
+    const { data, error } = await resend.emails.send({
+      from,
+      to,
+      subject,
+      html,
+      text,
+      reply_to: replyTo,
+    });
+
+    if (error) {
+      throw new Error(error.message || 'Failed to send email via Resend API');
+    }
+    return data;
+  }
+
+  // 2. Traditional SMTP fallback
   const transporter = getMailTransporter();
   const defaultFrom = process.env.SMTP_FROM || process.env.SMTP_USER;
 
